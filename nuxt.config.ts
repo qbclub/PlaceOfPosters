@@ -1,22 +1,29 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+
 export default defineNuxtConfig({
-  css: ['~/assets/main.scss'],
+  css: ["~/assets/main.scss"],
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false,
+    },
+  ],
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: { name: "page", mode: "out-in" },
   },
   devtools: { enabled: true },
   build: {
-    transpile: ['vuetify'],
+    transpile: ["vuetify"],
   },
   modules: [
     (_options, nuxt) => {
-      nuxt.hooks.hook('vite:extendConfig', (config) => {
+      nuxt.hooks.hook("vite:extendConfig", (config) => {
         // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }))
-      })
+        config.plugins.push(vuetify({ autoImport: true }));
+      });
     },
-    '@pinia/nuxt',
+    "@pinia/nuxt",
   ],
   vite: {
     vue: {
@@ -25,4 +32,4 @@ export default defineNuxtConfig({
       },
     },
   },
-})
+});

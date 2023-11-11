@@ -43,7 +43,7 @@ let routeTo = (path) => {
                     :ripple="false">
                     Информация
                 </v-list-item>
-                <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/create-post" exact :ripple="false">
+                <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">
                     Создать
                 </v-list-item>
 
@@ -63,7 +63,7 @@ let routeTo = (path) => {
 
         </v-main>
 
-
+        <Bottom class="d-flex d-sm-none" />
     </v-app>
 </template>
 

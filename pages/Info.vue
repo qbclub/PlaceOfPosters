@@ -16,11 +16,11 @@
 </script>
 <template>
     <v-container>
-        <!-- <v-row>
+        <v-row>
             <v-col>
                 <BackButton />
             </v-col>
-        </v-row> -->
+        </v-row>
         <v-row class="d-flex flex-column flex-md-row">
             <v-col cols="12" md="2">
                 <div class="d-flex justify-center flex-wrap flex-md-column">
