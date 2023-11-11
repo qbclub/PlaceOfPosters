@@ -1,0 +1,81 @@
+// .v-text-field .v-input__details,
+// .v-messages {
+// min-height: 0 !important;
+// }
+i {
+  opacity: 0.7;
+}
+.v-bottom-navigation {
+  background: rgba(255, 255, 255, 0);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.v-btn {
+  padding: 0 24px 0 24px !important;
+}
+
+*::-webkit-scrollbar {
+  width: 10px; /* ширина всей полосы прокрутки */
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(248, 248, 248);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 20px; /* округлось бегунка */
+  background-color: rgb(235, 235, 235);
+}
+
+.v-field__input input {
+  background-color: transparent !important;
+}
+
+* {
+  scrollbar-color: rgb(235, 235, 235);
+}
+.posterView {
+  height: 80dvh;
+  overflow: auto;
+}
+.title {
+  position: sticky;
+  z-index: 99;
+  top: 0;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.ql-container {
+  height: fit-content !important;
+}
+
+.dp-custom-input {
+  height: 44px;
+}
+.v-input__details {
+  height: 0;
+  padding: 0;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  color: #2e528f;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  // filter: blur(0.5rem);
+}
