@@ -68,4 +68,4 @@ onMounted(() => {
 .posterView {
     height: 80dvh;
 }
-</style>
+</style>~/PLUGINS_TEMP/dates

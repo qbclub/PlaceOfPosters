@@ -122,4 +122,4 @@ onMounted(async () => {
     </v-img>
   </v-dialog>
 </template>
-<style scoped></style>
+<style scoped></style>~/PLUGINS_TEMP/dates

@@ -23,4 +23,4 @@ $api.interceptors.response.use(function (response) {
     return error
 });
 
-export default defineNuxtPlugin($api);
+export default $api;

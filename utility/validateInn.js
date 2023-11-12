@@ -1,4 +1,4 @@
-export default defineNuxtPlugin( function validateInn(inn, error) {
+export default function validateInn(inn, error) {
 	var result = false;
 	if (typeof inn === 'number') {
 		inn = inn.toString();
@@ -43,4 +43,4 @@ export default defineNuxtPlugin( function validateInn(inn, error) {
 		}
 	}
 	return result;
-})
+}
