@@ -7,4 +7,4 @@
 function newNumber () {
     return getRandomInt (1, 1000000000)
 }
-export default  newNumber
+export default  defineNuxtPlugin(newNumber)

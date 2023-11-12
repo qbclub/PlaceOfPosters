@@ -1,4 +1,4 @@
-export default async function getPossiblePartner(value) {
+export default defineNuxtPlugin(  async function getPossiblePartner(value) {
 
     var url = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party";
 
@@ -28,4 +28,4 @@ export default async function getPossiblePartner(value) {
         console.log(error);
     }
 
-}
+})

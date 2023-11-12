@@ -1,4 +1,4 @@
-export default async function getPossibleLocations(value) {
+export default defineNuxtPlugin( async function getPossibleLocations(value) {
     if (value.trim().length < 3)
         return
 
@@ -47,4 +47,4 @@ export default async function getPossibleLocations(value) {
     } catch (error) {
         console.log(error);
     }
-}
+})

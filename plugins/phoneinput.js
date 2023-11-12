@@ -1,4 +1,4 @@
-export function initPhoneInput() {
+export default defineNuxtPlugin( function  initPhoneInput() {
     var phoneInputs = document.querySelectorAll('input#tel-input');
 
     var getInputNumbersValue = function (input) {
@@ -73,4 +73,4 @@ export function initPhoneInput() {
         phoneInput.addEventListener('input', onPhoneInput, false);
         phoneInput.addEventListener('paste', onPhonePaste, false);
     }
-}
+})

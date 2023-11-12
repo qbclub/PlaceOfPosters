@@ -1,4 +1,4 @@
-export default {
+export default defineNuxtPlugin( {
     clearDate(dataString) {
 
         let date = 0
@@ -37,4 +37,4 @@ export default {
 
         })
     }
-} 
+} )
