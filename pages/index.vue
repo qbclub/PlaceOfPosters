@@ -1,3 +1,6 @@
 <template>
-start
+    <div class="text-center">
+        start
+    </div>
+
 </template>

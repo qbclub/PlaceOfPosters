@@ -78,7 +78,7 @@
 
 <template>
 
-    <PosterCard/>
+  
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
     <v-container class="pt-0 d-flex justify-center ">
       <v-row v-show="imgOnload" class="justify-center flex-wrap mb-16 mt-2 w-100">

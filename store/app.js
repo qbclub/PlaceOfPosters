@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from 'pinia'
-import appStateService from '@/service/AppStateService'
-import OrdService from '@/service/OrdService'
+import appStateService from '~/service/AppStateService'
+import OrdService from '~/service/OrdService'
 import _ from 'lodash'
 
 export const useAppStore = defineStore('app', {
