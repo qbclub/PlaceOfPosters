@@ -21,9 +21,7 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "@pinia/nuxt": "^0.5.1",
+    "axios": "^1.6.1",
     "pinia": "^2.1.7"
-  },
-  "overrides": {
-    "vue": "latest"
   }
 }
