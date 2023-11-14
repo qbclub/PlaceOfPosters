@@ -8,13 +8,12 @@ const { poster } = defineProps(["poster"]);
 </script>
 
 <template>
-  я афиша
-  <!-- <div class="card rounded" @click="router.push(`/post?_id=${poster._id}`)">
+  <div class="card rounded" @click="router.push(`/post?_id=${poster._id}`)">
     <div class="img-container h-100">
       <img :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }">
     </div>
 
-  </div> -->
+  </div>
 </template>
 
 <style scoped lang="scss">

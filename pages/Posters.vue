@@ -1,79 +1,62 @@
 <script setup>
-// import { ref, onMounted, onBeforeMount, onUpdated } from 'vue';
-// import { useRoute } from "vue-router";
-// // import PosterCard from './PosterCard.vue';
-// import { usePoster } from '@/store/poster';
-// import { useLocations } from '@/store/locations';
-// import { computed } from 'vue';
-// let posterStore = usePoster()
 
-// const wrapper = ref(null)
-// const route = useRoute();
-// let locationsStore = useLocations()
-// let imgOnload = ref(false)
+import { useRoute } from "vue-router";
+import { usePoster } from '@/store/poster';
+import { useLocations } from '@/store/locations';
 
-// let isLoad = () => {
-//   imgOnload.value = true
-// }
+let posterStore = usePoster()
 
-// let handleScroll = async () => {
-//   let triggerHeight =
-//     wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
-//   if (triggerHeight >= wrapper.value.scrollHeight) {
-//     triggerHeight = wrapper.value.scrollHeight
-//   }
-//   if (triggerHeight == wrapper.value.scrollHeight) {
-//     await posterStore.fetchPosters(posterStore.filter)
-//   }
-// }
+const wrapper = ref(null)
+const route = useRoute();
+let locationsStore = useLocations()
+let imgOnload = ref(false)
 
-// let blur = (date) => {
-//   let isDateOut
-//   if (date?.length) {
-//     for (let i = 0; i < date.length; i++) {
-//       if (date[i] < new Date().setHours(0, 0, 0, 0)) {
-//         isDateOut = true
-//       } else {
-//         return false
-//       }
-//     }
-//   } else {
-//     return false
-//   }
-//   return isDateOut
-// }
+let isLoad = () => {
+  imgOnload.value = true
+}
 
-// onMounted(async () => {
-//   if (route.hash) {
-//     let id = route.hash.slice(1)
-//     document.getElementById(id)?.scrollIntoView()
-//   }
-//   wrapper.value.addEventListener("scroll", handleScroll);
+let handleScroll = async () => {
+  let triggerHeight =
+    wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
+  if (triggerHeight >= wrapper.value.scrollHeight) {
+    triggerHeight = wrapper.value.scrollHeight
+  }
+  if (triggerHeight == wrapper.value.scrollHeight) {
+    await posterStore.fetchPosters(posterStore.filter)
+  }
+}
 
-//   if (posterStore.posters.length == 0) {
-//     let filter
-//     if (localStorage.getItem('filterForm')) {
-//       filter = JSON.parse(localStorage.getItem('filterForm'))
-//     }
-//     if (!locationsStore.location.length) {
-//       if (localStorage.getItem('location')) {
-//         locationsStore.location = localStorage.getItem('location')
-//       }
-//     }
+onMounted(async () => {
+  if (route.hash) {
+    let id = route.hash.slice(1)
+    document.getElementById(id)?.scrollIntoView()
+  }
+  wrapper.value.addEventListener("scroll", handleScroll);
 
-//     posterStore.page = 1
-//     await posterStore.fetchPosters(filter)
-//   }
+  if (posterStore.posters.length == 0) {
+    let filter
+    if (localStorage.getItem('filterForm')) {
+      filter = JSON.parse(localStorage.getItem('filterForm'))
+    }
+    if (!locationsStore.location.length) {
+      if (localStorage.getItem('location')) {
+        locationsStore.location = localStorage.getItem('location')
+      }
+    }
+
+    posterStore.page = 1
+    await posterStore.fetchPosters(filter)
+  }
 
 
-// });
-// onBeforeMount(() => {
-//   window.addEventListener("load", isLoad());
-// }
-// )
-// onUpdated(() => {
-//   window.addEventListener("load", isLoad());
-// })
+});
+onBeforeMount(() => {
+  window.addEventListener("load", isLoad());
+}
+)
+onUpdated(() => {
+  window.addEventListener("load", isLoad());
+})
 </script>
 
 <template>
@@ -84,7 +67,7 @@
       <v-row v-show="imgOnload" class="justify-center flex-wrap mb-16 mt-2 w-100">
     
         <v-col v-for="item of posterStore.posters" :key="item._id" cols="6" sm="4" md="3" lg="2" class="pa-1">
-          <PosterCard :poster="item" :id='item._id' :class="{ blur: blur(item.date) }" />
+          <PosterCard :poster="item" :id='item._id'/>
         </v-col>
       
       </v-row>
@@ -113,7 +96,4 @@
   }
 }
 
-.blur {
-  filter: grayscale(100%);
-}
 </style>

@@ -1,10 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router"
-import { usePoster } from '@/store/poster';
+import { usePoster } from '~/store/poster';
 import { useHead } from '@unhead/vue'
 import { useShare } from '@vueuse/core'
-import dates from "@/plugins/dates"
+import dates from "~/utility/dates"
 
 const API_URL = import.meta.env.VITE_API_URL
 
