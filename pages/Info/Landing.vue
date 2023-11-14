@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
-import { usePrice } from '@/store/price';
-import { useAuth } from "../../store/auth";
-import Buy from "@/components/Buy.vue"
+import { usePrice } from '~/store/price';
+import { useAuth } from "~/store/auth";
+
 
 
 
@@ -95,77 +95,79 @@ onMounted(async () => {
 
 </script>
 <template>
-    <v-row class="pb-16">
-        <v-col cols="12">
-            <p class="text-center mb-0 text-caption mt-1" style="color:#ED413E">Внимание!
-                Приложение
-                работает в тестовом режиме.</p>
-        </v-col>
+    <div>
+        <v-row class="pb-16">
+            <v-col cols="12">
+                <p class="text-center mb-0 text-caption mt-1" style="color:#ED413E">Внимание!
+                    Приложение
+                    работает в тестовом режиме.</p>
+            </v-col>
 
-        <v-col cols="12" sm="6">
-            <v-hover v-slot="{ isHovering, props }">
-                <v-card userStore. @click="checkIsAuth()" height="100" v-bind="props" v-box-shadow="isHovering ? 14 : 10"
-                    color="success" class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
-                    <div class=" text-h6 text-md-h5">Тестовый режим до 31.12.2023</div>
-                    <div class=" text-h6 text-md-h5 text-end font-weight-bold"> Aфиша - 0 рублей </div>
-                </v-card>
-            </v-hover>
-        </v-col>
+            <v-col cols="12" sm="6">
+                <v-hover v-slot="{ isHovering, props }">
+                    <v-card userStore. @click="checkIsAuth()" height="100" v-bind="props" color="success"
+                        class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
+                        <div class=" text-h6 text-md-h5">Тестовый режим до 31.12.2023</div>
+                        <div class=" text-h6 text-md-h5 text-end font-weight-bold"> Aфиша - 0 рублей </div>
+                    </v-card>
+                </v-hover>
+            </v-col>
 
-        <v-col v-for="price in prices" cols="12" sm="6">
-            <v-hover v-slot="{ isHovering, props }">
-                <!-- @click="buyDialog(price)" -->
-                <v-card height="100" v-bind="props" v-box-shadow="isHovering ? 14 : 10"
-                    class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
-                    <div class="text-end text-h6 font-italic">&laquo;{{ price.promoName }}&raquo;</div>
-                    <div class=" text-h6 text-md-h5 font-weight-bold"> {{ price.name
-                    }} </div>
+            <v-col v-for="price in prices" cols="12" sm="6">
+                <v-hover v-slot="{ isHovering, props }">
+                    <!-- @click="buyDialog(price)" -->
+                    <v-card height="100" v-bind="props"
+                        class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
+                        <div class="text-end text-h6 font-italic">&laquo;{{ price.promoName }}&raquo;</div>
+                        <div class=" text-h6 text-md-h5 font-weight-bold"> {{ price.name
+                        }} </div>
 
-                    <p v-if="price.profit">
-                        <span class="discont">
-                            Скидка {{ price.profit }}%
-                        </span>
-                        Экономия {{ price.numberPosters * 150 - price.price }} руб
-                    </p>
-                    <p class="text-end text-h6 font-weight-bold"> Цена: {{ price.price }} руб
-                    </p>
-                </v-card>
-            </v-hover>
+                        <p v-if="price.profit">
+                            <span class="discont">
+                                Скидка {{ price.profit }}%
+                            </span>
+                            Экономия {{ price.numberPosters * 150 - price.price }} руб
+                        </p>
+                        <p class="text-end text-h6 font-weight-bold"> Цена: {{ price.price }} руб
+                        </p>
+                    </v-card>
+                </v-hover>
 
-        </v-col>
-        <v-col cols="12" sm="6">
-            <v-hover v-slot="{ isHovering, props }">
-                <v-card v-bind="props" v-box-shadow="isHovering ? 14 : 10" color="accent"
-                    class="animation rounded pa-4 d-flex flex-column justify-space-between">
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-hover v-slot="{ isHovering, props }">
+                    <v-card v-bind="props" color="accent"
+                        class="animation rounded pa-4 d-flex flex-column justify-space-between">
 
-                    <ul class="pl-4">
-                        <li>
-                            <div class=" text-h6 text-md-h5"> Гранты на бесплатное размещение </div>
+                        <ul class="pl-4">
+                            <li>
+                                <div class=" text-h6 text-md-h5"> Гранты на бесплатное размещение </div>
 
-                        </li>
-                        <li>
-                            <div class=" text-h6 text-md-h5"> Особые условия рекламным агентствам</div>
-                        </li>
-                    </ul>
+                            </li>
+                            <li>
+                                <div class=" text-h6 text-md-h5"> Особые условия рекламным агентствам</div>
+                            </li>
+                        </ul>
 
-                </v-card>
-            </v-hover>
-        </v-col>
-    </v-row>
-    <v-dialog v-model="isBuyDialog" width="auto">
+                    </v-card>
+                </v-hover>
+            </v-col>
+        </v-row>
+        <v-dialog v-model="isBuyDialog" width="auto">
 
-        <v-card class="pa-2">
+            <v-card class="pa-2">
 
-            <v-card-title> Покупка </v-card-title>
-            <Buy @closeDialog="closeDialog" @purchase="purchase" :selectPrice="selectPrice" />
-        </v-card>
-    </v-dialog>
-    <v-snackbar v-model="snackbar" color="success" timeout="2000">
-        {{ snackbarText }}
-        <template v-slot:actions>
-            <v-btn @click="snackbar = false" density="compact" icon="mdi-close"></v-btn>
-        </template>
-    </v-snackbar>
+                <v-card-title> Покупка </v-card-title>
+                <Buy @closeDialog="closeDialog" @purchase="purchase" :selectPrice="selectPrice" />
+            </v-card>
+        </v-dialog>
+        <v-snackbar v-model="snackbar" color="success" timeout="2000">
+            {{ snackbarText }}
+            <template v-slot:actions>
+                <v-btn @click="snackbar = false" density="compact" icon="mdi-close"></v-btn>
+            </template>
+        </v-snackbar>
+    </div>
 </template>
 <style scoped lang="scss">
 .v-card {
