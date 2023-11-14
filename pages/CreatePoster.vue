@@ -555,17 +555,20 @@ function getCategory(category) {
 
                         <v-col cols="12" md="8">
                             <b>Описание </b><span>*</span>
-                            <QuillEditor theme="snow" ref="quill" contentType="html" v-model:content="form.description"
-                                :toolbar="[
-                                    ['bold', 'italic', 'underline'],
-                                    [{ list: 'ordered' }, { list: 'bullet' }],
-                                    [{ color: ['#000000', '#ED413E'] }],
-                                    [{ align: [] }],
-                                    ['link'],
-                                    ['clean']
-                                ]" :options="options">
+                            <ClientOnly fallback-tag="span" fallback="Loading on server...">
 
-                            </QuillEditor>
+                                <QuillEditor theme="snow" ref="quill" contentType="html" v-model:content="form.description"
+                                    :toolbar="[
+                                        ['bold', 'italic', 'underline'],
+                                        [{ list: 'ordered' }, { list: 'bullet' }],
+                                        [{ color: ['#000000', '#ED413E'] }],
+                                        [{ align: [] }],
+                                        ['link'],
+                                        ['clean']
+                                    ]" :options="options">
+
+                                </QuillEditor>
+                            </ClientOnly>
                         </v-col>
                     </v-row>
                     <v-row class="d-flex justify-center">
