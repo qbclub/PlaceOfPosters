@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
+
 import Buy from "@/components/Buy.vue"
-import { useAuth } from "../../store/auth";
+import { useAuth } from "~/store/auth";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -25,7 +25,7 @@ let purchase = async () => {
 }
 
 watch(select, () => {
-  router.push(select.value)
+  navigateTo(select.value)
 })
 watch(router.currentRoute, () => {
   select.value = router.currentRoute.value.path
@@ -36,17 +36,17 @@ watch(router.currentRoute, () => {
   <v-row>
     <v-col class="pb-0">
       <v-radio-group inline v-model="select" :hide-details="true">
-        <v-radio label="Активные" value="/cabinet/posters/active"></v-radio>
-        <v-radio label="На модерации" value="/cabinet/posters/on-moderation"></v-radio>
+        <v-radio label="Активные" value="/cabinet/posters/activeposters"></v-radio>
+        <v-radio label="На модерации" value="/cabinet/posters/postersonmoderation"></v-radio>
         <v-radio label="Отказано" value="/cabinet/posters/rejected"></v-radio>
-        <v-radio label="Архив" value="/cabinet/posters/archived"></v-radio>
-        <v-radio label="Черновики" value="/cabinet/posters/drafts"></v-radio>
+        <v-radio label="Архив" value="/cabinet/posters/archivedposters"></v-radio>
+        <v-radio label="Черновики" value="/cabinet/posters/draftposters"></v-radio>
       </v-radio-group>
     </v-col>
   </v-row>
   <v-row>
     <v-col class="d-flex flex-wrap align-center">
-      <v-btn color="accent" variant="outlined" :ripple="false" to="/create-post" class="ma-1">
+      <v-btn color="accent" variant="outlined" :ripple="false" to="/createposter" class="ma-1">
         Создать
       </v-btn>
       

@@ -1,16 +1,17 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue'
-import validateInn from '../../plugins/validateInn'
-import getPossiblePartner from "../../plugins/dadataINN";
+
 import _ from 'lodash'
-import { useAuth } from "../../store/auth";
-import { useAppStore } from '@/store/app';
 import { uid } from 'uid';
-import dates from "@/plugins/dates"
-import newNumber from '../../plugins/getRandomInt'
-import OrdService from '../../service/OrdService'
 
+import { useAuth } from "~/store/auth";
+import { useAppStore } from '~/store/app';
 
+import dates from "~/utility/dates"
+import newNumber from '~/utility/getRandomInt'
+import validateInn from '~/utility/validateInn'
+import getPossiblePartner from "~/utility/dadataINN";
+
+import OrdService from '~/service/OrdService'
 
 const userStore = useAuth();
 const appState = useAppStore().appState;

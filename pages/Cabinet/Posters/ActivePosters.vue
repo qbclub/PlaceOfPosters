@@ -1,8 +1,6 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import PostersList from "@/views/Cabinet/PostersList.vue"
-import { usePoster } from "../../store/poster";
-import { useAuth } from "../../store/auth";
+import { usePoster } from "~/store/poster";
+import { useAuth } from "~/store/auth";
 
 const userStore = useAuth();
 const user = ref(userStore.user);

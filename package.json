@@ -24,6 +24,7 @@
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.1",
     "pinia": "^2.1.7",
+    "uid": "^2.0.2",
     "vee-validate": "^4.11.8",
     "vue-email": "^0.8.0-beta.4"
   }

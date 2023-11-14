@@ -1,11 +1,8 @@
 <script setup>
-import { ref, computed } from "vue";
-import PosterCard from "@/components/PosterCard.vue";
-import Buy from "@/components/Buy.vue"
 import { usePoster } from "@/store/poster";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "~/store/auth";
 import router from "@/router";
-import dates from "@/plugins/dates"
+import dates from "~/utility/dates"
 
 const userStore = useAuth();
 const posterStore = usePoster();

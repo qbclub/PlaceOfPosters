@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from "vue"
-import ContractForm from "./ContractForm.vue";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "~/store/auth";
 import { useRouter } from "vue-router";
 
 const userStore = useAuth()
