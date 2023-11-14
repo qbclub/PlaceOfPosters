@@ -1,8 +1,8 @@
 <script setup>
 
 import { useRoute } from "vue-router";
-import { usePoster } from '@/store/poster';
-import { useLocations } from '@/store/locations';
+import { usePoster } from '~/store/poster';
+import { useLocations } from '~/store/locations';
 
 let posterStore = usePoster()
 

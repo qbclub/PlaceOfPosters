@@ -1,22 +1,20 @@
 <script setup>
 import VueDatePicker from '@vuepic/vue-datepicker'
 import "@vuepic/vue-datepicker/dist/main.css";
-import ImageCropper from '../components/ImageCropper.vue'
-import Buy from "@/components/Buy.vue"
+
 import { QuillEditor } from "@vueup/vue-quill";
 import 'quill-paste-smart';
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { useRouter } from 'vue-router'
 
-import BackButton from '../components/BackButton.vue'
-import ContractForm from "../views/Cabinet/ContractForm.vue";
-import { reactive, onMounted, ref, watch, onBeforeUnmount } from 'vue'
-import getPossibleLocations from "../plugins/dadata";
 
-import { useAppStore } from '@/store/app';
-import { useAuth } from '@/store/auth';
-import { usePoster } from '@/store/poster'
-import { usePrice } from '@/store/price';
+import { reactive, onMounted, ref, watch, onBeforeUnmount } from 'vue'
+import getPossibleLocations from "~/utility/dadata";
+
+import { useAppStore } from '~/store/app';
+import { useAuth } from '~/store/auth';
+import { usePoster } from '~/store/poster'
+import { usePrice } from '~/store/price';
 import { formatDate } from '@vueuse/core';
 
 let router = useRouter()

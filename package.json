@@ -21,9 +21,13 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "@pinia/nuxt": "^0.5.1",
+    "@vuepic/vue-datepicker": "^7.2.2",
+    "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.1",
+    "cropperjs": "^1.6.1",
     "pinia": "^2.1.7",
+    "quill-paste-smart": "^1.4.12",
     "uid": "^2.0.2",
     "vee-validate": "^4.11.8",
     "vue-email": "^0.8.0-beta.4"
