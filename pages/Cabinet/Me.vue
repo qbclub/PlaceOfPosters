@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ["is-auth"]
+})
+
 import { useAuth } from "../../store/auth";
 
 const userStore = useAuth()
@@ -7,12 +11,7 @@ const user = userStore.user
 
 <template>
   <v-col class="d-flex flex-row flex-nowrap align-center">
-    <v-avatar
-      style="font-size: large"
-      class="font-weight-bold"
-      color="surface-variant"
-      size="large"
-    >
+    <v-avatar style="font-size: large" class="font-weight-bold" color="surface-variant" size="large">
       {{ user.firstname[0] }}
     </v-avatar>
 
@@ -29,7 +28,7 @@ const user = userStore.user
           {{ user.email }}
         </div>
       </v-col>
-  
+
       <v-col>
         <div style="color: grey">Телефон</div>
         <div>
