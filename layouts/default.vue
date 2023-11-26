@@ -1,9 +1,9 @@
 <script setup>
 
-import { usePoster } from '~/store/poster';
-import { useLocations } from '~/store/locations';
-import { useAuth } from '~/store/auth';
-import { useAppStore } from '~/store/app';
+// import { usePoster } from '~/store/poster';
+// import { useLocations } from '~/store/locations';
+// import { useAuth } from '~/store/auth';
+// import { useAppStore } from '~/store/app';
 
 let posterStore = usePoster()
 let locationsStore = useLocations()
@@ -60,7 +60,7 @@ let checkFilter = async () => {
 let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
-  await authStore.checkAuth()
+  // await authStore.checkAuth()
 
 
 }
@@ -88,7 +88,7 @@ watch(showFilter, () => {
 
 })
 onMounted(async () => {
-    await setApp()
+  await setApp()
 
   //   if (!locationsStore.location.length) {
   //     if (localStorage.getItem('location')) {

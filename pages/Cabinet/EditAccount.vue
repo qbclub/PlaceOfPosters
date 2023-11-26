@@ -1,8 +1,6 @@
 <script setup>
 import SettingInput from '@/components/Input/SettingInput.vue'
-import { useAuth } from '@/store/auth'
 import { useField, useForm } from 'vee-validate'
-import { useRouter } from 'vue-router'
 
 let authStore = useAuth()
 let router = useRouter()

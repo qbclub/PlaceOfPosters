@@ -1,8 +1,5 @@
 <script setup>
-
 import Buy from "@/components/Buy.vue"
-import { useAuth } from "~/store/auth";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userStore = useAuth();
@@ -49,7 +46,7 @@ watch(router.currentRoute, () => {
       <v-btn color="accent" variant="outlined" :ripple="false" to="/createposter" class="ma-1">
         Создать
       </v-btn>
-      
+
       <v-btn color="accent" @click="buyDialog = true" class="ma-1" x>Купить
       </v-btn>
       <div class="ma-4">

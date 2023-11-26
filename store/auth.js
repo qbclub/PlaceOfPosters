@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import AuthService from '../service/AuthService'
+import { getData, setData } from 'nuxt-storage/local-storage';
 
 export const useAuth = defineStore('auth', {
 	state: () => ({
@@ -52,7 +53,7 @@ export const useAuth = defineStore('auth', {
 			try {
 				const response = await AuthService.login(form);
 				if (response.data.accessToken)
-					localStorage.setItem('token', response.data.accessToken);
+					setData('token', response.data.accessToken, '30', 'd')
 				if (response.data.user) {
 					this.isAuth = true;
 					this.user = response.data.user
@@ -68,9 +69,11 @@ export const useAuth = defineStore('auth', {
 				if (this.authRefreshing) return
 				this.authRefreshing = true
 				const response = await AuthService.refresh()
+				console.log(response.data);
 				if (!response.data?.accessToken && !response.data?.user) return
 
-				localStorage.setItem('token', response.data.accessToken)
+				setData('token', response.data.accessToken, '30', 'd')
+
 				this.isAuth = true
 				this.user = response.data.user
 				this.authRefreshing = false
@@ -101,7 +104,7 @@ export const useAuth = defineStore('auth', {
 			try {
 				let response = await AuthService.getSubscriptionCount(_id)
 				this.user.subscription.count = response.data.subscription.count
-			
+
 			} catch (error) {
 				console.log(error);
 			}

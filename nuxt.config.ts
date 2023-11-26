@@ -25,6 +25,9 @@ export default defineNuxtConfig({
     },
     "@pinia/nuxt",
   ],
+  pinia: {
+    storesDirs: ['./store/**'],
+  },
   vite: {
     vue: {
       template: {

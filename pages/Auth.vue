@@ -25,7 +25,7 @@ const email = useField('email')
 const password = useField('password')
 
 const login = handleSubmit(values => {
-    userStore.login(values).then(() => router.push('/cabinet'))
+    userStore.login(values).then(() => router.push('/cabinet/me'))
 })
 </script>
 
@@ -42,7 +42,8 @@ const login = handleSubmit(values => {
                         <v-text-field v-model="email.value.value" :error-messages="email.errorMessage.value" label="E-mail"
                             class="w-100" density="compact" variant="outlined" autocomplete="off"></v-text-field>
                         <v-text-field v-model="password.value.value" :error-messages="password.errorMessage.value"
-                            label="Пароль" type="password" class="w-100" density="compact" variant="outlined" autocomplete="off"></v-text-field>
+                            label="Пароль" type="password" class="w-100" density="compact" variant="outlined"
+                            autocomplete="off"></v-text-field>
                         <v-btn class="mt-2" type="submit">
                             войти
                         </v-btn>
@@ -51,10 +52,11 @@ const login = handleSubmit(values => {
                             class="text-caption pt-2 pr-2 pl-2 mt-2 w-100 text-center text-accent" style="cursor: pointer;">
                             регистрация</div>
                         <div @click="router.push('/forgot-password')"
-                        class="text-caption pr-2 pb-2 pl-2 w-100 text-center text-accent" style="cursor: pointer;">
+                            class="text-caption pr-2 pb-2 pl-2 w-100 text-center text-accent" style="cursor: pointer;">
                             восстановить пароль</div>
                     </v-form>
                 </v-col>
             </v-row>
         </v-responsive>
-    </v-container></template>
+    </v-container>
+</template>

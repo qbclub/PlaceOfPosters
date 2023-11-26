@@ -1,47 +1,56 @@
 <script setup>
+definePageMeta({
+    middleware: ['is-auth']
+})
 
-import { useAuth } from "~/store/auth";
-import { useRouter } from "vue-router";
-import { usePrice } from '~/store/price';
-const router = useRouter();
-
-let tab = ref(0);
+let tab = ref("/cabinet/me");
 
 let authStore = useAuth();
 let priceStore = usePrice()
-if (authStore.user == null) {
-  navigateTo("/auth");
-}
+
 async function logout() {
-  await authStore.logout();
-  navigateTo("/posters");
+    await authStore.logout();
+    navigateTo("/posters");
 }
-onMounted(async () => {
-  if (!priceStore.prices.length) {
-    await priceStore.fetchPrices()
-  }
 
+watch(tab, (newValue) => {
+    navigateTo(newValue)
 })
-
+let routes = ["/cabinet/me", "/cabinet/contract", "/cabinet/posters", "/cabinet/eventlog"]
+onMounted(async () => {
+    if (!routes.includes(useRoute().path)) {
+        navigateTo('/cabinet/me')
+    }
+    if (!priceStore.prices.length) {
+        await priceStore.fetchPrices()
+    }
+})
 </script>
-
 <template>
-  <v-container>
-    <v-row class="justify-space-betwin">
-      <v-col>
-        <h2>Кабинет</h2>
-      </v-col>
-      <v-col @click="logout" style="cursor: pointer" cols="auto" class="d-flex flex-row">
-        <v-icon>mdi-logout</v-icon>
-        <div class="ml-1">выйти</div>
-      </v-col>
-    </v-row>
-    <v-tabs v-model="tab">
-      <v-tab :ripple="false" value="0" to="/cabinet/me"> О вас </v-tab>
-      <v-tab :ripple="false" value="2" to="/cabinet/contract"> Договоры </v-tab>
-      <v-tab :ripple="false" value="1" to="/cabinet/posters"> Афиши </v-tab>
-      <v-tab :ripple="false" value="3" to="/cabinet/eventlog"> Оплаты </v-tab>
-    </v-tabs>
-    <router-view />
-  </v-container>
+    <v-container>
+        <v-row>
+            <v-col>
+                <h2>Кабинет</h2>
+            </v-col>
+            <v-col @click="logout" style="cursor: pointer" cols="auto" class="d-flex flex-row">
+                <v-icon>mdi-logout</v-icon>
+                <div class="ml-1">выйти</div>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <v-tabs model-value="tab" :mandatory="true">
+                    <v-tab :ripple="false" :value="routes[0]" :to="routes[0]"> О вас </v-tab>
+                    <v-tab :ripple="false" :value="routes[1]" :to="routes[1]"> Договоры </v-tab>
+                    <v-tab :ripple="false" :value="routes[2]" :to="routes[2]"> Афиши </v-tab>
+                    <v-tab :ripple="false" :value="routes[3]" :to="routes[3]"> Оплаты </v-tab>
+                </v-tabs>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <NuxtPage />
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
