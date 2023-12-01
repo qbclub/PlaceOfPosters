@@ -1,14 +1,8 @@
 <script setup>
-
-import { usePoster } from '~/store/poster';
-import { useLocations } from '~/store/locations';
-import { useAuth } from '~/store/auth';
-import { useAppStore } from '~/store/app';
-
 let posterStore = usePoster()
 let locationsStore = useLocations()
 
-let location = ref('')
+let { location } = storeToRefs(locationsStore)
 let filter = reactive({
 
 })
@@ -61,8 +55,6 @@ let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
   await authStore.checkAuth()
-
-
 }
 
 
@@ -85,25 +77,11 @@ watch(location, async (newValue, oldValue) => {
 })
 watch(showFilter, () => {
   checkFilter()
-
 })
+
 onMounted(async () => {
     await setApp()
-
-  //   if (!locationsStore.location.length) {
-  //     if (localStorage.getItem('location')) {
-  //       locationsStore.location = localStorage.getItem('location')
-  //     }
-  //   }
-
-  //   if (checkFilter()) {
-  //     filter = JSON.parse(localStorage.getItem('filterForm'))
-  //     posterStore.filter = filter
-  //     // await posterStore.fetchPosters(filter)
-  //   }
-
 })
-
 </script>
 
 <template>
@@ -119,8 +97,7 @@ onMounted(async () => {
             <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline" @click="showFilter = !showFilter"></v-icon>
 
             <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular"
-              style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline"
-              @click="showAddPlace = !showAddPlace">
+              style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
               {{ location ? shortLocationName : "Место" }}
             </v-btn>
 
@@ -130,6 +107,12 @@ onMounted(async () => {
 
       </v-container>
     </v-app-bar>
+
+    <v-dialog transition="scale-transition" v-model="showFilter" fullscreen>
+      <v-card>
+        <Filter @closeDialog="closeFilter()" />
+      </v-card>
+    </v-dialog>
 
     <v-navigation-drawer v-model="drawer" location="right" temporary elevation="0">
       <v-list nav>
