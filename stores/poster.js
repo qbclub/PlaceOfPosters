@@ -5,8 +5,6 @@ import { useLocations } from './locations.js';
 // import { render  } from 'vue-email';
 import PosterCreatedTemplate from '../email-templates/PosterCreatedTemplate.vue'
 
-let locationsStore = useLocations()
-
 export const usePoster = defineStore('poster', {
     state: () => ({
         posters: [],
@@ -75,9 +73,9 @@ export const usePoster = defineStore('poster', {
 
         async fetchPosters(filter) {
 
-            // console.log(locationsStore.location)
+            // console.log(useLocations().location)
             let send = Object.assign({}, filter)
-            send.eventLocation = locationsStore.location ? locationsStore.location : ''
+            send.eventLocation = useLocations().location ? useLocations().location : ''
             send.page = this.page
             if (this.page == 1) {
                 this.load = true

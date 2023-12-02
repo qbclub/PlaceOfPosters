@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 import { useAuth } from './auth';
+import { ref } from 'vue';
 import LocationsService from '../service/LocationsService.js'
 
 export const useLocations = defineStore('locations', {
     state: () => ({
-        eventlocations: [],
-        location: ''
+        eventlocations: ref([]),
+        location: ref('')
     }),
     getters: {
     },

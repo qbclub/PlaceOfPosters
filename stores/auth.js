@@ -13,7 +13,7 @@ export const useAuth = defineStore('auth', {
 	actions: {
 		async resetPassword(password, token, user_id) {
 			let response = await AuthService.resetPassword(password, token, user_id)
-			if (response.data.accessToken)
+			if (response.data.accessToken && process.client)
 				localStorage.setItem('token', response.data.accessToken);
 
 			this.isAuth = true
@@ -72,8 +72,8 @@ export const useAuth = defineStore('auth', {
 				console.log(response.data);
 				if (!response.data?.accessToken && !response.data?.user) return
 
-				setData('token', response.data.accessToken, '30', 'd')
-
+				if (process.client)
+					localStorage.setItem('token', response.data.accessToken)
 				this.isAuth = true
 				this.user = response.data.user
 				this.authRefreshing = false
@@ -109,8 +109,5 @@ export const useAuth = defineStore('auth', {
 				console.log(error);
 			}
 		}
-
-
-
 	},
 })

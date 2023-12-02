@@ -11,10 +11,6 @@ import { useRouter } from 'vue-router'
 import { reactive, onMounted, ref, watch, onBeforeUnmount } from 'vue'
 import getPossibleLocations from "~/utility/dadata";
 
-import { useAppStore } from '~/store/app';
-import { useAuth } from '~/store/auth';
-import { usePoster } from '~/store/poster'
-import { usePrice } from '~/store/price';
 import { formatDate } from '@vueuse/core';
 
 let router = useRouter()

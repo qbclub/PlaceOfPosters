@@ -1,152 +1,215 @@
 <script setup>
+import { ref, watch, onMounted, computed, reactive } from 'vue'
+import { useAppStore } from '@/store/app';
+import { useLocations } from '@/store/locations';
+import { usePoster } from '@/store/poster';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
+import { useRouter } from 'vue-router';
 
-const appStateStore = useAppStore();
+const props = defineProps(['isStartPage'])
+let emit = defineEmits(['closeDialog'])
+
+
+
+let router = useRouter()
+let appState = useAppStore().appState
+let locationStore = useLocations()
 let posterStore = usePoster()
-// let typeQuery = ref('')
-let eventTypes = ref(appStateStore.appState.eventTypes)
-let subcategories = ref([])
-
-// let eventSubtypes = ref([])
-
-
-let emit = defineEmits(['closeFilter'])
-
-let filterForm = reactive({
-    searchText: '',
-    date: null,
-    eventType: [],
-    eventSubtype: []
-})
-
-
-// function setSubtypes(value) {
-//     eventSubtypes.value = value ? appStateStore.appState.eventTypes.find(item => item.name === value).subcategories : []
-// }
-
-// setSubtypes()
+let locations = ref([])
+let categories = ref([])
+let selectedLocation = ref('')
 let date_items = [
     'Сегодня',
     'На неделе',
     'Скоро',
 ]
-let selectedTypeIndex = ref(null)
-let selectedSubcategoryIndex = ref(null)
-let selectedDayIndex = ref(null)
-
-
-
-async function submit() {
-    filterForm.searchText = filterForm.searchText
-    posterStore.posters = []
-    posterStore.page = 1
-    await posterStore.fetchPosters(filterForm)
-    emit('closeFilter')
-}
-
-async function resetForm() {
-    filterForm.searchText = '';
-    filterForm.date = '';
-    filterForm.eventType = [];
-    filterForm.eventSubtype = []
-    localStorage.setItem('filterForm', JSON.stringify(filterForm))
-    localStorage.setItem('selectedDayIndex', null)
-    localStorage.setItem('selectedTypeIndex', null)
-    localStorage.setItem('selectedSubcategoryIndex', null)
-    posterStore.posters = []
-    posterStore.page = 1
-    await posterStore.fetchPosters(filterForm)
-    emit('closeFilter')
-}
-
-// function updateSubcategories() {
-//     subcategories.value = []
-//     appStateStore.appState.eventTypes.filter(category => filterForm.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
-// }
-
-// watch(filterForm, () => {
-//     localStorage.setItem('filterForm', JSON.stringify(filterForm))
-// })
-// // watch(() => filterForm.eventType, (value) => { setSubtypes(value); })
-// watch(selectedDayIndex, () => {
-//     filterForm.date = date_items[selectedDayIndex.value]
-//     localStorage.setItem('selectedDayIndex', selectedDayIndex.value)
-// })
-// watch(selectedTypeIndex, () => {
-//     filterForm.eventType = selectedTypeIndex.value.map((value) => { return eventTypes.value[value].name })
-//     updateSubcategories()
-
-//     localStorage.setItem('selectedTypeIndex', JSON.stringify(selectedTypeIndex.value))
-// })
-// watch(selectedSubcategoryIndex, () => {
-//     filterForm.eventSubtype = selectedSubcategoryIndex.value.map((value) => { return subcategories.value[value] })
-    
-//     localStorage.setItem('selectedSubcategoryIndex', JSON.stringify(selectedSubcategoryIndex.value))
-// })
-
-onMounted(async () => {
-    // if (localStorage.getItem('filterForm')) {
-    //     let filter = JSON.parse(localStorage.getItem('filterForm'))
-    //     filterForm.searchText = filter.searchText;
-    //     filterForm.date = filter.date;
-    //     filterForm.eventType = filter.eventType;
-    //     filterForm.eventSubtype = filter.eventSubtype
-    // }
-
-
-    // if (localStorage.getItem('selectedDayIndex')) {
-    //     selectedDayIndex.value = localStorage.getItem('selectedDayIndex')
-    //     filterForm.date = date_items[selectedDayIndex.value]
-    // }
-    // if (localStorage.getItem('selectedTypeIndex')) {
-    //     selectedTypeIndex.value = JSON.parse(localStorage.getItem('selectedTypeIndex'))
-    //     filterForm.eventType = eventTypes.value[selectedTypeIndex.value]?.name
-    //     updateSubcategories()
-    // }
-    // if (localStorage.getItem('selectedSubcategoryIndex')) {
-    //     selectedSubcategoryIndex.value = JSON.parse(localStorage.getItem('selectedSubcategoryIndex'))
-    //     filterForm.eventSubtype = subcategories.value[selectedSubcategoryIndex.value]?.name
-    // }
+let filter = ref({
+    searchText: '',
+    date: '',
+    eventType: [],
+    eventSubtype: []
 })
+
+let shortName = (item) => {
+    return item.name.split(' ').pop()
+}
+
+async function closeDialog() {
+    posterStore.posters = []
+    posterStore.page = 1
+    await posterStore.fetchPosters(filter.value)
+    emit('closeDialog')
+}
+function clearFilter() {
+    selectedLocation.value = ''
+    localStorage.setItem('location', selectedLocation.value)
+    locationStore.location = selectedLocation.value
+
+    filter.value = {
+        searchText: '',
+        date: '',
+        eventType: [],
+        eventSubtype: []
+    }
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    posterStore.filter = filter.value
+}
+
+function selectLocation(index) {
+    if (selectedLocation.value == locations.value[index].name) {
+        selectedLocation.value = ''
+    } else {
+        selectedLocation.value = locations.value[index].name
+    }
+    localStorage.setItem('location', selectedLocation.value)
+    locationStore.location = selectedLocation.value
+}
+function selectCategory(index) {
+    let name = categories.value[index].name
+    let place = filter.value.eventType.indexOf(name)
+    place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    posterStore.filter = filter.value
+}
+let selectPeriod = (name) => {
+    if (filter.value.date == name) {
+        filter.value.date = ''
+
+    } else {
+        filter.value.date = name
+    }
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    posterStore.filter = filter.value
+}
+
+let isSelectedLocation = (name) => {
+    if (selectedLocation.value == name) {
+        return true
+    } else {
+        return false
+    }
+}
+
+
+
+let isSelectedCategory = (name) => {
+
+    if (filter.value.eventType) {
+        return filter.value?.eventType.includes(name) ? true : false
+    } else {
+        return false
+    }
+
+}
+watch(() => filter.value.searchText, () => {
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    posterStore.filter = filter.value
+})
+
+onMounted(() => {
+    
+    locations.value = locationStore.eventlocations
+    categories.value = appState.eventTypes
+
+    if (!selectedLocation.value.length) {
+        if (localStorage.getItem('location')) {
+            selectedLocation.value = localStorage.getItem('location')
+        }
+    }
+
+    if (localStorage.getItem('filterForm')) {
+        filter.value = JSON.parse(localStorage.getItem('filterForm'))
+        posterStore.filter = filter.value
+    }
+
+})
+
 </script>
 
 <template>
-    <v-form ref="form">
-        <v-row class="justify-center">
-            <v-col cols="12" sm="6">
-                <v-text-field v-model="filterForm.searchText" variant="outlined" density="compact" label="Поиск"
-                    hide-details></v-text-field>
+    <v-container>
+        <v-row class="flex-column justify-center align-center">
+            <v-col v-if="isStartPage" cols="auto" class="pb-0">
+                <h2> Настрой для себя</h2>
             </v-col>
-            <v-col cols="12" sm="6" class="d-flex justify-space-evenly">
-                <v-chip-group filter v-model="selectedDayIndex">
-                    <v-chip filter variant="outlined" v-for="item, index in date_items">
-                        {{ item }}
-                    </v-chip>
-                </v-chip-group>
+            <v-col v-if="!isStartPage" cols="12" sm="6">
+                <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
+                    clearable></v-text-field>
             </v-col>
-            <v-col cols="12" style="max-height: 30dvh;  overflow-y:auto">
-                <v-chip-group filter multiple v-model="selectedTypeIndex">
-                    <v-chip filter variant="outlined" v-for="type, index in eventTypes">
-                        {{ type.name }}
-                    </v-chip>
-                </v-chip-group>
+            <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
+                <v-btn v-for="location, index in locations" @click="selectLocation(index)"
+                    :class="isSelectedLocation(location.name) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
+                    :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat">
+                    {{ shortName(location) }}
+                </v-btn>
             </v-col>
-            <v-col cols="12" style="max-height: 30dvh;  overflow-y:auto">
-                <v-chip-group filter multiple v-model="selectedSubcategoryIndex">
-                    <v-chip filter variant="outlined" v-for="type, index in subcategories">
-                        {{ type }}
-                    </v-chip>
-                </v-chip-group>
+            <v-col cols="8" v-if="!isStartPage">
+                <v-divider />
             </v-col>
-            <v-col cols="12" sm="6" class="d-flex justify-space-around">
-                <v-btn color="accent" @click="submit()" :flat="true">Найти</v-btn>
-                <v-btn @click="resetForm()" :flat="true">Очистить</v-btn>
+
+
+            <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
+                <v-btn v-for="item, index in date_items" @click="selectPeriod(item)"
+                    :class="filter.date == item ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                    style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                    {{ item }}
+                </v-btn>
+            </v-col>
+
+            <v-col cols="8">
+                <v-divider />
+            </v-col>
+
+
+            <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px;">
+                <v-btn v-for="category, index in categories" @click="selectCategory(index)"
+                    :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                    style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                    {{ category.name }}
+                </v-btn>
+            </v-col>
+
+            <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
+                <v-btn @click="isStartPage ? router.push('/posters') : closeDialog()" class="rounded-lg text-accent"
+                    variant="outlined" :ripple="false" size="large">
+                    Показать афиши
+                </v-btn>
+
+                <!-- <v-btn v-if="!isStartPage" @click="clearFilter()" class="rounded-lg text-accent" variant="outlined" :ripple="false"
+                    size="large">
+                    Очистить фильтр
+                </v-btn> -->
             </v-col>
         </v-row>
-    </v-form>
+    </v-container>
 </template>
+
 <style lang="scss" scoped>
-.active {
-    background: #ED413E;
-    color: white;
+$red: #ff0000;
+$white: #ffffff;
+
+@keyframes blink {
+    0% {
+        background: $white;
+    }
+
+    33% {
+        background: $red;
+    }
+
+    66% {
+        background: $white;
+    }
+
+    100% {
+        background: $red;
+    }
 }
+
+.btn.bg-red {
+    animation: blink 1s;
+}
+
 </style>
+
+
