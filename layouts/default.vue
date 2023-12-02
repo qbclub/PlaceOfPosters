@@ -1,4 +1,5 @@
 <script setup>
+import { getData, setData } from 'nuxt-storage/local-storage';
 let posterStore = usePoster()
 let locationsStore = useLocations()
 let authStore = useAuth()
@@ -23,33 +24,34 @@ let routeTo = (path) => {
 }
 
 let closeFilter = async () => {
-  // filter = JSON.parse(localStorage.getItem('filterForm'))
+
+  filter = getData('filterForm')
   posterStore.filter = filter
   showFilter.value = false
 }
 let checkFilter = async () => {
-  // if (localStorage.getItem('filterForm')) {
-  //   let filter = JSON.parse(localStorage.getItem('filterForm'))
-  //   posterStore.filter = filter
-  //   for (const key in filter) {
-  //     if (key == "eventType") {
-  //       if (filter.eventType.length)
-  //         isFiltered.value = true
-  //       break
-  //     } else {
-  //       if (filter[key]) {
-  //         isFiltered.value = true
-  //         break
-  //       }
-  //     }
-  //     isFiltered.value = false
-  //     if (filter[key]) {
-  //       if (filter.eventType.length)
-  //         isFiltered.value = true
-  //       break
-  //     }
-  //   }
-  // }
+  if (getData('filterForm')) {
+    let filter = getData('filterForm')
+    posterStore.filter = filter
+    for (const key in filter) {
+      if (key == "eventType") {
+        if (filter.eventType.length)
+          isFiltered.value = true
+        break
+      } else {
+        if (filter[key]) {
+          isFiltered.value = true
+          break
+        }
+      }
+      isFiltered.value = false
+      if (filter[key]) {
+        if (filter.eventType.length)
+          isFiltered.value = true
+        break
+      }
+    }
+  }
 }
 
 let setApp = async () => {
@@ -63,17 +65,18 @@ let setApp = async () => {
 // shorten names in response.data
 
 watch(location, async (newValue, oldValue) => {
-  // if (location.value) {
-  //   locationsStore.location = location.value
-  //   localStorage.setItem('location', location.value);
-  // } else {
-  //   locationsStore.location = ''
-  //   localStorage.setItem('location', '');
-  // }
-  // showAddPlace.value = false
-  // posterStore.posters = []
-  // posterStore.page = 1
-  // await posterStore.fetchPosters(filter)
+  if (location.value) {
+    locationsStore.location = location.value
+    setData('location', location.value, 30, 'd')
+   
+  } else {
+    locationsStore.location = ''
+    setData('location', '',30, 'd');
+  }
+  showAddPlace.value = false
+  posterStore.posters = []
+  posterStore.page = 1
+  await posterStore.fetchPosters(filter)
 
 })
 watch(showFilter, () => {
