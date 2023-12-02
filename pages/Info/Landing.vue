@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
-import { usePrice } from '~/store/price';
-import { useAuth } from "~/store/auth";
+
 
 
 
@@ -191,4 +190,4 @@ onMounted(async () => {
     transform: scale(1.03);
     transition: all 0.5s;
 }
-</style>~/stores/price~/stores/auth
+</style>
