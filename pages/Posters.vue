@@ -1,4 +1,5 @@
 <script setup>
+import { getData } from 'nuxt-storage/local-storage';
 import { useRoute } from "vue-router";
 
 
@@ -30,20 +31,21 @@ onMounted(async () => {
     }
     wrapper.value.addEventListener("scroll", handleScroll);
   
-    // if (posterStore.posters.length == 0) {
-    //   let filter
-    //   if (localStorage.getItem('filterForm')) {
-    //     filter = JSON.parse(localStorage.getItem('filterForm'))
-    //   }
-    //   if (!locationsStore.location.length) {
-    //     if (localStorage.getItem('location')) {
-    //       locationsStore.location = localStorage.getItem('location')
-    //     }
-    //   }
+    if (posterStore.posters.length == 0) {
+      let filter
+  
+      if (getData('filterForm')) {
+        filter = getData('filterForm')
+      }
+      if (!locationsStore.location.length) {
+        if (getData('location')) {
+          locationsStore.location = getData('location')
+        }
+      }
   
       posterStore.page = 1
       await posterStore.fetchPosters(filter)
-    // }
+    }
 })
 </script>
 
