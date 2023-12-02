@@ -1,18 +1,15 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { usePoster } from '~/store/poster';
-import { useLocations } from '~/store/locations';
+
 
 let posterStore = usePoster()
 
-// const wrapper = ref(null)
+const wrapper = ref(null)
 const route = useRoute();
 let locationsStore = useLocations()
-let imgOnload = ref(false)
 
-let isLoad = () => {
-  imgOnload.value = true
-}
+
+
 
 let handleScroll = async () => {
   let triggerHeight =
@@ -21,17 +18,17 @@ let handleScroll = async () => {
     triggerHeight = wrapper.value.scrollHeight
   }
   if (triggerHeight == wrapper.value.scrollHeight) {
-    // await posterStore.fetchPosters(posterStore.filter)
+    await posterStore.fetchPosters(posterStore.filter)
   }
 }
 
 onMounted(async () => {
-  console.log(process.client)
+ 
     if (route.hash) {
       let id = route.hash.slice(1)
       document.getElementById(id)?.scrollIntoView()
     }
-    // wrapper.value.addEventListener("scroll", handleScroll);
+    wrapper.value.addEventListener("scroll", handleScroll);
   
     // if (posterStore.posters.length == 0) {
     //   let filter
@@ -44,18 +41,18 @@ onMounted(async () => {
     //     }
     //   }
   
-    //   posterStore.page = 1
-    //   // await posterStore.fetchPosters(filter)
+      posterStore.page = 1
+      await posterStore.fetchPosters(filter)
     // }
 })
 </script>
 
 <template>
 
-  <!-- <ClientOnly>
+
     <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
       <v-container class="pt-0 d-flex justify-center ">
-        <v-row v-show="imgOnload" class="justify-center flex-wrap mb-16 mt-2 w-100">
+        <v-row  class="justify-center flex-wrap mb-16 mt-2 w-100">
       
           <v-col v-for="item of posterStore.posters" :key="item._id" cols="6" sm="4" md="3" lg="2" class="pa-1">
             <PosterCard :poster="item" :id='item._id'/>
@@ -74,7 +71,7 @@ onMounted(async () => {
   
       </v-row>
     </div>
-  </ClientOnly> -->
+  
   афиши
 </template>
 

@@ -1,8 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, computed, reactive } from 'vue'
-import { useAppStore } from '@/store/app';
-import { useLocations } from '@/store/locations';
-import { usePoster } from '@/store/poster';
+import { getData, setData } from 'nuxt-storage/local-storage';
 import { useDisplay } from 'vuetify/lib/framework.mjs';
 import { useRouter } from 'vue-router';
 
@@ -42,7 +39,7 @@ async function closeDialog() {
 }
 function clearFilter() {
     selectedLocation.value = ''
-    localStorage.setItem('location', selectedLocation.value)
+    setData('location', selectedLocation.value, 30, 'd')
     locationStore.location = selectedLocation.value
 
     filter.value = {
@@ -51,7 +48,7 @@ function clearFilter() {
         eventType: [],
         eventSubtype: []
     }
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    setData('filterForm', filter.value, 30, 'd')
     posterStore.filter = filter.value
 }
 
@@ -61,14 +58,14 @@ function selectLocation(index) {
     } else {
         selectedLocation.value = locations.value[index].name
     }
-    localStorage.setItem('location', selectedLocation.value)
+    setData('location', selectedLocation.value, 30, 'd')
     locationStore.location = selectedLocation.value
 }
 function selectCategory(index) {
     let name = categories.value[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    setData('filterForm', filter.value, 30, 'd')
     posterStore.filter = filter.value
 }
 let selectPeriod = (name) => {
@@ -78,7 +75,7 @@ let selectPeriod = (name) => {
     } else {
         filter.value.date = name
     }
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    setData('filterForm', filter.value, 30, 'd')
     posterStore.filter = filter.value
 }
 
@@ -102,23 +99,22 @@ let isSelectedCategory = (name) => {
 
 }
 watch(() => filter.value.searchText, () => {
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    setData('filterForm', filter.value, 30, 'd')
     posterStore.filter = filter.value
 })
 
 onMounted(() => {
-    
+
     locations.value = locationStore.eventlocations
     categories.value = appState.eventTypes
-
     if (!selectedLocation.value.length) {
-        if (localStorage.getItem('location')) {
-            selectedLocation.value = localStorage.getItem('location')
+        if (getData('location')) {
+            selectedLocation.value = getData('location')
         }
     }
 
-    if (localStorage.getItem('filterForm')) {
-        filter.value = JSON.parse(localStorage.getItem('filterForm'))
+    if (getData('filterForm')) {
+        filter.value = getData('filterForm')
         posterStore.filter = filter.value
     }
 
@@ -209,7 +205,6 @@ $white: #ffffff;
 .btn.bg-red {
     animation: blink 1s;
 }
-
 </style>
 
 

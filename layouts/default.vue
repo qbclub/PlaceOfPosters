@@ -24,8 +24,8 @@ let routeTo = (path) => {
 
 let closeFilter = async () => {
   // filter = JSON.parse(localStorage.getItem('filterForm'))
-  // posterStore.filter = filter
-  // showFilter.value = false
+  posterStore.filter = filter
+  showFilter.value = false
 }
 let checkFilter = async () => {
   // if (localStorage.getItem('filterForm')) {
@@ -97,7 +97,7 @@ onMounted(async () => {
 
             <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline" @click="showFilter = !showFilter"></v-icon>
 
-            <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular"
+            <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular disabled"
               style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
               {{ location ? shortLocationName : "Место" }}
             </v-btn>
@@ -111,7 +111,7 @@ onMounted(async () => {
 
     <v-dialog transition="scale-transition" v-model="showFilter" fullscreen>
       <v-card>
-        <Filter @closeDialog="closeFilter()" />
+        <Filter @closeDialog="closeFilter()" :isStartPage="false" />
       </v-card>
     </v-dialog>
 
@@ -141,7 +141,7 @@ onMounted(async () => {
     </v-navigation-drawer>
 
     <v-main class="pb-0">
-      <v-container class="pt-0 pb-0">
+      <!-- <v-container class="pt-0 pb-0">
          <v-row class="flex-column align-center justify-center ma-0">
           <v-col cols="12" sm="8" md="6" lg="5" xl="4" class="pa-0">
             <v-menu v-model="showAddPlace" :close-on-content-click="false" activator="parent" scroll-strategy="close"
@@ -164,7 +164,7 @@ onMounted(async () => {
             </v-menu>
           </v-col>
         </v-row> 
-      </v-container>
+      </v-container> -->
       <NuxtPage />
 
     </v-main>
