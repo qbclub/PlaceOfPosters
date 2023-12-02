@@ -102,4 +102,4 @@ onMounted(async () => {
             </v-col>
         </v-row>
     </v-container>
-</template>
+</template>~/stores/auth~/stores/app

@@ -82,3 +82,4 @@ const register = handleSubmit(async (values) => {
 		</v-responsive>
 	</v-container>
 </template>
+../stores/auth

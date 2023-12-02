@@ -72,3 +72,4 @@ watch(snackbar, ()=>{
   </v-snackbar>
 </template>
 <style lang="scss" scoped></style>
+../stores/auth

@@ -29,3 +29,4 @@ onMounted(async () => {
       v-if="loading"></v-progress-circular></div>
 </template>
 <style scoped></style>
+~/stores/poster~/stores/auth

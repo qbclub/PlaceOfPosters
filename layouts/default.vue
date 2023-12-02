@@ -1,12 +1,8 @@
 <script setup>
 
-// import { usePoster } from '~/store/poster';
-// import { useLocations } from '~/store/locations';
-// import { useAuth } from '~/store/auth';
-// import { useAppStore } from '~/store/app';
-
 let posterStore = usePoster()
 let locationsStore = useLocations()
+let authStore = useAuth()
 
 let location = ref('')
 let filter = reactive({
@@ -17,7 +13,7 @@ let drawer = ref(false)
 let showFilter = ref(false)
 let showAddPlace = ref(false)
 let isFiltered = ref(false)
-let authStore = useAuth()
+
 
 let shortLocationName = computed(() => {
   return location.value.split(" ").at(-1)
@@ -157,8 +153,8 @@ onMounted(async () => {
     </v-navigation-drawer>
 
     <v-main class="pb-0">
-      <!-- <v-container class="pt-0 pb-0">
-        <v-row class="flex-column align-center justify-center ma-0">
+      <v-container class="pt-0 pb-0">
+         <v-row class="flex-column align-center justify-center ma-0">
           <v-col cols="12" sm="8" md="6" lg="5" xl="4" class="pa-0">
             <v-menu v-model="showAddPlace" :close-on-content-click="false" activator="parent" scroll-strategy="close"
               transition="scroll-y-transition">
@@ -179,8 +175,8 @@ onMounted(async () => {
               </v-card>
             </v-menu>
           </v-col>
-        </v-row>
-      </v-container> -->
+        </v-row> 
+      </v-container>
       <NuxtPage />
 
     </v-main>

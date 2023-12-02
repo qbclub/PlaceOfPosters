@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+
 import { useRouter } from "vue-router";
 
 let router = useRouter();

@@ -107,4 +107,4 @@ onMounted(async () => {
     cursor: pointer;
 
 }
-</style>
+</style>~/stores/poster

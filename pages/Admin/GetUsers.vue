@@ -42,4 +42,4 @@ onMounted(async () => {
             </v-table>
         </v-col>
     </v-row>
-</template>
+</template>~/stores/app

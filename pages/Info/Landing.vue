@@ -191,4 +191,4 @@ onMounted(async () => {
     transform: scale(1.03);
     transition: all 0.5s;
 }
-</style>
+</style>~/stores/price~/stores/auth

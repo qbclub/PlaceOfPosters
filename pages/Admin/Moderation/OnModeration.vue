@@ -88,4 +88,4 @@ onMounted(async () => {
 }
 
 
-</style>
+</style>~/stores/poster

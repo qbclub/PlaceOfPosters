@@ -1,9 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-
-import { usePrice } from '~/store/price';
-import { useAuth } from "~/store/auth";
-
 
 const userStore = useAuth();
 const user = ref(userStore.user);

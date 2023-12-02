@@ -167,4 +167,4 @@ onMounted(async () => {
 
   }
 }
-</style>~/PLUGINS_TEMP/dates
+</style>~/PLUGINS_TEMP/dates~/stores/poster

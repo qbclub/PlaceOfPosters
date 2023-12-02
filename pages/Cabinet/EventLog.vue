@@ -107,4 +107,4 @@ onMounted(async () => {
 .yellow {
     background-color: rgb(237, 143, 62, 0.1)
 }
-</style>
+</style>../../stores/auth../../stores/logs

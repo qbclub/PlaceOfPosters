@@ -617,4 +617,4 @@ function getCategory(category) {
     </v-container>
 </template>
 
-<style lang="scss" scoped></style>../PLUGINS_TEMP/dadata../PLUGINS_TEMP/dadata
+<style lang="scss" scoped></style>../PLUGINS_TEMP/dadata../PLUGINS_TEMP/dadata~/stores/app~/stores/auth~/stores/poster~/stores/price

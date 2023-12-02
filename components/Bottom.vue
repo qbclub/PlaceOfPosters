@@ -1,6 +1,6 @@
 <script setup>
-// import { useAuth } from '@/store/auth';
-// let authStore = useAuth()
+
+let authStore = useAuth()
 </script>
 
 <template>

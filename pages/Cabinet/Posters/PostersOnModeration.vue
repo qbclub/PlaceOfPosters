@@ -30,3 +30,4 @@ onMounted(async () => {
       v-if="loading"></v-progress-circular></div>
 </template>
 <style lang="scss" scoped></style>
+~/stores/poster

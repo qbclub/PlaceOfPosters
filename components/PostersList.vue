@@ -1,6 +1,5 @@
 <script setup>
-import { usePoster } from "@/store/poster";
-import { useAuth } from "~/store/auth";
+
 import router from "@/router";
 import dates from "~/utility/dates"
 

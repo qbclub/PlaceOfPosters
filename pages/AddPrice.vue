@@ -1,6 +1,5 @@
 <script setup>
-import { reactive } from 'vue';
-import { usePrice } from '@/store/price';
+
 
 const PriceStore = usePrice();
 

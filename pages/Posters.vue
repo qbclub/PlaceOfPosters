@@ -96,4 +96,4 @@ onUpdated(() => {
   }
 }
 
-</style>
+</style>~/stores/poster~/stores/locations

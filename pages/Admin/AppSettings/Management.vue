@@ -40,4 +40,4 @@ async function findPosters() {
             </h3>
         </v-col>
     </v-row>
-</template>
+</template>~/stores/poster

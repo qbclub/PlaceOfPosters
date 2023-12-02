@@ -1,7 +1,4 @@
-
 <template>
   <NuxtLayout/>
-
-
 </template>
 

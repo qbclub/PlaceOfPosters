@@ -3,9 +3,6 @@
 import _ from 'lodash'
 import { uid } from 'uid';
 
-import { useAuth } from "~/store/auth";
-import { useAppStore } from '~/store/app';
-
 import dates from "~/utility/dates"
 import newNumber from '~/utility/getRandomInt'
 import validateInn from '~/utility/validateInn'

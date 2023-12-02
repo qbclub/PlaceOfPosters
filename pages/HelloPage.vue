@@ -86,4 +86,4 @@ onMounted(async () => {
         color: white;
     }
 }
-</style>
+</style>~/stores/poster~/stores/locations

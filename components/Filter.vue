@@ -1,9 +1,4 @@
 <script setup>
-import { reactive } from 'vue'
-import { usePoster } from '@/store/poster';
-import { useAppStore } from '@/store/app';
-import { onMounted, ref } from 'vue';
-import { watch } from 'vue';
 
 const appStateStore = useAppStore();
 let posterStore = usePoster()
@@ -12,7 +7,7 @@ let eventTypes = ref(appStateStore.appState.eventTypes)
 let subcategories = ref([])
 
 // let eventSubtypes = ref([])
-console.log(subcategories.value)
+
 
 let emit = defineEmits(['closeFilter'])
 
@@ -68,49 +63,49 @@ async function resetForm() {
 //     appStateStore.appState.eventTypes.filter(category => filterForm.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
 // }
 
-watch(filterForm, () => {
-    localStorage.setItem('filterForm', JSON.stringify(filterForm))
-})
-// watch(() => filterForm.eventType, (value) => { setSubtypes(value); })
-watch(selectedDayIndex, () => {
-    filterForm.date = date_items[selectedDayIndex.value]
-    localStorage.setItem('selectedDayIndex', selectedDayIndex.value)
-})
-watch(selectedTypeIndex, () => {
-    filterForm.eventType = selectedTypeIndex.value.map((value) => { return eventTypes.value[value].name })
-    updateSubcategories()
+// watch(filterForm, () => {
+//     localStorage.setItem('filterForm', JSON.stringify(filterForm))
+// })
+// // watch(() => filterForm.eventType, (value) => { setSubtypes(value); })
+// watch(selectedDayIndex, () => {
+//     filterForm.date = date_items[selectedDayIndex.value]
+//     localStorage.setItem('selectedDayIndex', selectedDayIndex.value)
+// })
+// watch(selectedTypeIndex, () => {
+//     filterForm.eventType = selectedTypeIndex.value.map((value) => { return eventTypes.value[value].name })
+//     updateSubcategories()
 
-    localStorage.setItem('selectedTypeIndex', JSON.stringify(selectedTypeIndex.value))
-})
-watch(selectedSubcategoryIndex, () => {
-    filterForm.eventSubtype = selectedSubcategoryIndex.value.map((value) => { return subcategories.value[value] })
+//     localStorage.setItem('selectedTypeIndex', JSON.stringify(selectedTypeIndex.value))
+// })
+// watch(selectedSubcategoryIndex, () => {
+//     filterForm.eventSubtype = selectedSubcategoryIndex.value.map((value) => { return subcategories.value[value] })
     
-    localStorage.setItem('selectedSubcategoryIndex', JSON.stringify(selectedSubcategoryIndex.value))
-})
+//     localStorage.setItem('selectedSubcategoryIndex', JSON.stringify(selectedSubcategoryIndex.value))
+// })
 
 onMounted(async () => {
-    if (localStorage.getItem('filterForm')) {
-        let filter = JSON.parse(localStorage.getItem('filterForm'))
-        filterForm.searchText = filter.searchText;
-        filterForm.date = filter.date;
-        filterForm.eventType = filter.eventType;
-        filterForm.eventSubtype = filter.eventSubtype
-    }
+    // if (localStorage.getItem('filterForm')) {
+    //     let filter = JSON.parse(localStorage.getItem('filterForm'))
+    //     filterForm.searchText = filter.searchText;
+    //     filterForm.date = filter.date;
+    //     filterForm.eventType = filter.eventType;
+    //     filterForm.eventSubtype = filter.eventSubtype
+    // }
 
 
-    if (localStorage.getItem('selectedDayIndex')) {
-        selectedDayIndex.value = localStorage.getItem('selectedDayIndex')
-        filterForm.date = date_items[selectedDayIndex.value]
-    }
-    if (localStorage.getItem('selectedTypeIndex')) {
-        selectedTypeIndex.value = JSON.parse(localStorage.getItem('selectedTypeIndex'))
-        filterForm.eventType = eventTypes.value[selectedTypeIndex.value]?.name
-        updateSubcategories()
-    }
-    if (localStorage.getItem('selectedSubcategoryIndex')) {
-        selectedSubcategoryIndex.value = JSON.parse(localStorage.getItem('selectedSubcategoryIndex'))
-        filterForm.eventSubtype = subcategories.value[selectedSubcategoryIndex.value]?.name
-    }
+    // if (localStorage.getItem('selectedDayIndex')) {
+    //     selectedDayIndex.value = localStorage.getItem('selectedDayIndex')
+    //     filterForm.date = date_items[selectedDayIndex.value]
+    // }
+    // if (localStorage.getItem('selectedTypeIndex')) {
+    //     selectedTypeIndex.value = JSON.parse(localStorage.getItem('selectedTypeIndex'))
+    //     filterForm.eventType = eventTypes.value[selectedTypeIndex.value]?.name
+    //     updateSubcategories()
+    // }
+    // if (localStorage.getItem('selectedSubcategoryIndex')) {
+    //     selectedSubcategoryIndex.value = JSON.parse(localStorage.getItem('selectedSubcategoryIndex'))
+    //     filterForm.eventSubtype = subcategories.value[selectedSubcategoryIndex.value]?.name
+    // }
 })
 </script>
 
