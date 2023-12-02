@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-import { useAuth } from "../store/auth";
+
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { reactive } from "vue"

@@ -73,8 +73,6 @@ onMounted(async () => {
   
       </v-row>
     </div>
-  
-  афиши
 </template>
 
 <style lang="scss" scoped>

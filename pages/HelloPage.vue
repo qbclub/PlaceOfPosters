@@ -1,8 +1,7 @@
 <script setup>
-import { onMounted } from 'vue';
+
 import { useRouter } from 'vue-router'
-import { usePoster } from '@/store/poster';
-import { useLocations } from '@/store/locations';
+
 
 let posterStore = usePoster()
 let router = useRouter()

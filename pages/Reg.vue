@@ -1,7 +1,7 @@
 <script setup>
 import { useField, useForm } from 'vee-validate'
 import { useRouter } from 'vue-router'
-import { useAuth } from '../store/auth'
+
 
 let router = useRouter()
 
