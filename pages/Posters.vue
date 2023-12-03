@@ -3,7 +3,6 @@ import { useDisplay } from 'vuetify'
 import { getData, setData } from 'nuxt-storage/local-storage';
 import { useRoute } from "vue-router";
 
-
 let posterStore = usePoster()
 
 const { mobile } = useDisplay()
@@ -47,15 +46,19 @@ watch(mobile, () => {
 
 
 onMounted(async () => {
-  mobile.value ? cols.value = "6" : cols.value = "3"
-  if (getData("cols")) { cols.value = getData("cols") }
 
-  if (route.hash) {
-    if (process.client) {
-      let id = route.hash.slice(1)
-      document.getElementById(id)?.scrollIntoView()
+
+  // if (getData("cols")) { cols.value = getData("cols") }
+  // else { mobile.value ? cols.value = "6" : cols.value = "3" }
+
+  if (process.client) {
+    if (route.hash) {
+       let id = route.hash.slice(1)
+    let el = document.getElementById(id)
+    el?.scrollIntoView()
     }
   }
+
 
   wrapper.value.addEventListener("scroll", handleScroll);
 
@@ -79,17 +82,18 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-    <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-      <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
-
-    </v-radio-group>
+  
+      <!-- <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+        <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
+      </v-radio-group> -->
+ 
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
-        <v-fade-transition group leave-absolute hide-on-leave>
-          <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
-            <PosterCard :poster="item" :id='item._id' />
-          </v-col>
-        </v-fade-transition>
+        <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
+        <v-col v-for="item of posterStore.posters" :key="item._id" cols="6" sm="4" md="3" lg="2" class="pa-1">
+          <PosterCard :poster="item" :id='item._id' />
+        </v-col>
+        <!-- </v-fade-transition> -->
       </v-row>
     </v-container>
     <v-row class="justify-center">

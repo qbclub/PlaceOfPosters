@@ -69,11 +69,13 @@ export const useAuth = defineStore('auth', {
 				if (this.authRefreshing) return
 				this.authRefreshing = true
 				const response = await AuthService.refresh()
-				console.log(response.data);
+				// console.log(response.data);
 				if (!response.data?.accessToken && !response.data?.user) return
 
 				if (process.client)
 					localStorage.setItem('token', response.data.accessToken)
+				// почему не setData от Nuxt storage
+
 				this.isAuth = true
 				this.user = response.data.user
 				this.authRefreshing = false
