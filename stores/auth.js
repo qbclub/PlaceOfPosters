@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import AuthService from '../service/AuthService'
+import AuthService from '~/service/AuthService'
 import { getData, setData } from 'nuxt-storage/local-storage';
 
 export const useAuth = defineStore('auth', {
@@ -14,7 +14,7 @@ export const useAuth = defineStore('auth', {
 		async resetPassword(password, token, user_id) {
 			let response = await AuthService.resetPassword(password, token, user_id)
 			if (response.data.accessToken && process.client)
-				localStorage.setItem('token', response.data.accessToken);
+				setData('token', response.data.accessToken);
 
 			this.isAuth = true
 			this.user = response.data.user
@@ -38,7 +38,7 @@ export const useAuth = defineStore('auth', {
 			try {
 				const response = await AuthService.registration(form);
 				if (response.data.accessToken)
-					localStorage.setItem('token', response.data.accessToken);
+					setData('token', response.data.accessToken);
 				if (response.data.user) {
 					this.isAuth = true
 					this.user = response.data.user
@@ -73,8 +73,8 @@ export const useAuth = defineStore('auth', {
 				if (!response.data?.accessToken && !response.data?.user) return
 
 				if (process.client)
-					localStorage.setItem('token', response.data.accessToken)
-				// почему не setData от Nuxt storage
+					setData('token', response.data.accessToken)
+
 
 				this.isAuth = true
 				this.user = response.data.user
@@ -85,7 +85,7 @@ export const useAuth = defineStore('auth', {
 		async logout() {
 			try {
 				const response = await AuthService.logout();
-				localStorage.removeItem('token');
+				setData('token', '');
 
 				this.isAuth = false;
 				this.user = null

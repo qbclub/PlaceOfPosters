@@ -1,8 +1,4 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useAuth } from "../../store/auth";
-import { useLogsStore } from "../../store/logs";
-
 
 let page = ref(1)
 const userStore = useAuth()

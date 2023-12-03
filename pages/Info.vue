@@ -30,12 +30,12 @@
                     <div @click="navigateTo(`/info/rules`)" class=" menu-btn">
                         правила
                     </div>
-                    
-                        <div @click="navigateTo('/info/contacts')" class="menu-btn">
 
-                            контакты
-                        </div>
-               
+                    <div @click="navigateTo('/info/contacts')" class="menu-btn">
+
+                        контакты
+                    </div>
+
                 </div>
             </v-col>
             <v-col cols="12" md="10">

@@ -1,8 +1,8 @@
 <script setup>
 
 import { useRouter } from 'vue-router'
-import BackButton from '../components/BackButton.vue'
-import dates from "@/plugins/dates"
+
+import dates from "~/utility/dates"
 let router = useRouter()
 let poster = ref({})
 let preview = ref()

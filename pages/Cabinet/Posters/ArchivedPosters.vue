@@ -1,8 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import PostersList from "@/views/Cabinet/PostersList.vue"
-import { usePoster } from "@/store/poster";
-import { useAuth } from "../../store/auth";
+
 const userStore = useAuth();
 const user = ref(userStore.user);
 let posterStore = usePoster();
@@ -21,12 +18,14 @@ onMounted(async () => {
 });
 </script>
 <template>
+  <div>
   <div v-if="archivePosters.length">
     <PostersList :posters="archivePosters" @getPosters="getPosters"  :actions="['delete', 'prolong']" />
   </div>
   <div v-else v-if="!loading">У вас нет старых афиш </div>
   <div class="d-flex justify-center"><v-progress-circular indeterminate color="accent" :size="60" :width="10"
       v-if="loading"></v-progress-circular></div>
+    </div>
 </template>
 <style scoped></style>
 ~/stores/poster
