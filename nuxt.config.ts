@@ -3,6 +3,9 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
   css: ["~/assets/main.scss"],
+  router: {
+    options: {}
+  },
   components: [
     {
       path: "~/components",

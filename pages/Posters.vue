@@ -1,9 +1,13 @@
 <script setup>
-import { getData } from 'nuxt-storage/local-storage';
+import { useDisplay } from 'vuetify'
+import { getData, setData } from 'nuxt-storage/local-storage';
 import { useRoute } from "vue-router";
 
 
 let posterStore = usePoster()
+
+const { mobile } = useDisplay()
+let cols = ref('')
 
 const wrapper = ref(null)
 const route = useRoute();
@@ -23,56 +27,82 @@ let handleScroll = async () => {
   }
 }
 
+let radio = computed(() => {
+  if (mobile.value) {
+
+    return [{ label: 1, value: 12 }, { label: 2, value: 6 }, { label: 3, value: 4 }]
+  } else {
+
+    return [{ label: 3, value: 4 }, { label: 4, value: 3 }, { label: 6, value: 2 }, { label: 12, value: 1 }]
+  }
+})
+
+watch(cols, () => {
+  setData("cols", cols.value, 30, 'd')
+})
+watch(mobile, () => {
+  mobile.value ? cols.value = "6" : cols.value = "2"
+})
+
+
+
 onMounted(async () => {
- 
-    if (route.hash) {
+  mobile.value ? cols.value = "6" : cols.value = "3"
+  if (getData("cols")) { cols.value = getData("cols") }
+
+  if (route.hash) {
+    if (process.client) {
       let id = route.hash.slice(1)
       document.getElementById(id)?.scrollIntoView()
     }
-    wrapper.value.addEventListener("scroll", handleScroll);
-  
-    if (posterStore.posters.length == 0) {
-      let filter
-  
-      if (getData('filterForm')) {
-        filter = getData('filterForm')
-      }
-      if (!locationsStore.location.length) {
-        if (getData('location')) {
-          locationsStore.location = getData('location')
-        }
-      }
-  
-      posterStore.page = 1
-      await posterStore.fetchPosters(filter)
+  }
+
+  wrapper.value.addEventListener("scroll", handleScroll);
+
+  if (posterStore.posters.length == 0) {
+    let filter
+
+    if (getData('filterForm')) {
+      filter = getData('filterForm')
     }
+    if (!locationsStore.location.length) {
+      if (getData('location')) {
+        locationsStore.location = getData('location')
+      }
+    }
+
+    posterStore.page = 1
+    await posterStore.fetchPosters(filter)
+  }
 })
 </script>
 
 <template>
+  <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
+    <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+      <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
 
-
-    <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-      <v-container class="pt-0 d-flex justify-center ">
-        <v-row  class="justify-center flex-wrap mb-16 mt-2 w-100">
-      
-          <v-col v-for="item of posterStore.posters" :key="item._id" cols="6" sm="4" md="3" lg="2" class="pa-1">
-            <PosterCard :poster="item" :id='item._id'/>
+    </v-radio-group>
+    <v-container class="pt-0 d-flex justify-center ">
+      <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
+        <v-fade-transition group leave-absolute hide-on-leave>
+          <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
+            <PosterCard :poster="item" :id='item._id' />
           </v-col>
-        
-        </v-row>
-      </v-container>
-      <v-row class="justify-center">
-        <v-col>
-          <h3 class="text-center" v-if="!posterStore.posters.length && posterStore.isLoaded"> Мы ничего не нашли 😟</h3>
-        </v-col>
+        </v-fade-transition>
       </v-row>
-      <v-row class="justify-center">
-        <v-col v-show="!posterStore.isLoaded" cols="12" sm="4" class="ma-0 pa-0"> <v-progress-linear indeterminate
-            color="accent"></v-progress-linear></v-col>
-  
-      </v-row>
-    </div>
+    </v-container>
+    <v-row class="justify-center">
+      <v-col>
+        <h3 class="text-center" v-if="!posterStore.posters.length && posterStore.isLoaded"> Мы ничего не нашли 😟</h3>
+      </v-col>
+    </v-row>
+    <v-row class="justify-center">
+      <v-col v-show="!posterStore.isLoaded" cols="12" sm="4" class="ma-0 pa-0"> <v-progress-linear indeterminate
+          color="accent"></v-progress-linear></v-col>
+
+    </v-row>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -85,5 +115,4 @@ onMounted(async () => {
     display: none;
   }
 }
-
 </style>~/stores/poster~/stores/locations

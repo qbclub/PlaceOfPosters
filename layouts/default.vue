@@ -85,6 +85,7 @@ watch(showFilter, () => {
 
 onMounted(async () => {
     await setApp()
+    checkFilter()
 })
 </script>
 

@@ -80,7 +80,8 @@ onMounted(async () => {
     <v-responsive>
       <v-row>
         <v-col>
-          <div @click="router.push({ path: '/posters', hash: `#${poster._id}` })" class="pa-1 cursor-pointer text-body-1">
+          <!-- router.replace({ hash: "#bio" }) -->
+          <div @click="router.replace({ path: '/posters', hash: `#${poster._id}` })" class="pa-1 cursor-pointer text-body-1">
             <span class="mdi mdi-arrow-left"></span> назад
           </div>
         </v-col>
