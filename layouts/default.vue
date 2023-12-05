@@ -57,7 +57,6 @@ let checkFilter = async () => {
 let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
-  await authStore.checkAuth()
 }
 
 
@@ -68,10 +67,10 @@ watch(location, async (newValue, oldValue) => {
   if (location.value) {
     locationsStore.location = location.value
     setData('location', location.value, 30, 'd')
-   
+
   } else {
     locationsStore.location = ''
-    setData('location', '',30, 'd');
+    setData('location', '', 30, 'd');
   }
   showAddPlace.value = false
   posterStore.posters = []
@@ -84,8 +83,8 @@ watch(showFilter, () => {
 })
 
 onMounted(async () => {
-    await setApp()
-    checkFilter()
+  await setApp()
+  checkFilter()
 })
 </script>
 

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import AuthService from '~/service/AuthService'
-import { getData, setData } from 'nuxt-storage/local-storage';
 
 export const useAuth = defineStore('auth', {
 	state: () => ({
@@ -13,8 +12,8 @@ export const useAuth = defineStore('auth', {
 	actions: {
 		async resetPassword(password, token, user_id) {
 			let response = await AuthService.resetPassword(password, token, user_id)
-			if (response.data.accessToken && process.client)
-				setData('token', response.data.accessToken);
+			if (response.data.accessToken)
+				localStorage.setItem('token', response.data.accessToken);
 
 			this.isAuth = true
 			this.user = response.data.user
@@ -38,7 +37,7 @@ export const useAuth = defineStore('auth', {
 			try {
 				const response = await AuthService.registration(form);
 				if (response.data.accessToken)
-					setData('token', response.data.accessToken);
+					localStorage.setItem('token', response.data.accessToken);
 				if (response.data.user) {
 					this.isAuth = true
 					this.user = response.data.user
@@ -53,7 +52,7 @@ export const useAuth = defineStore('auth', {
 			try {
 				const response = await AuthService.login(form);
 				if (response.data.accessToken)
-					setData('token', response.data.accessToken, '30', 'd')
+					localStorage.setItem('token', response.data.accessToken)
 				if (response.data.user) {
 					this.isAuth = true;
 					this.user = response.data.user
@@ -72,8 +71,7 @@ export const useAuth = defineStore('auth', {
 				// console.log(response.data);
 				if (!response.data?.accessToken && !response.data?.user) return
 
-				if (process.client)
-					setData('token', response.data.accessToken)
+				localStorage.setItem('token', response.data.accessToken)
 
 
 				this.isAuth = true
@@ -85,7 +83,7 @@ export const useAuth = defineStore('auth', {
 		async logout() {
 			try {
 				const response = await AuthService.logout();
-				setData('token', '');
+				localStorage.setItem('token', '');
 
 				this.isAuth = false;
 				this.user = null

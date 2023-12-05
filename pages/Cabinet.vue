@@ -49,7 +49,9 @@ onMounted(async () => {
         </v-row>
         <v-row>
             <v-col cols="12">
-                <NuxtPage />
+                <ClientOnly>
+                    <NuxtPage />
+                </ClientOnly>
             </v-col>
         </v-row>
     </v-container>
