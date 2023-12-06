@@ -1,14 +1,11 @@
 <script setup>
 
-import { useRouter } from "vue-router";
-
-let router = useRouter();
 const { poster } = defineProps(["poster"]);
 
 </script>
 
 <template>
-  <div class="card rounded" @click="router.push(`/post?_id=${poster._id}`)">
+  <div class="card rounded" @click="navigateTo(`/post?_id=${poster._id}`)">
     <div class="img-container h-100">
       <img :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }">
     </div>

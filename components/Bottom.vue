@@ -10,12 +10,12 @@ let authStore = useAuth()
       <span>Афиши</span>
     </v-btn>
 
-    <v-btn  @click="navigateTo('/info/rules')" exact :ripple="false">
+    <v-btn  @click="navigateTo('/info/landing')" exact :ripple="false">
       <v-icon>mdi-information-variant</v-icon>
       <span>Инфо</span>
     </v-btn>
 
-    <v-btn @click="navigateTo('/cabinet')" exact :ripple="false">
+    <v-btn @click="navigateTo('/cabinet/me')" exact :ripple="false">
       <v-icon>mdi-account</v-icon>
       <span>Кабинет</span>
     </v-btn>

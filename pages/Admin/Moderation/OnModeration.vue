@@ -31,7 +31,7 @@ async function deletePoster(id) {
     }
 }
 async function checkPoster(id) {
-    navigateTo(`/admin/moderation/moderate?_id=${id}`)
+    navigateTo(`/admin/moderation/moderateposter?_id=${id}`)
 }
 
 

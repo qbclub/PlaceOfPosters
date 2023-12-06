@@ -120,13 +120,13 @@ onMounted(async () => {
 
     <v-navigation-drawer v-model="drawer" location="right" temporary elevation="0">
       <v-list nav>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/" exact :ripple="false">
+        <!-- <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/" exact :ripple="false">
           Домой
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/posters" exact :ripple="false">
           Афиши
         </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info" exact :ripple="false">
+        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact :ripple="false">
           Информация
         </v-list-item>
         <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">

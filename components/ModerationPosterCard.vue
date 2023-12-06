@@ -1,8 +1,4 @@
 <script setup>
-
-import { useRouter } from "vue-router";
-
-let router = useRouter();
 const { poster } = defineProps(["poster"]);
 
 let is_active = ref(false);
@@ -20,7 +16,7 @@ let like = ref(false)
 </script>
 
 <template>
-  <div class="card" @click="router.push(`/admin/moderation/moderate?_id=${poster._id}`)">
+  <div class="card" @click="navigateTo(`/admin/moderation/moderateposter?_id=${poster._id}`)">
     <div class="card-front cursor-pointer" :style="`border-radius: 8px; 
            background: #e4e4e4 url(${poster.image}) 50% 50% no-repeat; 
            background-size: cover;`" />
