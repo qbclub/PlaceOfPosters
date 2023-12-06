@@ -35,27 +35,27 @@ let radio = computed(() => {
     return [{ label: 3, value: 4 }, { label: 4, value: 3 }, { label: 6, value: 2 }, { label: 12, value: 1 }]
   }
 })
+let setCols = () => {
+  mobile.value ? cols.value = "6" : cols.value = "3"
+  if (getData("cols")) { cols.value = getData("cols") }
+}
 
 watch(cols, () => {
   setData("cols", cols.value, 30, 'd')
 })
 watch(mobile, () => {
-  mobile.value ? cols.value = "6" : cols.value = "2"
+  mobile.value ? cols.value = "6" : cols.value = "3"
 })
-
 
 
 onMounted(async () => {
 
-
-  // if (getData("cols")) { cols.value = getData("cols") }
-  // else { mobile.value ? cols.value = "6" : cols.value = "3" }
-
+  await setCols()
   if (process.client) {
     if (route.hash) {
-       let id = route.hash.slice(1)
-    let el = document.getElementById(id)
-    el?.scrollIntoView()
+      let id = route.hash.slice(1)
+      let el = document.getElementById(id)
+      el?.scrollIntoView()
     }
   }
 
@@ -82,15 +82,16 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-  
-      <!-- <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+
+    <ClientOnly>
+      <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
-      </v-radio-group> -->
- 
+      </v-radio-group>
+    </ClientOnly>
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
-        <v-col v-for="item of posterStore.posters" :key="item._id" cols="6" sm="4" md="3" lg="2" class="pa-1">
+        <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
           <PosterCard :poster="item" :id='item._id' />
         </v-col>
         <!-- </v-fade-transition> -->

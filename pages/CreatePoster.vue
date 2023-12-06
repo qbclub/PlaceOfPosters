@@ -1,18 +1,19 @@
 <script setup>
+definePageMeta({
+    middleware: ['is-auth']
+})
+
 import VueDatePicker from '@vuepic/vue-datepicker'
 import "@vuepic/vue-datepicker/dist/main.css";
 
 import { QuillEditor } from "@vueup/vue-quill";
 import 'quill-paste-smart';
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { useRouter } from 'vue-router'
-
 
 import getPossibleLocations from "~/utility/dadata";
 
 
 let router = useRouter()
-
 let appStateStore = useAppStore()
 let userStore = useAuth()
 let posterStore = usePoster()
