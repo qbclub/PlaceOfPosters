@@ -207,7 +207,7 @@ async function editPoster() {
     if (router.currentRoute.value.query.hotfix == 'true')
         router.push('admin/appsettings/management')
     else
-        router.push('/cabinet/posters/onmoderation');
+        router.push('/cabinet/posters/postersonmoderation');
 }
 async function createDraft() {
     try {
@@ -252,7 +252,7 @@ async function createPoster() {
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
             resetForm()
-            router.push("/cabinet/posters/onmoderation");
+            router.push("/cabinet/posters/postersonmoderation");
         }
     } catch (error) {
         console.log(error);
