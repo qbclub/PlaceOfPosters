@@ -205,9 +205,9 @@ async function editPoster() {
     localStorage.removeItem('editPosterId')
 
     if (router.currentRoute.value.query.hotfix == 'true')
-        router.push('admin/app-settings/management')
+        router.push('admin/appsettings/management')
     else
-        router.push('/cabinet/posters/on-moderation');
+        router.push('/cabinet/posters/onmoderation');
 }
 async function createDraft() {
     try {
@@ -252,7 +252,7 @@ async function createPoster() {
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
             resetForm()
-            router.push("/cabinet/posters/on-moderation");
+            router.push("/cabinet/posters/onmoderation");
         }
     } catch (error) {
         console.log(error);
