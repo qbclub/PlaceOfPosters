@@ -16,7 +16,7 @@ async function logout() {
 watch(tab, (newValue) => {
     navigateTo(newValue)
 })
-let routes = ["/cabinet/me", "/cabinet/contract", "/cabinet/posters", "/cabinet/eventlog"]
+let routes = ["/cabinet/me", "/cabinet/contract", "/cabinet/posters/activeposters", "/cabinet/eventlog"]
 onMounted(async () => {
     if (!routes.includes(useRoute().path)) {
         navigateTo('/cabinet/me')

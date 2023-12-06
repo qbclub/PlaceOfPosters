@@ -18,12 +18,14 @@ onMounted(async () => {
 });
 </script>
 <template>
-    <div v-if="rejectedPosters.length">
-        <PostersList :posters="rejectedPosters" @getPosters="getPosters"  :actions="['delete', 'edit', 'message']"/>
+    <div>
+        <div v-if="rejectedPosters.length">
+            <PostersList :posters="rejectedPosters" @getPosters="getPosters" :actions="['delete', 'edit', 'message']" />
+        </div>
+        <div v-else v-if="!loading">У вас нет афиш для исправления</div>
+        <div class="d-flex justify-center"><v-progress-circular indeterminate color="accent" :size="60" :width="10"
+                v-if="loading"></v-progress-circular></div>
     </div>
-    <div v-else v-if="!loading">У вас нет афиш для исправления</div>
-    <div class="d-flex justify-center"><v-progress-circular indeterminate color="accent" :size="60" :width="10"
-      v-if="loading"></v-progress-circular></div>
 </template>
 <style scoped></style>
 ~/stores/poster

@@ -1,6 +1,6 @@
 <script setup>
 
-import router from "@/router";
+
 import dates from "~/utility/dates"
 
 const userStore = useAuth();
@@ -109,9 +109,9 @@ let acceptAction = () => {
         dialog.value = false;
         localStorage.setItem('editPosterId', selectedPoster.value._id)
         if (isAdminPage)
-            router.push(`/create-post?hotfix=true`)
+            navigateTo(`/create-post?hotfix=true`)
         else
-            router.push(`/create-post`)
+            navigateTo(`/create-post`)
     }
 }
 
