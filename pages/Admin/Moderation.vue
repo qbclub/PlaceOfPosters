@@ -1,11 +1,8 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import router from "@/router";
-
-let select = ref('/admin/moderation/on-moderation')
+let select = ref('/admin/moderation/onmoderation')
 
 watch(select, () => {
-    router.push(select.value)
+    navigateTo(select.value)
 })
 
 onMounted(async () => {
@@ -16,7 +13,7 @@ onMounted(async () => {
 <template>
     <v-container>
         <v-radio-group inline v-model="select">
-            <v-radio label="На модерации" value="/admin/moderation/on-moderation"></v-radio>
+            <v-radio label="На модерации" value="/admin/moderation/onmoderation"></v-radio>
             <v-radio label="Отказано" value="/admin/moderation/rejected"></v-radio>
         </v-radio-group>
 

@@ -1,11 +1,7 @@
 <script setup>
-import { onMounted, ref } from "vue"
-import { useRouter } from "vue-router"
-import { useAuth } from "@/store/auth";
-import { useAppStore } from "@/store/app";
+
 
 let authStore = useAuth()
-let router = useRouter()
 const appStateStore = useAppStore()
 
 let newEventType = ref('')
@@ -15,7 +11,7 @@ let newEventSubtype = ref('')
 
 async function logout() {
     await authStore.logout()
-    router.push('/posters')
+    navigateTo('/posters')
 }
 async function addEventType() {
     await appStateStore.addEventType(newEventType.value)

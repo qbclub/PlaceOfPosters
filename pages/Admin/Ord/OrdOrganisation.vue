@@ -1,7 +1,7 @@
 <script setup>
-import { reactive, watch, ref, onMounted } from 'vue'
-import getPossiblePartner from "../../plugins/dadataINN";
-import OrdService from '@/service/OrdService'
+
+import getPossiblePartner from "~/utility/dadataINN";
+
 import _ from 'lodash'
 import { uid } from 'uid';
 let types = reactive(["fl", "ul", "ip", "ffl", "ful"])

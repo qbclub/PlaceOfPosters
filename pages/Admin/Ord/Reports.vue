@@ -1,3 +1,6 @@
 <template>
-    reports
+    <div>
+         reports
+    </div>
+   
 </template>

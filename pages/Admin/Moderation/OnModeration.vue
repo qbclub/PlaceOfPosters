@@ -1,10 +1,5 @@
 <script setup>
-import ModerationPosterCard from "@/components/ModerationPosterCard.vue";
-import { ref, onMounted } from 'vue'
-import { usePoster } from "@/store/poster";
-import { useRouter } from "vue-router";
 
-let router = useRouter();
 let posterStore = usePoster()
 
 let postersOnModeration = ref([])
@@ -36,12 +31,12 @@ async function deletePoster(id) {
     }
 }
 async function checkPoster(id) {
-    router.push(`/admin/moderation/moderate?_id=${id}`)
+    navigateTo(`/admin/moderation/moderate?_id=${id}`)
 }
 
 
 let getPostersOnModeration = async () => {
-    postersOnModeration.value = await posterStore.getPostersOnModeration('on-moderation')
+    postersOnModeration.value = await posterStore.getPostersOnModeration('onmoderation')
 }
 
 onMounted(async () => {

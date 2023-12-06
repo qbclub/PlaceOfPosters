@@ -1,12 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
-import dates from "@/plugins/dates"
-import { useRouter } from "vue-router"
-import { usePoster } from '@/store/poster';
-import { useAuth } from '@/store/auth';
-import BackButton from '@/components/BackButton.vue'
-import { watch } from 'vue';
-
+import dates from "~/utility/dates"
 const isActive = ref(false)
 
 let router = useRouter()
@@ -31,14 +24,14 @@ async function moderate() {
   if (res.status == 200) {
     // обновить свои остатки афиш
     userStore.getSubscriptionCount(userStore.user._id)
-    router.push('/admin/moderation/on-moderation')
+   navigateTo('/admin/moderation/on-moderation')
   }
 
 }
 async function reject() {
   let res = await posterStore.rejectPoster(poster.value._id, poster.value.moderationMessage)
   if (res.status == 200) {
-    router.push('/admin/moderation/on-moderation')
+   navigateTo('/admin/moderation/on-moderation')
   }
 }
 watch(posterId, () => {

@@ -136,10 +136,10 @@ onMounted(async () => {
         <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet" exact :ripple="false">
           Кабинет
         </v-list-item>
-        <!-- <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/on-moderation" exact
-                    :ripple="false" v-if="authStore.user?.roles.includes('admin')">
-                    Админ
-                </v-list-item> -->
+        <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/onmoderation" exact
+          :ripple="false" v-if="authStore.user?.roles.includes('admin')">
+          Админ
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

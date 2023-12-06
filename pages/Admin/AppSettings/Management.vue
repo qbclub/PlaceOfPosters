@@ -1,7 +1,4 @@
 <script setup>
-import { usePoster } from '@/store/poster';
-import { ref, watch } from 'vue';
-import PostersList from '../Cabinet/PostersList.vue';
 
 let search = ref('')
 let posters = ref([])

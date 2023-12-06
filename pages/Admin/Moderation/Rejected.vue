@@ -1,12 +1,6 @@
 <script setup>
-import ModerationPosterCard from "@/components/ModerationPosterCard.vue";
-import { ref, onMounted } from 'vue'
-
-import { usePoster } from "@/store/poster";
-import { useRouter } from "vue-router"
 
 let posterStore = usePoster()
-let router = useRouter()
 
 let rejectedPosters = ref([])
 let dialog = ref(false);
@@ -30,7 +24,7 @@ let acceptAction = () => {
     }
 }
 async function checkPoster(id) {
-    router.push(`/admin/moderation/moderate?_id=${id}`)
+    navigateTo(`/admin/moderation/moderate?_id=${id}`)
 }
 async function deletePoster(id) {
     let res = await posterStore.deletePosterById(id)

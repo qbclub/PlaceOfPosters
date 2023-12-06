@@ -1,28 +1,26 @@
 <script setup>
-import { onMounted, ref, watch } from "vue"
-import { useRouter } from "vue-router"
 
 let router = useRouter()
 
-let select = ref('/admin/app-settings/interface')
+let select = ref('/admin/appsettings/interface')
 let routeTo = () => {
-    router.push(select.value)
+    navigateTo(select.value)
 }
 watch(select, () => {
-    routeTo()
+    navigateTo(select.value)
 })
 
 onMounted(() => {
-    if (router.currentRoute.value.path != '/admin/app-settings/interface')
-        router.push('/admin/app-settings/interface')
+    if (router.currentRoute.value.path != '/admin/appsettings/interface')
+        navigateTo('/admin/appsettings/interface')
 })
 </script>
 
 <template>
     <v-container>
         <v-radio-group inline v-model="select">
-            <v-radio label="Интерфейс" value="/admin/app-settings/interface"></v-radio>
-            <v-radio label="Управление" value="/admin/app-settings/management"></v-radio>
+            <v-radio label="Интерфейс" value="/admin/appsettings/interface"></v-radio>
+            <v-radio label="Управление" value="/admin/appsettings/management"></v-radio>
         </v-radio-group>
         <NuxtPage />
 

@@ -1,14 +1,11 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-
-import { useAppStore } from '@/store/app';
 
 let appStore = useAppStore()
 
 let users = ref([])
 onMounted(async () => {
     users.value = await appStore.getUsers()
-    console.log();
+ 
 })
 </script>
 <template>
