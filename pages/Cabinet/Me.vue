@@ -5,7 +5,7 @@ let user = ref(userStore.user)
 </script>
 <template>
   <v-container>
-    <v-row v-if="user">
+    <v-row>
       <v-col class="d-flex flex-row flex-nowrap align-center">
         <v-avatar style="font-size: large" class="font-weight-bold" color="surface-variant" size="large">
           {{ user.firstname[0] }}
