@@ -67,16 +67,17 @@ export const useAuth = defineStore('auth', {
 			try {
 				if (this.authRefreshing) return
 				this.authRefreshing = true
-				const response = await AuthService.refresh()
-				// console.log(response.data);
-				if (!response.data?.accessToken && !response.data?.user) return
 
-				localStorage.setItem('token', response.data.accessToken)
+				const response = await useApi('/auth/refresh', { method: 'POST', credentials: 'include' }, { server: false })
 
+				this.authRefreshing = false
+
+				if (!response.data.value?.accessToken && !response.data.value?.user) return
+
+				localStorage.setItem('token', response.data.value.accessToken)
 
 				this.isAuth = true
-				this.user = response.data.user
-				this.authRefreshing = false
+				this.user = response.data.value.user
 			} catch (err) {
 			}
 		},

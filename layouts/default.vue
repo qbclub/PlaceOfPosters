@@ -126,7 +126,8 @@ onMounted(async () => {
         <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/posters" exact :ripple="false">
           Афиши
         </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact :ripple="false">
+        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact
+          :ripple="false">
           Информация
         </v-list-item>
         <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">
@@ -136,10 +137,12 @@ onMounted(async () => {
         <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet" exact :ripple="false">
           Кабинет
         </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/onmoderation" exact
-          :ripple="false" v-if="authStore.user?.roles.includes('admin')">
-          Админ
-        </v-list-item>
+        <ClientOnly>
+          <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/onmoderation" exact
+            :ripple="false" v-if="authStore.user?.roles.includes('admin')">
+            Админ
+          </v-list-item>
+        </ClientOnly>
       </v-list>
     </v-navigation-drawer>
 
@@ -168,7 +171,7 @@ onMounted(async () => {
           </v-col>
         </v-row> 
       </v-container> -->
-      <NuxtPage />
+      <slot />
 
     </v-main>
 
