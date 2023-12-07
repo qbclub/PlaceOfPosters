@@ -2,6 +2,11 @@
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      apiBase: "",
+    },
+  },
   css: ["~/assets/main.scss"],
   components: [
     {
@@ -36,5 +41,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
 });

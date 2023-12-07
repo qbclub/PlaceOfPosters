@@ -8,7 +8,8 @@ export default {
         return $api.post('/auth/forgot-password', { 'email': email })
     },
     async refresh() {
-        return $api.get('/auth/refresh', { withCredentials: true })
+        return $api.post('/auth/refresh', { withCredentials: true })
+        //  useApi('/auth/refresh', { method: 'GET' })
     },
     async registration(form) {
         return $api.post('/auth/registration', form)
