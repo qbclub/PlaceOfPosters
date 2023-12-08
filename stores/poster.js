@@ -2,8 +2,6 @@ import { defineStore } from 'pinia'
 import { useAuth } from './auth';
 import PosterService from '../service/PosterService.js'
 import { useLocations } from './locations.js';
-// import { render  } from 'vue-email';
-import PosterCreatedTemplate from '../email-templates/PosterCreatedTemplate.vue'
 
 export const usePoster = defineStore('poster', {
     state: () => ({
