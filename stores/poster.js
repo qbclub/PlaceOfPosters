@@ -43,9 +43,7 @@ export const usePoster = defineStore('poster', {
             try {
                 let authStore = useAuth()
 
-                // const emailHtml = await render(PosterCreatedTemplate, poster);
-
-                let response = await PosterService.createPoster(poster, authStore.user._id, emailHtml)
+                let response = await PosterService.createPoster(poster, authStore.user._id)
                 authStore.user.posters.push(response.data._id)
 
                 return response.data._id

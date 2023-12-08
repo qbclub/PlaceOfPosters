@@ -10,8 +10,8 @@ export default {
     createPosterDraft(poster, userId) {
         return $api.post('/poster/create-draft', { poster, userId })
     },
-    createPoster(poster, user_id, emailHtml) {
-        return $api.post('/poster/create', { poster, user_id, emailHtml })
+    createPoster(poster, user_id) {
+        return $api.post('/poster/create', { poster, user_id })
     },
     updatePoster(poster) {
         return $api.post('/poster/update', poster)
