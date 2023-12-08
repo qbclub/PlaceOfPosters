@@ -2,43 +2,46 @@
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      apiBase: "",
+    runtimeConfig: {
+        public: {
+            apiBase: "",
+        },
     },
-  },
-  css: ["~/assets/main.scss"],
-  components: [
-    {
-      path: "~/components",
-      pathPrefix: false,
+    css: ["~/assets/main.scss"],
+    components: [
+        {
+            path: "~/components",
+            pathPrefix: false,
+        },
+    ],
+    app: {
+        pageTransition: { name: "page", mode: "out-in" },
     },
-  ],
-  app: {
-    pageTransition: { name: "page", mode: "out-in" },
-  },
-  devtools: { enabled: true },
-  build: {
-    transpile: ["vuetify"],
-  },
-  modules: [
-    (_options, nuxt) => {
-      nuxt.hooks.hook("vite:extendConfig", (config) => {
-        // @ts-expect-error
-        config.plugins.push(vuetify({ autoImport: true }));
-      });
+    devtools: { enabled: true },
+    build: {
+        transpile: ["vuetify"],
     },
-    "@pinia/nuxt",
-    
-  ],
-  pinia: {
-    storesDirs: ['./stores/**'],
-  },
-  vite: {
-    vue: {
-      template: {
-        transformAssetUrls,
-      },
+    modules: [
+        (_options, nuxt) => {
+            nuxt.hooks.hook("vite:extendConfig", (config) => {
+                // @ts-expect-error
+                config.plugins.push(vuetify({ autoImport: true }));
+            });
+        },
+        "@pinia/nuxt",
+    ],
+    pinia: {
+        storesDirs: ["./stores/**"],
     },
-  },
+    vite: {
+        vue: {
+            template: {
+                transformAssetUrls,
+            },
+        },
+    },
+    routeRules: {
+        "/createposter": { ssr: false },
+        "/cabinet**": { ssr: false },
+    },
 });
