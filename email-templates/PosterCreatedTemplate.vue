@@ -1,5 +1,5 @@
 <script setup>
-import { EHtml, EHead, ESection, EPreview } from 'vue-email';
+// import { EHtml, EHead, ESection, EPreview } from 'vue-email';
 
 defineProps({ title: String })
 </script>
