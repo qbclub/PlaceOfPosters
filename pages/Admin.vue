@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ['is-admin']
+})
+
 import { getData, setData } from 'nuxt-storage/local-storage';
 
 
@@ -7,7 +11,7 @@ let tab = ref(getData('adminTab') ?? "/admin/moderation");
 navigateTo(tab.value)
 
 function setLocalStorage() {
- setData('adminTab', tab.value, 30, 'd')
+  setData('adminTab', tab.value, 30, 'd')
 }
 
 watch(tab, () => {
