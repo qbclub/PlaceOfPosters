@@ -137,7 +137,7 @@ onMounted(async () => {
           Создать
         </v-list-item>
 
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet" exact :ripple="false">
+        <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet/me" exact :ripple="false">
           Кабинет
         </v-list-item>
         <ClientOnly>
