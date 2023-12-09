@@ -53,10 +53,13 @@ let checkFilter = async () => {
     }
   }
 }
-
 let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
+  let authStore = useAuth()
+  if (!authStore.isAuth) {
+    await authStore.checkAuth()
+  }
 }
 
 
