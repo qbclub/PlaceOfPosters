@@ -6,20 +6,18 @@ export function useApi(url, options, settings) {
     const defaults = {
         baseURL: config.public.apiBase,
         // set user token if connected
-        onRequest({ request, options }) {
+        async onRequest({ request, options }) {
+            let nuxtApp = useNuxtApp()
             // Set the request headers
+            const { data } = await useFetch('/api/access-token')
+
             options.headers = options.headers || {}
-            options.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+            // options.headers.authorization = `Bearer ${data.value.token}`
         },
         onRequestError({ request, options, error }) {
             // Handle the request errors
         },
         onResponse({ request, response, options }) {
-            // Process the response data
-            if (response._data.token) {
-                console.log(response._data.token);
-                localStorage.setItem('token', response._data.token)
-            }
         },
         onResponseError({ request, response, options }) {
             // Handle the response errors

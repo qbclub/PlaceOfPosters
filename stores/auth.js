@@ -51,8 +51,6 @@ export const useAuth = defineStore('auth', {
 		async login(form) {
 			try {
 				const response = await AuthService.login(form);
-				if (response.data.accessToken)
-					localStorage.setItem('token', response.data.accessToken)
 				if (response.data.user) {
 					this.isAuth = true;
 					this.user = response.data.user
@@ -68,16 +66,14 @@ export const useAuth = defineStore('auth', {
 				if (this.authRefreshing) return
 				this.authRefreshing = true
 
-				const response = await useApi('/auth/refresh', { method: 'POST', credentials: 'include' }, { server: false })
+				const response = await useApi('/auth/refresh', { method: 'POST', credentials: 'include' })
 
-				this.authRefreshing = false
-
-				if (!response.data.value?.accessToken && !response.data.value?.user) return
-
-				localStorage.setItem('token', response.data.value.accessToken)
+				if (!response.data.value?.accessToken && !response.data.value?.user) return response
 
 				this.isAuth = true
 				this.user = response.data.value.user
+				this.authRefreshing = false
+				return response
 			} catch (err) {
 			}
 		},

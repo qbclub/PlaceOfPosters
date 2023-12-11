@@ -42,6 +42,5 @@ export default defineNuxtConfig({
     },
     routeRules: {
         "/createposter": { ssr: false },
-        "/cabinet**": { ssr: false },
     },
 });

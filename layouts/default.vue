@@ -56,11 +56,8 @@ let checkFilter = async () => {
 let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
-  if (!authStore.isAuth) {
-    await authStore.checkAuth()
-  }
+  // await authStore.checkAuth()
 }
-
 
 
 // shorten names in response.data
@@ -83,7 +80,6 @@ watch(location, async (newValue, oldValue) => {
 watch(showFilter, () => {
   checkFilter()
 })
-
 onMounted(async () => {
   await setApp()
   checkFilter()
