@@ -7,20 +7,21 @@ export function useApi(url, options, settings) {
         baseURL: config.public.apiBase,
         // set user token if connected
         async onRequest({ request, options }) {
-            let nuxtApp = useNuxtApp()
             // Set the request headers
             const { data } = await useFetch('/api/access-token')
 
             options.headers = options.headers || {}
-            // options.headers.authorization = `Bearer ${data.value.token}`
+            options.headers.authorization = `Bearer ${data.value.token}`
         },
         onRequestError({ request, options, error }) {
             // Handle the request errors
         },
         onResponse({ request, response, options }) {
         },
-        onResponseError({ request, response, options }) {
-            // Handle the response errors
+        async onResponseError({ request, response, options }) {
+            if (response.status == 401) {
+                await useAuth().checkAuth()
+            }
         }
     }
     // for nice deep defaults, please use unjs/defu
