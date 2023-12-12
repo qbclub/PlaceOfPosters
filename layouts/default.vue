@@ -56,7 +56,8 @@ let checkFilter = async () => {
 let setApp = async () => {
   await useAppStore().getAppState()
   await locationsStore.fetchLocations()
-  // await authStore.checkAuth()
+  if (!authStore.isAuth)
+    await authStore.checkAuth()
 }
 
 
