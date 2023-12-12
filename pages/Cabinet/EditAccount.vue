@@ -1,5 +1,4 @@
 <script setup>
-import SettingInput from '@/components/Input/SettingInput.vue'
 import { useField, useForm } from 'vee-validate'
 
 let authStore = useAuth()
