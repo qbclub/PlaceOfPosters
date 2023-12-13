@@ -57,9 +57,8 @@ function resetForm() {
     form.price = ''
     form.site = ''
     form.email = ''
-    form.date = [],
-
-        form.image = ''
+    form.date = []
+    form.image = ''
     form.description = '<p><br></p>'
     localStorage.setItem('createPosterForm', '')
     localStorage.setItem('posterFormImage', '')
@@ -197,9 +196,9 @@ async function editPoster() {
     localStorage.setItem('editPosterId', '')
 
     if (router.currentRoute.value.query.hotfix == 'true')
-        router.push('admin/appsettings/management')
+        navigateTo('admin/appsettings/management')
     else
-        router.push('/cabinet/posters/postersonmoderation');
+        navigateTo('/cabinet/posters/postersonmoderation');
 }
 async function createDraft() {
     try {
@@ -222,7 +221,7 @@ async function createDraft() {
                     await posterStore.uploadImage(imagesFormData, _id);
                 }
                 resetForm()
-                router.push("/cabinet/posters/drafts");
+                navigateTo("/cabinet/posters/draftposters");
             }
         }
 
@@ -246,7 +245,7 @@ async function createPoster() {
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
             resetForm()
-            router.push("/cabinet/posters/postersonmoderation");
+            navigateTo("/cabinet/posters/postersonmoderation");
         }
     } catch (error) {
         console.log(error);
@@ -564,7 +563,7 @@ function getCategory(category) {
                     </v-row>
                     <v-row class="d-flex justify-center">
                         <v-col class="d-flex justify-space-around align-center flex-wrap pa-8 mb-8">
-                            <v-btn class="ma-2" @click="router.push({ name: 'PosterPreview' })">
+                            <v-btn class="ma-2" @click="navigateTo({ name: 'PosterPreview' })">
                                 Посмотреть
                             </v-btn>
                             <v-btn class="ma-2" @click="resetForm">
