@@ -38,7 +38,7 @@ let contract = ref('')
 let editPosterId = localStorage.getItem('editPosterId')
 
 let locationSearchRequest = ref('')
-let possibleLocations = ref(await getPossibleLocations(locationSearchRequest.value));
+let possibleLocations = ref([]);
 let buyDialog = ref(false)
 let snackbar = ref(false)
 let snackbarText = ref('')
@@ -326,6 +326,7 @@ watch(locationSearchRequest, async (value) => {
 });
 
 onMounted(async () => {
+    possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
     if (!appStateStore.appState) {
         await appStateStore.getAppState()
     }
