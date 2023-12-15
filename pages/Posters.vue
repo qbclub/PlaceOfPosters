@@ -1,6 +1,5 @@
 <script setup>
 import { useDisplay } from 'vuetify'
-import { getData, setData } from 'nuxt-storage/local-storage';
 import { useRoute } from "vue-router";
 
 let posterStore = usePoster()
@@ -37,20 +36,18 @@ let radio = computed(() => {
 })
 let setCols = () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
-  if (getData("cols")) { cols.value = getData("cols") }
+  if (localStorage.getItem("cols")) { cols.value = localStorage.getItem("cols") }
 }
 
 watch(cols, () => {
-  setData("cols", cols.value, 30, 'd')
+  localStorage.setItem("cols", cols.value)
 })
 watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
-
 onMounted(async () => {
-
-  await setCols()
+  setCols()
   if (process.client) {
     if (route.hash) {
       let id = route.hash.slice(1)
@@ -65,12 +62,12 @@ onMounted(async () => {
   if (posterStore.posters.length == 0) {
     let filter
 
-    if (getData('filterForm')) {
-      filter = getData('filterForm')
+    if (localStorage.getItem('filterForm')) {
+      filter = JSON.parse(localStorage.getItem('filterForm'))
     }
     if (!locationsStore.location.length) {
-      if (getData('location')) {
-        locationsStore.location = getData('location')
+      if (localStorage.getItem('location')) {
+        locationsStore.location = localStorage.getItem('location')
       }
     }
 
@@ -83,11 +80,9 @@ onMounted(async () => {
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
 
-    <ClientOnly>
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-    </ClientOnly>
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
@@ -120,4 +115,4 @@ onMounted(async () => {
     display: none;
   }
 }
-</style>~/stores/poster~/stores/locations
+</style>
