@@ -1,6 +1,4 @@
 <script setup>
-
-
 import dates from "~/utility/dates"
 
 const userStore = useAuth();
@@ -108,10 +106,12 @@ let acceptAction = () => {
     if (selectedAction.value == 'edit') {
         dialog.value = false;
         localStorage.setItem('editPosterId', selectedPoster.value._id)
-        if (isAdminPage)
-            navigateTo(`/create-post?hotfix=true`)
-        else
-            navigateTo(`/create-post`)
+        if (isAdminPage) {
+            navigateTo('/createposter?hotfix=true')
+        }
+        else {
+            navigateTo('/createposter')
+        }
     }
 }
 
