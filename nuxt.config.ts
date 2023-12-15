@@ -4,7 +4,7 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineNuxtConfig({
     runtimeConfig: {
         public: {
-            apiBase: "",
+            apiBase: process.env.NUXT_PUBLIC_API_BASE,
         },
     },
     css: ["~/assets/main.scss"],
