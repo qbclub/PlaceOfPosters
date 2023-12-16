@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-    middleware: ['is-auth']
+    middleware: ['is-auth'],
 })
 
 let tab = ref("/cabinet/me");
@@ -49,9 +49,7 @@ onMounted(async () => {
         </v-row>
         <v-row>
             <v-col cols="12">
-                <ClientOnly>
-                    <NuxtPage />
-                </ClientOnly>
+                <NuxtPage />
             </v-col>
         </v-row>
     </v-container>

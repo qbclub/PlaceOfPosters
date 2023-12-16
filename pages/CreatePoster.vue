@@ -4,7 +4,6 @@ definePageMeta({
 })
 
 import getPossibleLocations from "~/utility/dadata";
-import { getData, setData } from 'nuxt-storage/local-storage';
 
 let router = useRouter()
 let appStateStore = useAppStore()
@@ -36,10 +35,10 @@ let imagePreviewOverlay = ref(false)
 
 let contract = ref('')
 
-let editPosterId = getData('editPosterId')
+let editPosterId = localStorage.getItem('editPosterId')
 
 let locationSearchRequest = ref('')
-let possibleLocations = ref(await getPossibleLocations(locationSearchRequest.value));
+let possibleLocations = ref([]);
 let buyDialog = ref(false)
 let snackbar = ref(false)
 let snackbarText = ref('')
@@ -58,12 +57,11 @@ function resetForm() {
     form.price = ''
     form.site = ''
     form.email = ''
-    form.date = [],
-
-        form.image = ''
+    form.date = []
+    form.image = ''
     form.description = '<p><br></p>'
-    setData('createPosterForm', '')
-    setData('posterFormImage', '')
+    localStorage.setItem('createPosterForm', '')
+    localStorage.setItem('posterFormImage', '')
     preview.value = null;
 
 }
@@ -173,13 +171,13 @@ function addPreview(blob) {
     reader.onloadend = function () {
         let base64data = reader.result;
         preview.value = base64data;
-        setData('posterFormImage', base64data)
+        localStorage.setItem('posterFormImage', base64data)
     };
 }
 function deletePreview() {
     blobImage = null;
     preview.value = null
-    setData('posterFormImage', '')
+    localStorage.setItem('posterFormImage', '')
 }
 async function editPoster() {
     if (form.date) {
@@ -195,12 +193,12 @@ async function editPoster() {
         imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
         await posterStore.uploadImage(imagesFormData, _id).then(() => { })
     }
-    setData('editPosterId', '')
+    localStorage.setItem('editPosterId', '')
 
     if (router.currentRoute.value.query.hotfix == 'true')
-        router.push('admin/appsettings/management')
+        navigateTo('admin/appsettings/management')
     else
-        router.push('/cabinet/posters/postersonmoderation');
+        navigateTo('/cabinet/posters/postersonmoderation');
 }
 async function createDraft() {
     try {
@@ -223,7 +221,7 @@ async function createDraft() {
                     await posterStore.uploadImage(imagesFormData, _id);
                 }
                 resetForm()
-                router.push("/cabinet/posters/drafts");
+                navigateTo("/cabinet/posters/draftposters");
             }
         }
 
@@ -247,7 +245,7 @@ async function createPoster() {
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
             resetForm()
-            router.push("/cabinet/posters/postersonmoderation");
+            navigateTo("/cabinet/posters/postersonmoderation");
         }
     } catch (error) {
         console.log(error);
@@ -306,7 +304,7 @@ async function submit() {
 }
 
 watch(form, (value) => {
-    if (!editPosterId) { setData('createPosterForm', JSON.stringify(form)) }
+    if (!editPosterId) { localStorage.setItem('createPosterForm', JSON.stringify(form)) }
     if (!userStore?.user.contracts.length) {
         contractDialog.value = true;
     }
@@ -327,6 +325,7 @@ watch(locationSearchRequest, async (value) => {
 });
 
 onMounted(async () => {
+    possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
     if (!appStateStore.appState) {
         await appStateStore.getAppState()
     }
@@ -352,7 +351,7 @@ onMounted(async () => {
 
     } else {
         try {
-            let formFromLocalStorage = JSON.parse(getData('createPosterForm'))
+            let formFromLocalStorage = JSON.parse(localStorage.getItem('createPosterForm'))
             if (formFromLocalStorage) {
                 let formKeys = Object.keys(form)
 
@@ -365,7 +364,7 @@ onMounted(async () => {
         } catch (error) { }
 
         try {
-            let posterFormImageFromLocalStorage = getData('posterFormImage')
+            let posterFormImageFromLocalStorage = localStorage.getItem('posterFormImage')
             if (posterFormImageFromLocalStorage) {
                 preview.value = posterFormImageFromLocalStorage
 
@@ -379,7 +378,7 @@ onMounted(async () => {
 
 })
 onBeforeUnmount(() => {
-    setData('editPosterId', '')
+    localStorage.setItem('editPosterId', '')
 })
 
 function getCategory(category) {
@@ -564,7 +563,7 @@ function getCategory(category) {
                     </v-row>
                     <v-row class="d-flex justify-center">
                         <v-col class="d-flex justify-space-around align-center flex-wrap pa-8 mb-8">
-                            <v-btn class="ma-2" @click="router.push({ name: 'PosterPreview' })">
+                            <v-btn class="ma-2" @click="navigateTo({ name: 'PosterPreview' })">
                                 Посмотреть
                             </v-btn>
                             <v-btn class="ma-2" @click="resetForm">

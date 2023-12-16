@@ -1,5 +1,4 @@
 <script setup>
-
 let search = ref('')
 let posters = ref([])
 
@@ -37,4 +36,4 @@ async function findPosters() {
             </h3>
         </v-col>
     </v-row>
-</template>~/stores/poster
+</template>

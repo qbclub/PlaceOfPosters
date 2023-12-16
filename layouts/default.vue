@@ -1,5 +1,4 @@
 <script setup>
-import { getData, setData } from 'nuxt-storage/local-storage';
 let posterStore = usePoster()
 let locationsStore = useLocations()
 let authStore = useAuth()
@@ -25,13 +24,13 @@ let routeTo = (path) => {
 
 let closeFilter = async () => {
 
-  filter = getData('filterForm')
+  filter = JSON.parse(localStorage.getItem('filterForm'))
   posterStore.filter = filter
   showFilter.value = false
 }
 let checkFilter = async () => {
-  if (getData('filterForm')) {
-    let filter = getData('filterForm')
+  if (localStorage.getItem('filterForm')) {
+    let filter = JSON.parse(localStorage.getItem('filterForm'))
     posterStore.filter = filter
     for (const key in filter) {
       if (key == "eventType") {
@@ -53,26 +52,17 @@ let checkFilter = async () => {
     }
   }
 }
-let setApp = async () => {
-  await useAppStore().getAppState()
-  await locationsStore.fetchLocations()
-  if (!authStore.isAuth) {
-    await authStore.checkAuth()
-  }
-}
-
-
 
 // shorten names in response.data
 
 watch(location, async (newValue, oldValue) => {
   if (location.value) {
     locationsStore.location = location.value
-    setData('location', location.value, 30, 'd')
+    localStorage.setItem('location', location.value)
 
   } else {
     locationsStore.location = ''
-    setData('location', '', 30, 'd');
+    localStorage.setItem('location', '');
   }
   showAddPlace.value = false
   posterStore.posters = []
@@ -83,7 +73,12 @@ watch(location, async (newValue, oldValue) => {
 watch(showFilter, () => {
   checkFilter()
 })
-
+let setApp = async () => {
+  await useAppStore().getAppState()
+  await locationsStore.fetchLocations()
+  if (!authStore.isAuth)
+    await authStore.checkAuth()
+}
 onMounted(async () => {
   await setApp()
   checkFilter()
