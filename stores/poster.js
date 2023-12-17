@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAuth } from './auth';
 import PosterService from '../service/PosterService.js'
-import { useLocations } from './locations.js';
 
 export const usePoster = defineStore('poster', {
     state: () => ({
@@ -111,7 +109,9 @@ export const usePoster = defineStore('poster', {
         },
         async getById(_id) {
             try {
-                let response = await PosterService.getById(_id)
+                console.log(_id);
+                let response = await useApi('/poster/get-by-id', { method: 'GET' })
+                console.log(response.error);
                 return response.data
             } catch (error) {
                 console.log(error);
