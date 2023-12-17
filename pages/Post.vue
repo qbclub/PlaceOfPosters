@@ -47,7 +47,10 @@ poster.value = posterFromDB.value
     <Head>
       <Title>{{ poster.title }}</Title>
       <Meta name="og:title" :content="poster.title" />
-      <Meta name="og:image" :content="poster.image" />
+      <!-- 210 / 297 aspect ratio -->
+      <Meta name="og:image:height" :content="Number(400 * 297 / 210).toString()" />
+      <Meta name="og:image:width" :content="Number(400 * 210 / 297).toString()" />
+
       <meta property="vk:image" :content="poster.image" />
       <Meta name="description" :content="poster.eventType ? poster?.eventType.join(' | ') : ''" />
       <meta property="og:site_name" content="PlPo - Place Of Posters" />
