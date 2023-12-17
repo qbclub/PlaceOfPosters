@@ -47,7 +47,7 @@ watch(mobile, () => {
 })
 
 onMounted(async () => {
-  setCols()
+ await setCols()
   if (process.client) {
     if (route.hash) {
       let id = route.hash.slice(1)
