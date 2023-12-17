@@ -8,20 +8,26 @@ let router = useRouter()
 const route = useRoute();
 let poster = ref({})
 
-function getLink() {
+let posterLink = computed(() => {
   return runtimeConfig.public.siteUrl + '/post?_id=' + poster.value._id
-}
-
-const options = ref({
-  url: getLink(),
 })
 
-const { share, isSupported } = useShare(options)
+const options = ref({
+  url: posterLink.value,
+})
+
+const { isSupported } = useShare(options)
 
 const posterId = route.query?._id
 
 function startShare() {
-  return share().catch(err => err)
+  options.value.url = posterLink.value
+
+  const { share } = useShare(options)
+
+  return share().catch(err => {
+    console.log(err);
+  })
 }
 
 let getHref = (link) => {
@@ -43,9 +49,9 @@ poster.value = posterFromDB.value
       <Meta name="og:title" :content="poster.title" />
       <Meta name="og:image" :content="poster.image" />
       <meta property="vk:image" :content="poster.image" />
-      <Meta name="description" :content="poster.description" />
-      <meta property="og:site_name" content="PlPo" />
-      <Meta name="og:url" :content="getLink()" />
+      <Meta name="description" :content="poster.eventType ? poster?.eventType.join(' | ') : ''" />
+      <meta property="og:site_name" content="PlPo - Place Of Posters" />
+      <Meta name="og:url" :content="posterLink" />
     </Head>
 
     <v-responsive>
