@@ -4,7 +4,8 @@ import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineNuxtConfig({
     runtimeConfig: {
         public: {
-            apiBase: "",
+            apiBase: process.env.NUXT_PUBLIC_API_BASE,
+            siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
         },
     },
     css: ["~/assets/main.scss"],
@@ -42,5 +43,7 @@ export default defineNuxtConfig({
     },
     routeRules: {
         "/createposter": { ssr: false },
+        "/cabinet/**": { ssr: false },
+        "/posters": { ssr: false },
     },
 });

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port=3030",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -26,7 +26,6 @@
     "@vueuse/core": "^10.6.1",
     "axios": "^1.6.1",
     "cropperjs": "^1.6.1",
-    "nuxt-storage": "^1.2.2",
     "pinia": "^2.1.7",
     "quill-paste-smart": "^1.4.12",
     "uid": "^2.0.2",

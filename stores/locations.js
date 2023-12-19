@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { useAuth } from './auth';
 import { ref } from 'vue';
 import LocationsService from '../service/LocationsService.js'
 
