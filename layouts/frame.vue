@@ -91,7 +91,7 @@ onMounted(async () => {
       <v-container>
         <v-row class="d-flex flex-nowrap justify-space-between align-center">
           <div>
-            <img src="@/assets/logo.webp" class="logo cursor-pointer" @click="routeTo('/posters')" />
+            
           </div>
           <div class="d-flex align-center">
 
@@ -102,7 +102,6 @@ onMounted(async () => {
               {{ location ? shortLocationName : "Место" }}
             </v-btn>
 
-            <v-icon class="d-none d-sm-block ma-2" icon="mdi-menu" @click.stop="drawer = !drawer"></v-icon>
           </div>
         </v-row>
 
@@ -115,59 +114,8 @@ onMounted(async () => {
       </v-card>
     </v-dialog>
 
-    <v-navigation-drawer v-model="drawer" location="right" temporary elevation="0">
-      <v-list nav>
-        <!-- <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/" exact :ripple="false">
-          Домой
-        </v-list-item> -->
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/posters" exact :ripple="false">
-          Афиши
-        </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact
-          :ripple="false">
-          Информация
-        </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">
-          Создать
-        </v-list-item>
-
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet/me" exact :ripple="false">
-          Кабинет
-        </v-list-item>
-        <ClientOnly>
-          <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/onmoderation" exact
-            :ripple="false" v-if="authStore.user?.roles.includes('admin')">
-            Админ
-          </v-list-item>
-        </ClientOnly>
-      </v-list>
-    </v-navigation-drawer>
-
     <v-main class="pb-0">
-      <!-- <v-container class="pt-0 pb-0">
-         <v-row class="flex-column align-center justify-center ma-0">
-          <v-col cols="12" sm="8" md="6" lg="5" xl="4" class="pa-0">
-            <v-menu v-model="showAddPlace" :close-on-content-click="false" activator="parent" scroll-strategy="close"
-              transition="scroll-y-transition">
-              <v-card class="pa-6 rounded-lg">
-
-                <v-autocomplete v-model="location" v-model:search="locationQuery" clearable variant="outlined"
-                  :items="[...locationsStore.eventlocations]" item-title="name" label="Место" density="compact" />
-
-              </v-card>
-            </v-menu>
-          </v-col>
-
-          <v-col cols="12" sm="10" md="8" class="pa-0">
-            <v-menu v-model="showFilter" :close-on-content-click="false" activator="parent" class="w-50"
-              scroll-strategy="none" transition="scroll-y-transition">
-              <v-card class="pa-6 rounded-lg">
-                <Filter @closeFilter="closeFilter" />
-              </v-card>
-            </v-menu>
-          </v-col>
-        </v-row> 
-      </v-container> -->
+    
       <NuxtPage />
 
     </v-main>
