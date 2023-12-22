@@ -11,6 +11,10 @@ const wrapper = ref(null)
 const route = useRoute();
 let locationsStore = useLocations()
 
+definePageMeta({
+  layout: 'frame'
+})
+
 
 let handleScroll = async () => {
   let triggerHeight =
