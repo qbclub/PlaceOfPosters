@@ -326,6 +326,7 @@ watch(locationSearchRequest, async (value) => {
 
 onMounted(async () => {
     possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
+    if (!appState) {
         await appStateStore.getAppState()
     }
     updateSubcategories()
