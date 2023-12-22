@@ -5,8 +5,6 @@ definePageMeta({
 
 let tab = ref("/admin/moderation");
 
-navigateTo(tab.value)
-
 watch(tab, () => {
   navigateTo(tab.value)
 })
