@@ -109,9 +109,7 @@ export const usePoster = defineStore('poster', {
         },
         async getById(_id) {
             try {
-                console.log(_id);
-                let response = await useApi('/poster/get-by-id', { method: 'GET' })
-                console.log(response.error);
+                let response = await PosterService.getById(_id)
                 return response.data
             } catch (error) {
                 console.log(error);

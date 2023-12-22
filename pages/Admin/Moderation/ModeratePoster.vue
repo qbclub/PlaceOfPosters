@@ -8,13 +8,12 @@ let userStore = useAuth()
 
 const isActive = ref(false)
 let posterId = ref('')
-let poster = ref({})
+let poster = ref()
 let scale = ref(false)
 
-let getPoster = async (id) => {
-
+async function getPoster(id) {
   poster.value = await posterStore.getById(id)
-
+  console.log(poster.value);
 }
 
 async function moderate() {
@@ -35,12 +34,10 @@ async function reject() {
     navigateTo('/admin/moderation/onmoderation')
   }
 }
-watch(posterId, () => {
-  getPoster(posterId.value)
-})
 
 onMounted(async () => {
   posterId.value = router.currentRoute.value.query._id
+  getPoster(posterId.value)
 
 })
 </script>
