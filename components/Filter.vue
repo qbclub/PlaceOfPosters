@@ -7,11 +7,12 @@ let emit = defineEmits(['closeDialog'])
 
 
 let router = useRouter()
-let appState = useAppStore().appState
+let appState = await getAppState()
 let locationStore = useLocations()
 let posterStore = usePoster()
-let locations = ref([])
-let categories = ref([])
+
+let locations = await getEventLocations()
+let categories = appState.eventTypes
 let selectedLocation = ref('')
 let date_items = [
     'Сегодня',
@@ -51,16 +52,14 @@ function clearFilter() {
 }
 
 function selectLocation(index) {
-    if (selectedLocation.value == locations.value[index].name) {
-        selectedLocation.value = ''
+    if (selectedLocation.value == locations[index].name) {
+        locationStore.location = ''
     } else {
-        selectedLocation.value = locations.value[index].name
+        locationStore.location = locations[index].name
     }
     localStorage.setItem('location', selectedLocation.value)
-    locationStore.location = selectedLocation.value
 }
 function selectCategory(index) {
-    let name = categories.value[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -103,8 +102,6 @@ watch(() => filter.value.searchText, () => {
 
 onMounted(() => {
 
-    locations.value = locationStore.eventlocations
-    categories.value = appState.eventTypes
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
             selectedLocation.value = localStorage.getItem('location')

@@ -6,7 +6,7 @@ definePageMeta({
 import getPossibleLocations from "~/utility/dadata";
 
 let router = useRouter()
-let appStateStore = useAppStore()
+let appState = await getAppStore()
 let userStore = useAuth()
 let posterStore = usePoster()
 let priceStore = usePrice()
@@ -318,7 +318,7 @@ watch(() => form.eventType, (newValue, oldValue) => {
 })
 function updateSubcategories() {
     subcategories.value = []
-    appStateStore.appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
+    appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
 }
 watch(locationSearchRequest, async (value) => {
     possibleLocations.value = await getPossibleLocations(value);
@@ -326,7 +326,6 @@ watch(locationSearchRequest, async (value) => {
 
 onMounted(async () => {
     possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
-    if (!appStateStore.appState) {
         await appStateStore.getAppState()
     }
     updateSubcategories()
@@ -382,7 +381,7 @@ onBeforeUnmount(() => {
 })
 
 function getCategory(category) {
-    return appStateStore.appState.eventTypes.find(item => item.name === category)
+    return appState.eventTypes.find(item => item.name === category)
 }
 </script>
 <template>
@@ -429,7 +428,7 @@ function getCategory(category) {
                         <v-col cols="12" md="6">
                             <b>Категории</b><span>*</span>
                             <v-select hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
-                                item-value="name" :items="appStateStore.appState.eventTypes" no-data-text="нет данных"
+                                item-value="name" :items="appState.eventTypes" no-data-text="нет данных"
                                 placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
                         </v-col>
                         <v-col cols="12" md="6">
