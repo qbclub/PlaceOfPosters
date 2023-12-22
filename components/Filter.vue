@@ -4,8 +4,6 @@ import { useDisplay } from 'vuetify/lib/framework.mjs';
 const props = defineProps(['isStartPage'])
 let emit = defineEmits(['closeDialog'])
 
-
-
 let router = useRouter()
 let appState = await getAppState()
 let locationStore = useLocations()
@@ -13,12 +11,15 @@ let posterStore = usePoster()
 
 let locations = await getEventLocations()
 let categories = appState.eventTypes
+
 let selectedLocation = ref('')
+
 let date_items = [
     'Сегодня',
     'На неделе',
     'Скоро',
 ]
+
 let filter = ref({
     searchText: '',
     date: '',
@@ -60,6 +61,7 @@ function selectLocation(index) {
     localStorage.setItem('location', selectedLocation.value)
 }
 function selectCategory(index) {
+    let name = categories[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -76,25 +78,10 @@ let selectPeriod = (name) => {
     posterStore.filter = filter.value
 }
 
-let isSelectedLocation = (name) => {
-    if (selectedLocation.value == name) {
-        return true
-    } else {
-        return false
-    }
-}
+let isSelectedLocation = (name) => selectedLocation.value == name
 
+let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventType.includes(name) : false
 
-
-let isSelectedCategory = (name) => {
-
-    if (filter.value.eventType) {
-        return filter.value?.eventType.includes(name) ? true : false
-    } else {
-        return false
-    }
-
-}
 watch(() => filter.value.searchText, () => {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
@@ -130,7 +117,8 @@ onMounted(() => {
             <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                 <v-btn v-for="location, index in locations" @click="selectLocation(index)"
                     :class="isSelectedLocation(location.name) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
-                    :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat">
+                    :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat"
+                >
                     {{ shortName(location) }}
                 </v-btn>
             </v-col>
