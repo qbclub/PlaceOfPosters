@@ -4,20 +4,22 @@ import { useDisplay } from 'vuetify/lib/framework.mjs';
 const props = defineProps(['isStartPage'])
 let emit = defineEmits(['closeDialog'])
 
-
-
 let router = useRouter()
-let appState = useAppStore().appState
+let appState = await getAppState()
 let locationStore = useLocations()
 let posterStore = usePoster()
-let locations = ref([])
-let categories = ref([])
+
+let locations = await getEventLocations()
+let categories = appState.eventTypes
+
 let selectedLocation = ref('')
+
 let date_items = [
     'Сегодня',
     'На неделе',
     'Скоро',
 ]
+
 let filter = ref({
     searchText: '',
     date: '',
@@ -51,16 +53,15 @@ function clearFilter() {
 }
 
 function selectLocation(index) {
-    if (selectedLocation.value == locations.value[index].name) {
-        selectedLocation.value = ''
+    if (selectedLocation.value == locations[index].name) {
+        locationStore.location = ''
     } else {
-        selectedLocation.value = locations.value[index].name
+        locationStore.location = locations[index].name
     }
     localStorage.setItem('location', selectedLocation.value)
-    locationStore.location = selectedLocation.value
 }
 function selectCategory(index) {
-    let name = categories.value[index].name
+    let name = categories[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -77,25 +78,10 @@ let selectPeriod = (name) => {
     posterStore.filter = filter.value
 }
 
-let isSelectedLocation = (name) => {
-    if (selectedLocation.value == name) {
-        return true
-    } else {
-        return false
-    }
-}
+let isSelectedLocation = (name) => selectedLocation.value == name
 
+let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventType.includes(name) : false
 
-
-let isSelectedCategory = (name) => {
-
-    if (filter.value.eventType) {
-        return filter.value?.eventType.includes(name) ? true : false
-    } else {
-        return false
-    }
-
-}
 watch(() => filter.value.searchText, () => {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
@@ -103,8 +89,6 @@ watch(() => filter.value.searchText, () => {
 
 onMounted(() => {
 
-    locations.value = locationStore.eventlocations
-    categories.value = appState.eventTypes
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
             selectedLocation.value = localStorage.getItem('location')
@@ -133,7 +117,8 @@ onMounted(() => {
             <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                 <v-btn v-for="location, index in locations" @click="selectLocation(index)"
                     :class="isSelectedLocation(location.name) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
-                    :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat">
+                    :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat"
+                >
                     {{ shortName(location) }}
                 </v-btn>
             </v-col>

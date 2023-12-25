@@ -1,14 +1,13 @@
 <script setup>
-let router = useRouter()
-
-onMounted(() => {
-    router.push('/posters')
-})
-
+import Filter from "../components/Filter.vue"
+let isStartPage = ref(true)
 
 </script>
+
 <template>
-    <div class="text-center">
-        <span>start</span>
-    </div>
+  <Filter :isStartPage = "isStartPage" />
 </template>
+
+<style lang="scss" scoped>
+
+</style>

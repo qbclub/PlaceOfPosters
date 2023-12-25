@@ -85,7 +85,7 @@ poster.value = posterFromDB.value
               <div class="float-right"><span style="cursor: pointer; opacity: 0.8;"
                   class="mdi mdi-24px mdi-share-variant-outline ma-8 " @click="startShare()" v-if="isSupported">
                 </span></div>
-              <div> <b>Место:</b> <a :href="`https://2gis.ru/search/${poster.eventLocation.name}`">{{
+              <div> <b>Место:</b> <a :href="`https://yandex.ru/maps/?text=${poster.eventLocation.name}`">{{
                 poster.eventLocation.name }}</a> </div>
               <div v-if="poster.date?.length" class="d-flex">
                 <div><b>Время начала:&nbsp;</b></div>
