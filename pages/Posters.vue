@@ -4,9 +4,7 @@ import { useRoute } from "vue-router";
 
 let posterStore = usePoster()
 
-let filter = useCookie('filterForm')
-filter.value = filter.value ?? {}
-await posterStore.fetchPosters(filter.value)
+await posterStore.fetchPosters(posterStore.filter)
 
 let route = useRoute()
 
