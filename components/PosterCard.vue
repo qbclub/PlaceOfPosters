@@ -41,10 +41,13 @@ const { poster } = defineProps(["poster"]);
 
 }
 
-.card:hover .img-container img {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+@media (min-width: 900px) {
+  .card:hover .img-container img {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 }
+
 
 .card-front {
   position: absolute;

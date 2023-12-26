@@ -62,6 +62,7 @@ function clearFilter() {
 function selectLocation(index) {
     if (selectedLocation.value == locations.value[index].name) {
 		selectedLocation.value = ''
+        locationStore.location = ''
     } else {
         locationStore.location = locations.value[index].name
 		selectedLocation.value = locationStore.location
