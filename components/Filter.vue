@@ -10,7 +10,7 @@ let locationStore = useLocations()
 let posterStore = usePoster()
 
 let locations = await getEventLocations()
-let categories = appState.eventTypes
+let categories = appState.value.eventTypes
 
 let selectedLocation = ref('')
 
@@ -37,6 +37,13 @@ async function closeDialog() {
     await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
 }
+async function closePage() {
+    posterStore.posters = []
+    posterStore.page = 1
+	posterStore.filter = filter.value
+    await posterStore.fetchPosters(filter.value)
+	navigateTo('/posters')
+}
 function clearFilter() {
     selectedLocation.value = ''
     localStorage.setItem('location', selectedLocation.value)
@@ -53,10 +60,11 @@ function clearFilter() {
 }
 
 function selectLocation(index) {
-    if (selectedLocation.value == locations[index].name) {
-        locationStore.location = ''
+    if (selectedLocation.value == locations.value[index].name) {
+		selectedLocation.value = ''
     } else {
-        locationStore.location = locations[index].name
+        locationStore.location = locations.value[index].name
+		selectedLocation.value = locationStore.location
     }
     localStorage.setItem('location', selectedLocation.value)
 }
@@ -102,11 +110,23 @@ onMounted(() => {
 
 })
 
+let loading = ref(false)
+
+if (props.isStartPage) {
+	loading.value = true
+	useNuxtApp().hook('page:finish', () => loading.value = false)
+}
 </script>
 
 <template>
     <v-container>
-        <v-row class="flex-column justify-center align-center">
+		<div v-if="loading" class="mt-10 w-100">
+			<v-skeleton-loader max-width="300" class="ma-auto d-flex justify-center" type="text" />
+			<v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center" type="button, button, button, button, button, button, button, button" />
+			<v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center" type="button, button, button, button, button, button, button" />
+		</div>
+
+        <v-row v-else class="flex-column justify-center align-center">
             <v-col v-if="isStartPage" cols="auto" class="pb-0">
                 <h2> Настрой для себя</h2>
             </v-col>
@@ -149,7 +169,7 @@ onMounted(() => {
             </v-col>
 
             <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
-                <v-btn @click="isStartPage ? router.push('/posters') : closeDialog()" class="rounded-lg text-accent"
+                <v-btn @click="isStartPage ? closePage() : closeDialog()" class="rounded-lg text-accent"
                     variant="outlined" :ripple="false" size="large">
                     Показать афиши
                 </v-btn>
