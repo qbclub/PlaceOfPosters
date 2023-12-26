@@ -91,7 +91,7 @@ onMounted(async () => {
       <v-container>
         <v-row class="d-flex flex-nowrap justify-space-between align-center">
           <div>
-            <img src="@/assets/logo.webp" class="logo cursor-pointer" @click="routeTo('/posters')" />
+            <img src="@/assets/logo.webp" class="logo cursor-pointer" @click="navigateTo('/posters')" />
           </div>
           <div class="d-flex align-center">
 

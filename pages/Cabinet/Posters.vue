@@ -23,9 +23,9 @@ let purchase = async () => {
 watch(select, () => {
   navigateTo(select.value)
 })
-watch(router.currentRoute, () => {
-  select.value = router.currentRoute.value.path
-})
+// watch(router.currentRoute, () => {
+//   select.value = router.currentRoute.value.path
+// })
 </script>
 <template>
   <v-container>
