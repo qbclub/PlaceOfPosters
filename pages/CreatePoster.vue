@@ -6,7 +6,7 @@ definePageMeta({
 import getPossibleLocations from "~/utility/dadata";
 
 let router = useRouter()
-let appState = await getAppStore()
+let appState =  useAppStore()
 let userStore = useAuth()
 let posterStore = usePoster()
 let priceStore = usePrice()
@@ -388,6 +388,7 @@ function getCategory(category) {
 <template>
     <v-container>
         <BackButton />
+
         <v-row class="d-flex justify-center">
             <v-col cols="12" sm="11" md="10" lg="9">
                 <div class="d-flex justify-space-between align-center flex-wrap">
@@ -429,7 +430,7 @@ function getCategory(category) {
                         <v-col cols="12" md="6">
                             <b>Категории</b><span>*</span>
                             <v-select hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
-                                item-value="name" :items="appState.eventTypes" no-data-text="нет данных"
+                                item-value="name" :items="appState.appState.eventTypes" no-data-text="нет данных"
                                 placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
                         </v-col>
                         <v-col cols="12" md="6">
