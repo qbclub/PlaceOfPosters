@@ -81,14 +81,14 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-<ClientOnly>
+<!-- <ClientOnly>
    <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-</ClientOnly>
+</ClientOnly> -->
      
     <div class="pt-0 d-flex justify-center ">
-      <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
+      <v-row class="justify-center flex-wrap w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
           <PosterCard :poster="item" :id='item._id' :isFrame="true" />

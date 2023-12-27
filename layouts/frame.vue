@@ -90,8 +90,12 @@ onMounted(async () => {
     <v-app-bar :elevation="0">
       <v-container>
         <v-row class="d-flex flex-nowrap justify-space-between align-center">
+          <!-- <h2>Афиши</h2> -->
           <div>
-            
+            <a href="https://plpo.ru" target="_blank">
+
+              <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;:"
+               /></a>
           </div>
           <div class="d-flex align-center">
 
@@ -114,13 +118,13 @@ onMounted(async () => {
       </v-card>
     </v-dialog>
 
-    <v-main class="ma-4">
-    
+    <v-main>
+
       <NuxtPage />
 
     </v-main>
 
-    <Bottom class="d-flex d-sm-none" />
+    <!-- <Bottom class="d-flex d-sm-none" /> -->
   </v-app>
 </template>
 

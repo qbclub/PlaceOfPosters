@@ -159,6 +159,7 @@ let purchase = async () => {
     buyDialog.value = false
     snackbarText.value = 'Афишы куплены'
     snackbar.value = true
+    createPoster()
 }
 
 function addPreview(blob) {
@@ -595,7 +596,7 @@ function getCategory(category) {
 
             <v-dialog v-model="buyDialog" width="auto">
                 <v-card class="pa-2">
-                    <v-card-title> Покупка </v-card-title>
+                    <v-card-title> Покупка и отправка </v-card-title>
                     <Buy @closeDialog="closeDialog" @purchase="purchase" />
                 </v-card>
             </v-dialog>

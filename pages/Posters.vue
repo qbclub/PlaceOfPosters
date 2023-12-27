@@ -3,14 +3,14 @@ import { useDisplay } from 'vuetify'
 import { useRoute } from "vue-router";
 
 let posterStore = usePoster()
+let cols = ref(3)
 
 await posterStore.fetchPosters(posterStore.filter)
 
 let route = useRoute()
 
 const { mobile } = useDisplay()
-let cols = useCookie('cols')
-cols.value = cols.value ?? '3'
+
 
 let radio = computed(() => {
   if (mobile.value) {
@@ -38,8 +38,23 @@ let handleScroll = async () => {
   }
 }
 
+  let setCols = () => {
+    if (process.client) {
+    mobile.value ? cols.value = "6" : cols.value = "3"
+    if (localStorage.getItem("cols")) { cols.value = localStorage.getItem("cols") }
+    }
+  }
+
+  watch(cols, () => {
+    localStorage.setItem("cols", cols.value)
+  })
+  watch(mobile, () => {
+    mobile.value ? cols.value = "6" : cols.value = "3"
+  })
+
 onMounted(async () => {
-  cols.value = mobile.value ? "6" : "3"
+  await setCols()
+
 
   if (process.client) {
     if (route.hash) {
@@ -55,17 +70,17 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-    <ClientOnly>
-      <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-        <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
-      </v-radio-group>
-   
+
+    <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+      <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
+    </v-radio-group>
+
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
-          <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
-            <PosterCard :poster="item" :id='item._id' />
-          </v-col>
+        <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
+          <PosterCard :poster="item" :id='item._id' />
+        </v-col>
         <!-- </v-fade-transition> -->
       </v-row>
     </v-container>
@@ -81,7 +96,7 @@ onMounted(async () => {
         <v-progress-linear indeterminate color="accent" />
       </v-col>
     </v-row>
-  </ClientOnly>
+
   </div>
 </template>
 
