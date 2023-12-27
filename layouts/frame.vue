@@ -114,7 +114,7 @@ onMounted(async () => {
       </v-card>
     </v-dialog>
 
-    <v-main class="pb-0">
+    <v-main class="ma-4">
     
       <NuxtPage />
 

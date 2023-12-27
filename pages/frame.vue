@@ -81,19 +81,21 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-
-      <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+<ClientOnly>
+   <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-    <v-container class="pt-0 d-flex justify-center ">
+</ClientOnly>
+     
+    <div class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
-          <PosterCard :poster="item" :id='item._id' />
+          <PosterCard :poster="item" :id='item._id' :isFrame="true" />
         </v-col>
         <!-- </v-fade-transition> -->
       </v-row>
-    </v-container>
+    </div>
     <v-row class="justify-center">
       <v-col>
         <h3 class="text-center" v-if="!posterStore.posters.length && posterStore.isLoaded"> Мы ничего не нашли 😟</h3>

@@ -120,14 +120,16 @@ if (props.isStartPage) {
 </script>
 
 <template>
+    
     <v-container>
+        <ClientOnly>
 		<div v-if="loading" class="mt-10 w-100">
 			<v-skeleton-loader max-width="300" class="ma-auto d-flex justify-center" type="text" />
 			<v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center" type="button, button, button, button, button, button, button, button" />
 			<v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center" type="button, button, button, button, button, button, button" />
 		</div>
 
-        <v-row v-else class="flex-column justify-center align-center">
+        <v-row class="flex-column justify-center align-center">
             <v-col v-if="isStartPage" cols="auto" class="pb-0">
                 <h2> Настрой для себя</h2>
             </v-col>
@@ -181,6 +183,7 @@ if (props.isStartPage) {
                 </v-btn> -->
             </v-col>
         </v-row>
+        </ClientOnly>
     </v-container>
 </template>
 

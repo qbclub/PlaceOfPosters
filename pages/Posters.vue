@@ -32,11 +32,11 @@ let handleScroll = async () => {
     wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
   if (triggerHeight >= wrapper.value.scrollHeight) {
     triggerHeight = wrapper.value.scrollHeight
-  }  
+  }
   if (triggerHeight == wrapper.value.scrollHeight) {
     await posterStore.fetchPosters(posterStore.filter)
-  }  
-}  
+  }
+}
 
 onMounted(async () => {
   cols.value = mobile.value ? "6" : "3"
@@ -55,17 +55,18 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-    <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-      <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
-    </v-radio-group>
-
+    <ClientOnly>
+      <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+        <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
+      </v-radio-group>
+   
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
-        <v-fade-transition group leave-absolute hide-on-leave>
+        <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
           <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
             <PosterCard :poster="item" :id='item._id' />
           </v-col>
-        </v-fade-transition>
+        <!-- </v-fade-transition> -->
       </v-row>
     </v-container>
 
@@ -76,10 +77,11 @@ onMounted(async () => {
     </v-row>
 
     <v-row class="justify-center">
-      <v-col v-show="!posterStore.isLoaded" cols="12" sm="4" class="ma-0 pa-0"> 
+      <v-col v-show="!posterStore.isLoaded" cols="12" sm="4" class="ma-0 pa-0">
         <v-progress-linear indeterminate color="accent" />
       </v-col>
     </v-row>
+  </ClientOnly>
   </div>
 </template>
 

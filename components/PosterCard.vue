@@ -1,11 +1,17 @@
 <script setup>
 
-const { poster } = defineProps(["poster"]);
-
+const { poster, isFrame } = defineProps(["poster", "isFrame"]);
+let checkRout = () => {
+  if (isFrame) {
+    return '/framepost'
+  } else {
+    return '/post'
+  }
+}
 </script>
 
 <template>
-  <div class="card rounded" @click="navigateTo(`/post?_id=${poster._id}`)">
+  <div class="card rounded" @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
     <div class="img-container h-100">
       <img :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }">
     </div>
