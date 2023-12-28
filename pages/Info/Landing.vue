@@ -2,10 +2,6 @@
 import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
 
-
-
-
-
 const userStore = useAuth();
 let router = useRouter();
 // let priceStore = usePrice()
