@@ -10,7 +10,8 @@ let locationStore = useLocations()
 let posterStore = usePoster()
 
 let locations = await getEventLocations()
-let categories = appState.value.eventTypes
+let active_categories = await getActiveCategories()
+let categories = appState.value.eventTypes.filter(item => active_categories.value.includes(item.name))
 
 let selectedLocation = ref('')
 
