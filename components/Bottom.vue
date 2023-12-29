@@ -4,13 +4,13 @@ let authStore = useAuth()
 </script>
 
 <template>
-  <v-bottom-navigation :elevation="0">
-    <v-btn  @click="navigateTo('/posters')" exact :ripple="false">
+  <v-bottom-navigation :elevation="0" density="comfortable" :grow="true">
+    <v-btn @click="navigateTo('/posters')" exact :ripple="false">
       <v-icon>mdi-post</v-icon>
       <span>Афиши</span>
     </v-btn>
 
-    <v-btn  @click="navigateTo('/info/landing')" exact :ripple="false">
+    <v-btn @click="navigateTo('/info/landing')" exact :ripple="false">
       <v-icon>mdi-information-variant</v-icon>
       <span>Инфо</span>
     </v-btn>
@@ -20,10 +20,10 @@ let authStore = useAuth()
       <span>Кабинет</span>
     </v-btn>
 
-    <!-- <v-btn to="/admin/moderation/on-moderation" exact :ripple="false" v-if="authStore.user?.roles.includes('admin')">
+    <v-btn to="/admin/moderation/onmoderation" exact :ripple="false" v-if="authStore.user?.roles.includes('admin')">
       <v-icon>mdi-security</v-icon>
       <span>Админ</span>
-    </v-btn> -->
+    </v-btn>
   </v-bottom-navigation>
 </template>
 
