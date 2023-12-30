@@ -87,6 +87,7 @@ onMounted(async () => {
 
 <template>
   <v-app>
+
     <v-app-bar :elevation="0">
       <v-container>
         <v-row class="d-flex flex-nowrap justify-space-between align-center">
