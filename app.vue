@@ -11,6 +11,7 @@
     <meta property="og:image" content="https://plpo.ru/android-chrome-512x512.png">
     <meta property="og:url" content="https://plpo.ru/">
     <meta property="og:type" content="website">
+    <link rel="icon" href="/favicon.ico" />
   </Head>
   <NuxtPwaManifest />
   <NuxtLayout>
