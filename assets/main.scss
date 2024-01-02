@@ -79,3 +79,7 @@ a {
   opacity: 0;
   // filter: blur(0.5rem);
 }
+
+.v-radio-group .v-input__details {
+  padding-inline: 0px !important;
+}

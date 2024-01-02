@@ -108,10 +108,10 @@ onMounted(async () => {
             </div>
 
         </v-col>
-        <v-col cols="12" sm="6" md="4">
+        <!-- <v-col cols="12" sm="6" md="4">
            {{ JSON.stringify(organization) }}
 
-        </v-col>
+        </v-col> -->
 
 
     </v-row>
