@@ -117,31 +117,32 @@ onMounted(async () => {
     </v-dialog>
 
     <v-navigation-drawer v-model="drawer" location="right" temporary elevation="0">
-      <v-list nav>
-        <!-- <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/" exact :ripple="false">
+      <ClientOnly>
+        <v-list nav>
+          <!-- <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/" exact :ripple="false">
           Домой
         </v-list-item> -->
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/posters" exact :ripple="false">
-          Афиши
-        </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact
-          :ripple="false">
-          Информация
-        </v-list-item>
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">
-          Создать
-        </v-list-item>
+          <v-list-item class="cursor-pointer" prepend-icon="mdi-post" to="/posters" exact :ripple="false">
+            Афиши
+          </v-list-item>
+          <v-list-item class="cursor-pointer" prepend-icon="mdi mdi-information-variant" to="/info/landing" exact
+            :ripple="false">
+            Информация
+          </v-list-item>
+          <v-list-item class="cursor-pointer" prepend-icon="mdi-plus" to="/createposter" exact :ripple="false">
+            Создать
+          </v-list-item>
 
-        <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet/me" exact :ripple="false">
-          Кабинет
-        </v-list-item>
-        <ClientOnly>
+          <v-list-item class="cursor-pointer" prepend-icon="mdi-account" to="/cabinet/me" exact :ripple="false">
+            Кабинет
+          </v-list-item>
+
           <v-list-item class="cursor-pointer" prepend-icon="mdi-security" to="/admin/moderation/onmoderation" exact
             :ripple="false" v-if="authStore.user?.roles.includes('admin')">
             Админ
           </v-list-item>
-        </ClientOnly>
-      </v-list>
+        </v-list>
+      </ClientOnly>
     </v-navigation-drawer>
 
     <v-main class="pb-0">
