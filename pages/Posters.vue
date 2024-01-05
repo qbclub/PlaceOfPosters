@@ -11,6 +11,7 @@ let route = useRoute()
 
 const { mobile } = useDisplay()
 
+const wrapper = ref(null)
 
 let radio = computed(() => {
   if (mobile.value) {
@@ -20,16 +21,12 @@ let radio = computed(() => {
   }
 })
 
-watch(mobile, value => {
-  value ? cols.value = "6" : cols.value = "3"
-})
 
 
-const wrapper = ref(null)
 
 let handleScroll = async () => {
   let triggerHeight =
-    wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
+  wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
   if (triggerHeight >= wrapper.value.scrollHeight) {
     triggerHeight = wrapper.value.scrollHeight
   }
@@ -48,13 +45,16 @@ let setCols = () => {
 watch(cols, () => {
   localStorage.setItem("cols", cols.value)
 })
+//это что?
+// watch(mobile, value => {
+//   value ? cols.value = "6" : cols.value = "3"
+// })
 watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
 onMounted(async () => {
   await setCols()
-
 
   if (process.client) {
     if (route.hash) {
@@ -63,13 +63,12 @@ onMounted(async () => {
       el?.scrollIntoView()
     }
   }
-
   wrapper.value.addEventListener("scroll", handleScroll);
 })
 </script>
 
 <template>
-  <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
+  <div class="wrapper" ref="wrapper" style="overflow-x: hidden">
     <ClientOnly>
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
@@ -77,11 +76,11 @@ onMounted(async () => {
     </ClientOnly>
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
-        <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
+
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
           <PosterCard :poster="item" :id='item._id' />
         </v-col>
-        <!-- </v-fade-transition> -->
+
       </v-row>
     </v-container>
 
