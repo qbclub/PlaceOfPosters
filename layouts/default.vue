@@ -3,6 +3,7 @@ let posterStore = usePoster()
 let locationsStore = useLocations()
 let authStore = useAuth()
 
+
 let { location } = storeToRefs(locationsStore)
 let filter = reactive({
 
@@ -79,9 +80,11 @@ let setApp = async () => {
   if (!authStore.isAuth)
     await authStore.checkAuth()
 }
+
 onMounted(async () => {
   await setApp()
   checkFilter()
+ 
 })
 </script>
 
@@ -146,35 +149,13 @@ onMounted(async () => {
     </v-navigation-drawer>
 
     <v-main class="pb-0">
-      <!-- <v-container class="pt-0 pb-0">
-         <v-row class="flex-column align-center justify-center ma-0">
-          <v-col cols="12" sm="8" md="6" lg="5" xl="4" class="pa-0">
-            <v-menu v-model="showAddPlace" :close-on-content-click="false" activator="parent" scroll-strategy="close"
-              transition="scroll-y-transition">
-              <v-card class="pa-6 rounded-lg">
 
-                <v-autocomplete v-model="location" v-model:search="locationQuery" clearable variant="outlined"
-                  :items="[...locationsStore.eventlocations]" item-title="name" label="Место" density="compact" />
-
-              </v-card>
-            </v-menu>
-          </v-col>
-
-          <v-col cols="12" sm="10" md="8" class="pa-0">
-            <v-menu v-model="showFilter" :close-on-content-click="false" activator="parent" class="w-50"
-              scroll-strategy="none" transition="scroll-y-transition">
-              <v-card class="pa-6 rounded-lg">
-                <Filter @closeFilter="closeFilter" />
-              </v-card>
-            </v-menu>
-          </v-col>
-        </v-row> 
-      </v-container> -->
       <NuxtPage />
 
     </v-main>
-
-    <Bottom class="d-flex d-sm-none" />
+    <ClientOnly>
+      <Bottom class="d-flex d-sm-none" />
+    </ClientOnly>
   </v-app>
 </template>
 

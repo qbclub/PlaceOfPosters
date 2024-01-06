@@ -5,8 +5,6 @@ import { useRoute } from "vue-router";
 let posterStore = usePoster()
 let cols = ref(3)
 
-await posterStore.fetchPosters(posterStore.filter)
-
 let route = useRoute()
 
 const { mobile } = useDisplay()
@@ -52,9 +50,10 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
+
 onMounted(async () => {
   await setCols()
-
+  await posterStore.fetchPosters(posterStore.filter)
 
   if (process.client) {
     if (route.hash) {
