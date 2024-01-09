@@ -48,7 +48,7 @@ const login = handleSubmit(values => {
                             войти
                         </v-btn>
 
-                        <div @click="router.push('/registration')"
+                        <div @click="router.push('/reg')"
                             class="text-caption pt-2 pr-2 pl-2 mt-2 w-100 text-center text-accent" style="cursor: pointer;">
                             регистрация</div>
                         <div @click="router.push('/forgot-password')"
