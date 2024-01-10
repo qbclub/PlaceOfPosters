@@ -69,11 +69,11 @@ onMounted(async () => {
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-    <ClientOnly>
+
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-    </ClientOnly>
+ 
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
