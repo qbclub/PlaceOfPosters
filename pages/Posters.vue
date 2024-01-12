@@ -5,8 +5,6 @@ import { useRoute } from "vue-router";
 let posterStore = usePoster()
 let cols = ref(3)
 
-await posterStore.fetchPosters(posterStore.filter)
-
 let route = useRoute()
 
 const { mobile } = useDisplay()
@@ -53,8 +51,10 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
+
 onMounted(async () => {
   await setCols()
+  await posterStore.fetchPosters(posterStore.filter)
 
   if (process.client) {
     if (route.hash) {
@@ -68,12 +68,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="wrapper" ref="wrapper" style="overflow-x: hidden">
-    <ClientOnly>
+  <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
+
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-    </ClientOnly>
+ 
     <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
