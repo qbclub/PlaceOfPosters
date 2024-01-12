@@ -1,4 +1,5 @@
 import { defu } from 'defu'
+import AuthService from '~/service/AuthService'
 
 export function useApi(url, options, settings) {
     const config = useRuntimeConfig()
@@ -16,7 +17,8 @@ export function useApi(url, options, settings) {
         onRequestError({ request, options, error }) {
             // Handle the request errors
         },
-        onResponse({ request, response, options }) {
+        async onResponse({ request, response, options }) {
+           
         },
         async onResponseError({ request, response, options }) {
             if (response.status == 401) {

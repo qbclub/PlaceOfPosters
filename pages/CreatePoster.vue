@@ -214,7 +214,6 @@ async function createDraft() {
             form.creator = userStore.user._id
             if (userStore?.user.contracts.length) {
                 let _id = await posterStore.createPosterDraft(form)
-                console.log(_id)
 
                 if (blobImage) {
                     let imagesFormData = new FormData();
