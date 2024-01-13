@@ -1,6 +1,6 @@
 <script setup>
 import { useDisplay } from 'vuetify/lib/framework.mjs';
-import _ from 'lodash'
+import {sortBy} from 'lodash'
 
 const props = defineProps(['isStartPage'])
 let emit = defineEmits(['closeDialog'])
@@ -12,7 +12,7 @@ let posterStore = usePoster()
 
 let locations = await getEventLocations()
 let active_categories = await getActiveCategories()
-let categories =  _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);  
+let categories =  sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);  
 
 let selectedLocation = ref('')
 
