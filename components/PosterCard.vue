@@ -13,11 +13,8 @@ let checkRout = () => {
 <template>
   <div class="card rounded" @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
     <div class="img-container h-100">
-      <!-- <picture :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"></picture> -->
-      <picture >
-      <source :srcset="poster.image" media="(orientation: portrait)" />
-      <img :src="poster.image" alt=""  class="h-100 rounded" :class="{ hide: poster.isHidden }" />
-    </picture>
+      <img :srcset="poster.image" :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }" loading="lazy"/>
+
     </div>
    
   </div>
