@@ -71,7 +71,7 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
-  
+
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
