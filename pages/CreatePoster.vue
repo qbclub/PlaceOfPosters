@@ -50,13 +50,13 @@ function resetForm() {
     form.title = ''
     form.eventType = []
     form.eventSubtype = []
-    form.eventLocation = null
-    form.organizer = ''
-    form.phone = ''
+    // form.eventLocation = null
+    // form.organizer = ''
+    // form.phone = ''
     form.ageLimit = ''
     form.price = ''
-    form.site = ''
-    form.email = ''
+    // form.site = ''
+    // form.email = ''
     form.date = []
     form.image = ''
     form.description = '<p><br></p>'
@@ -214,7 +214,6 @@ async function createDraft() {
             form.creator = userStore.user._id
             if (userStore?.user.contracts.length) {
                 let _id = await posterStore.createPosterDraft(form)
-                console.log(_id)
 
                 if (blobImage) {
                     let imagesFormData = new FormData();

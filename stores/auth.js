@@ -67,12 +67,12 @@ export const useAuth = defineStore('auth', {
 				this.authRefreshing = true
 
 				const response = await useApi('/auth/refresh', { method: 'POST', credentials: 'include' })
-
+				this.authRefreshing = false
 				if (!response.data.value?.accessToken && !response.data.value?.user) return response
 
 				this.isAuth = true
 				this.user = response.data.value.user
-				this.authRefreshing = false
+				
 				return response
 			} catch (err) {
 			}

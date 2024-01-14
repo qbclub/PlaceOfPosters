@@ -4,8 +4,7 @@ import { useRoute } from "vue-router";
 
 let posterStore = usePoster()
 let cols = ref(3)
-
-await posterStore.fetchPosters(posterStore.filter)
+let loading = ref(false)
 
 let route = useRoute()
 
@@ -53,8 +52,10 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
+
 onMounted(async () => {
   await setCols()
+  await posterStore.fetchPosters(posterStore.filter)
 
   if (process.client) {
     if (route.hash) {
@@ -65,16 +66,17 @@ onMounted(async () => {
   }
   wrapper.value.addEventListener("scroll", handleScroll);
 })
+useNuxtApp().hook('page:finish', () => loading.value = true)
 </script>
 
 <template>
-  <div class="wrapper" ref="wrapper" style="overflow-x: hidden">
-    <ClientOnly>
+  <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
+  
       <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
-    </ClientOnly>
-    <v-container class="pt-0 d-flex justify-center ">
+ 
+    <v-container class="pt-0 d-flex justify-center " v-if="loading">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">

@@ -31,6 +31,7 @@ watch(snackbar, ()=>{
 
 </script>
 <template>
+  <div>
   <v-container>
     <v-responsive>
       <v-row class="d-flex justify-center pa-8">
@@ -69,6 +70,7 @@ watch(snackbar, ()=>{
       <v-btn @click="snackbar = false" density="compact" icon="mdi-close"></v-btn>
     </template>
   </v-snackbar>
+</div>
 </template>
 <style lang="scss" scoped></style>
 ../stores/auth
