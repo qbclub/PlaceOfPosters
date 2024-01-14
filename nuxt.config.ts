@@ -36,6 +36,7 @@ export default defineNuxtConfig({
     },
     "@pinia/nuxt",
     "@vite-pwa/nuxt",
+    '@nuxt/image',
   ],
   pwa: {
     registerType: 'autoUpdate',
