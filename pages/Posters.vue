@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 
 let posterStore = usePoster()
 let cols = ref(3)
+let loading = ref(false)
 
 let route = useRoute()
 
@@ -65,6 +66,7 @@ onMounted(async () => {
 
   wrapper.value.addEventListener("scroll", handleScroll);
 })
+useNuxtApp().hook('page:finish', () => loading.value = true)
 </script>
 
 <template>
@@ -74,7 +76,7 @@ onMounted(async () => {
         <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
       </v-radio-group>
  
-    <v-container class="pt-0 d-flex justify-center ">
+    <v-container class="pt-0 d-flex justify-center " v-if="loading">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">

@@ -9,6 +9,7 @@ let router = useRouter()
 let appState = await getAppState()
 let locationStore = useLocations()
 let posterStore = usePoster()
+let loading = ref(false)
 
 let locations = await getEventLocations()
 let active_categories = await getActiveCategories()
@@ -113,7 +114,7 @@ onMounted(() => {
 
 })
 
-let loading = ref(false)
+
 
 if (props.isStartPage) {
     loading.value = true
