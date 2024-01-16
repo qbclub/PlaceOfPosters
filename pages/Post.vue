@@ -95,6 +95,12 @@ poster.value = posterFromDB.value
                   </div>
                 </div>
               </div>
+              <div v-if="poster.endEventDate">
+                <b>Время начала:</b>
+                <div>
+                  {{ dates.dateWithTime(poster.endEventDate) }}
+                </div>
+              </div>
               <!-- <div v-if="poster.workingTime"> <b>Режим работы:</b> {{ poster.workingTime }}</div> -->
               <div v-if="poster.price"> <b>Стоимость:</b> {{ poster.price }}</div>
               <div v-if="poster.organizer"> <b>Организатор:</b> {{ poster.organizer }}</div>

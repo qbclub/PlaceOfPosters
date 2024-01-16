@@ -23,7 +23,7 @@ let form = reactive({
     site: '',
     email: '',
     date: [],
-
+    endEventDate: null,
     image: '',
     description: ''
 })
@@ -209,6 +209,10 @@ async function createDraft() {
                     .filter((item) => { return item })
                     .map((stringDate) => { return new Date(stringDate).getTime() })
             }
+            if (form.endEventDate) {
+                form.endEventDate = (new Date(form.endEventDate)).getMilliseconds()
+                console.log(form.endEventDate)
+            }
             form.createdDate = Number(Date.now())
             form.contract = contract.value
             form.creator = userStore.user._id
@@ -236,6 +240,10 @@ async function createPoster() {
             form.date = form.date
                 .filter((item) => { return item })
                 .map((stringDate) => { return new Date(stringDate).getTime() })
+            if (form.endEventDate) {
+                form.endEventDate = (new Date(form.endEventDate)).getMilliseconds()
+                console.log(form.endEventDate)
+            }
             form.createdDate = Number(Date.now())
             form.contract = contract.value
             form.creator = userStore.user._id
@@ -382,7 +390,7 @@ onBeforeUnmount(() => {
 })
 
 function getCategory(category) {
-    return appState.eventTypes.find(item => item.name === category)
+    return appState.appState.eventTypes.find(item => item.name === category)
 }
 </script>
 <template>
@@ -509,11 +517,28 @@ function getCategory(category) {
                                 <v-icon icon="mdi-trash-can-outline" color="accent" style="cursor:pointer"
                                     @click="form.date.splice(index, 1);"></v-icon>
                             </div>
-
-
                         </v-col>
-
                     </v-row>
+
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <b>Время окончания</b>
+
+                            <!-- :format="format" для пиккера надо добавить -->
+                            <VueDatePicker 
+                                v-model="form.endEventDate"
+                                locale="ru" 
+                                minutes-grid-increment="2" 
+                                input-class-name="dp-custom-input" 
+                                placeholder="дата и время"
+                                :transitions="{
+                                    open: 'fade',
+                                    close: 'fade',
+                                }" 
+                            />
+                        </v-col>
+                    </v-row>
+
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-btn> добавить афишу<span>*</span>
