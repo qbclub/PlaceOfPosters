@@ -13,7 +13,7 @@ let checkRout = () => {
 <template>
   <div class="card rounded" @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
     <div class="img-container h-100">
-      <NuxtImg :src="poster.image" placeholder loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/>
+      <img :srcset="poster.image"  loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/>
 
     </div>
    
