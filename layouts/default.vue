@@ -97,12 +97,15 @@ onMounted(async () => {
 
             <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline" @click="showFilter = !showFilter"></v-icon>
 
-            <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular disabled"
-              style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
-              {{ location ? shortLocationName : "Место" }}
-            </v-btn>
+            <div @click="showFilter = !showFilter"  class="d-flex align-center pa-1 ml-4" style="cursor: pointer;">
+              <v-icon>mdi-map-marker-outline</v-icon>
 
-            <v-icon class="d-none d-sm-block ma-2" icon="mdi-menu" @click.stop="drawer = !drawer"></v-icon>
+              <div class="text-body-1 font-weight-regular" style="letter-spacing: normal !important; margin-left: 8px;">
+                {{ location ? shortLocationName : "Везде" }}
+              </div>
+            </div>
+
+            <v-icon class="d-none d-sm-flex ml-4" icon="mdi-menu" @click.stop="drawer = !drawer"></v-icon>
           </div>
         </v-row>
 
