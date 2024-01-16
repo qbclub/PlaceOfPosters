@@ -71,11 +71,24 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
 
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
+    <v-container class="pa-0 d-flex justify-center ">
+      <v-row  class="pa-0 ma-0 d-flexjustify-space-between ">
+        <div style="width: 80px"></div>
+        <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
+          <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
+        </v-radio-group>
+        <div class="text-center">
+          <a href="https://t.me/plporu" target="_blank">
+            <img class="ma-2" src="~/assets/icons/telegram.svg" alt=""></a>
 
-      <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-        <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
-      </v-radio-group>
- 
+          <a href="https://vk.com/plporu" target="_blank"><img class="ma-2" src="~/assets/icons/vk.svg" alt=""></a>
+
+        </div>
+      </v-row>
+    </v-container>
+
+
+
     <v-container class="pt-0 d-flex justify-center " v-if="loading">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
