@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/image": "^1.2.0",
     "@vite-pwa/nuxt": "^0.3.6",
     "nuxt": "^3.8.1",
     "sass": "^1.69.5",
