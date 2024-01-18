@@ -44,7 +44,7 @@ let validate = async () => {
     let validInn = validateInn(Number(inn.value), error)
     if (validInn && contractInfo.name.length > 5) {
       await  OrdService.createContract({form:contractInfo, userId:userStore.user._id})
-      
+      await userStore.checkAuth()
       emit('closeDialog')
     }
 }

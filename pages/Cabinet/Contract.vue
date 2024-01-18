@@ -17,7 +17,7 @@ let closeDialog = () => {
                 <v-row>
 
                     <v-col class="d-flex flex-wrap">
-                        <v-card v-for="contract in contracts" class="pa-4 ma-2">
+                        <v-card v-for="contract in userStore.user?.contracts" class="pa-4 ma-2">
                             <div>{{ contract.name }}</div>
                             <div>ИНН: {{ contract.inn }}</div>
                         </v-card>
