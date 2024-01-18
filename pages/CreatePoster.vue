@@ -240,7 +240,6 @@ async function createPoster() {
             form.contract = contract.value
             form.creator = userStore.user._id
             let _id = await posterStore.createPoster(form)
-            console.log(_id)
             let imagesFormData = new FormData();
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
