@@ -12,20 +12,20 @@ let posterStore = usePoster()
 let priceStore = usePrice()
 
 let form = reactive({
-    title: '',
-    eventType: [],
-    eventSubtype: [],
+    title: '',//
+    eventType: [],//
+    eventSubtype: [],//
     eventLocation: null,
     organizer: '',
     phone: '',
-    ageLimit: '',
-    price: '',
+    ageLimit: '',//
+    price: '',//
     site: '',
     email: '',
-    date: [],
-    endEventDate: null,
-    image: '',
-    description: ''
+    date: [],//
+    endEventDate: null,//
+    image: '',//
+    description: ''//
 })
 let subcategories = ref([])
 let visibleCropperModal = ref(false)
@@ -50,20 +50,15 @@ function resetForm() {
     form.title = ''
     form.eventType = []
     form.eventSubtype = []
-    // form.eventLocation = null
-    // form.organizer = ''
-    // form.phone = ''
     form.ageLimit = ''
     form.price = ''
-    // form.site = ''
-    // form.email = ''
     form.date = []
+    form.endEventDate = null
     form.image = ''
     form.description = '<p><br></p>'
     localStorage.setItem('createPosterForm', '')
     localStorage.setItem('posterFormImage', '')
     preview.value = null;
-
 }
 
 // function format() {
@@ -210,7 +205,7 @@ async function createDraft() {
                     .map((stringDate) => { return new Date(stringDate).getTime() })
             }
             if (form.endEventDate) {
-                form.endEventDate = (new Date(form.endEventDate)).getMilliseconds()
+                form.endEventDate = (new Date(form.endEventDate)).getTime()
                 console.log(form.endEventDate)
             }
             form.createdDate = Number(Date.now())
@@ -241,8 +236,7 @@ async function createPoster() {
                 .filter((item) => { return item })
                 .map((stringDate) => { return new Date(stringDate).getTime() })
             if (form.endEventDate) {
-                form.endEventDate = (new Date(form.endEventDate)).getMilliseconds()
-                console.log(form.endEventDate)
+                form.endEventDate = (new Date(form.endEventDate)).getTime()
             }
             form.createdDate = Number(Date.now())
             form.contract = contract.value
@@ -316,7 +310,6 @@ watch(form, (value) => {
     if (!userStore?.user.contracts.length) {
         contractDialog.value = true;
     }
-
 })
 watch(() => form.eventType, (newValue, oldValue) => {
     // subtype затирается при редактировании, когда заходишь на страницу
@@ -326,7 +319,7 @@ watch(() => form.eventType, (newValue, oldValue) => {
 })
 function updateSubcategories() {
     subcategories.value = []
-    appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
+    appState.appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
 }
 watch(locationSearchRequest, async (value) => {
     possibleLocations.value = await getPossibleLocations(value);
@@ -334,7 +327,7 @@ watch(locationSearchRequest, async (value) => {
 
 onMounted(async () => {
     possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
-    if (!appState) {
+    if (!appState.appState) {
         await appStateStore.getAppState()
     }
     updateSubcategories()
