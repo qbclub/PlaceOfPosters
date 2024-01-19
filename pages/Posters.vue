@@ -5,6 +5,7 @@ import { useRoute } from "vue-router";
 let posterStore = usePoster()
 let cols = ref(3)
 let loading = ref(false)
+let topVisible = ref(false)
 
 let route = useRoute()
 
@@ -25,7 +26,14 @@ let radio = computed(() => {
 
 let handleScroll = async () => {
   let triggerHeight =
-  wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
+    wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
+  console.log(triggerHeight)
+  if (triggerHeight >= 1500) {
+    topVisible.value = true
+  }
+  else {
+    topVisible.value = false
+  }
   if (triggerHeight >= wrapper.value.scrollHeight) {
     triggerHeight = wrapper.value.scrollHeight
   }
@@ -40,7 +48,12 @@ let setCols = () => {
     if (localStorage.getItem("cols")) { cols.value = localStorage.getItem("cols") }
   }
 }
-
+let goToTop = () => {
+  wrapper.value.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  })
+}
 watch(cols, () => {
   localStorage.setItem("cols", cols.value)
 })
@@ -72,7 +85,7 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
 <template>
   <div class="wrapper" ref="wrapper" style="overflow-x: hidden;">
     <v-container class="pa-0 d-flex justify-center ">
-      <v-row  class="pa-0 ma-0 d-flexjustify-space-between ">
+      <v-row class="pa-0 ma-0 d-flexjustify-space-between ">
         <div style="width: 80px"></div>
         <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
           <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
@@ -112,6 +125,11 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
     </v-row>
 
   </div>
+  <Transition name="move">
+    <v-btn v-if="topVisible" @click="goToTop" icon="mdi-chevron-double-up" color="accent"
+      class="topbtn d-none d-md-block">
+    </v-btn>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>
@@ -122,5 +140,22 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.topbtn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.move-enter-active,
+.move-leave-active {
+  transition: all 0.2s ease-out;
+}
+
+.move-enter-from,
+.move-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>
