@@ -43,15 +43,16 @@ let { data: posterFromDB, pending } = await useFetch('/poster/get-by-id', {
 })
 poster.value = posterFromDB.value
 
-let postersActive = ref([])
+let postersActiveMiniature = ref([])
 
-let getPostersMiniature = async () => {
-  postersActive.value = await posterStore.getPostersMiniature(poster.value.organizer, posterId, 'active')
+let getPostersMiniatureAndChangePoster = async (posterId) => {
+  postersActiveMiniature.value = await posterStore.getPostersMiniature(poster.value.organizer, posterId, 'active')
+  poster.value = await posterStore.getById(posterId)
 }
 
-
 onMounted(async () => {
-  getPostersMiniature()
+  getPostersMiniatureAndChangePoster(posterId)
+
 });
 
 </script>
@@ -119,9 +120,9 @@ onMounted(async () => {
               <div v-if="poster.phone"> <b>Телефон:</b> <a :href="getHref(`tel:${poster.phone}`)"> {{ poster.phone }}</a>
               </div>
             </div>
-            <div class="container d-flex justify-start mb-16 mt-5 w-100" >
-              <v-col :cols="3" v-for="item of postersActive" :key="item._id" class="pa-1" >
-                <Miniature :poster="item" :id='item._id'/>
+            <div class="container d-flex justify-start mb-16 mt-5 w-100">
+              <v-col :cols="3" v-for="item of postersActiveMiniature" :key="item._id" class="pa-1">
+                <Miniature @click = "getPostersMiniatureAndChangePoster(item._id)" :poster="item" :id='item._id' />
               </v-col>
             </div>
           </div>
