@@ -2,14 +2,13 @@
 
 const { poster, isFrame } = defineProps(["poster", "isFrame"]);
 let checkRout = () => {
-  console.log(isFrame,poster)
-
   if (isFrame) {
     return '/framepost'
   } else {
     return '/post'
   }
 }
+
 </script>
 
 <template>
@@ -17,10 +16,8 @@ let checkRout = () => {
     <div class="img-container h-100">
       <img :src="poster.image" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }">
     </div>
-
   </div>
 </template>
-
 <style scoped lang="scss">
 .card {
   width: 100%;
