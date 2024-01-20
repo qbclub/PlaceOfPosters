@@ -12,20 +12,20 @@ let posterStore = usePoster()
 let priceStore = usePrice()
 
 let form = reactive({
-    title: '',
-    eventType: [],
-    eventSubtype: [],
+    title: '',//
+    eventType: [],//
+    eventSubtype: [],//
     eventLocation: null,
     organizer: '',
     phone: '',
-    ageLimit: '',
-    price: '',
+    ageLimit: '',//
+    price: '',//
     site: '',
     email: '',
-    date: [],
-
-    image: '',
-    description: ''
+    date: [],//
+    endEventDate: null,//
+    image: '',//
+    description: ''//
 })
 let subcategories = ref([])
 let visibleCropperModal = ref(false)
@@ -50,20 +50,15 @@ function resetForm() {
     form.title = ''
     form.eventType = []
     form.eventSubtype = []
-    form.eventLocation = null
-    form.organizer = ''
-    form.phone = ''
     form.ageLimit = ''
     form.price = ''
-    form.site = ''
-    form.email = ''
     form.date = []
+    form.endEventDate = null
     form.image = ''
     form.description = '<p><br></p>'
     localStorage.setItem('createPosterForm', '')
     localStorage.setItem('posterFormImage', '')
     preview.value = null;
-
 }
 
 // function format() {
@@ -209,12 +204,15 @@ async function createDraft() {
                     .filter((item) => { return item })
                     .map((stringDate) => { return new Date(stringDate).getTime() })
             }
+            if (form.endEventDate) {
+                form.endEventDate = (new Date(form.endEventDate)).getTime()
+                console.log(form.endEventDate)
+            }
             form.createdDate = Number(Date.now())
             form.contract = contract.value
             form.creator = userStore.user._id
             if (userStore?.user.contracts.length) {
                 let _id = await posterStore.createPosterDraft(form)
-                console.log(_id)
 
                 if (blobImage) {
                     let imagesFormData = new FormData();
@@ -237,11 +235,13 @@ async function createPoster() {
             form.date = form.date
                 .filter((item) => { return item })
                 .map((stringDate) => { return new Date(stringDate).getTime() })
+            if (form.endEventDate) {
+                form.endEventDate = (new Date(form.endEventDate)).getTime()
+            }
             form.createdDate = Number(Date.now())
             form.contract = contract.value
             form.creator = userStore.user._id
             let _id = await posterStore.createPoster(form)
-            console.log(_id)
             let imagesFormData = new FormData();
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
@@ -309,7 +309,6 @@ watch(form, (value) => {
     if (!userStore?.user.contracts.length) {
         contractDialog.value = true;
     }
-
 })
 watch(() => form.eventType, (newValue, oldValue) => {
     // subtype затирается при редактировании, когда заходишь на страницу
@@ -319,7 +318,7 @@ watch(() => form.eventType, (newValue, oldValue) => {
 })
 function updateSubcategories() {
     subcategories.value = []
-    appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
+    appState.appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
 }
 watch(locationSearchRequest, async (value) => {
     possibleLocations.value = await getPossibleLocations(value);
@@ -327,7 +326,7 @@ watch(locationSearchRequest, async (value) => {
 
 onMounted(async () => {
     possibleLocations.value = await getPossibleLocations(locationSearchRequest.value)
-    if (!appState) {
+    if (!appState.appState) {
         await appStateStore.getAppState()
     }
     updateSubcategories()
@@ -383,7 +382,7 @@ onBeforeUnmount(() => {
 })
 
 function getCategory(category) {
-    return appState.eventTypes.find(item => item.name === category)
+    return appState.appState.eventTypes.find(item => item.name === category)
 }
 </script>
 <template>
@@ -510,11 +509,29 @@ function getCategory(category) {
                                 <v-icon icon="mdi-trash-can-outline" color="accent" style="cursor:pointer"
                                     @click="form.date.splice(index, 1);"></v-icon>
                             </div>
-
-
                         </v-col>
-
                     </v-row>
+
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <b>Дата окончания</b>
+
+                            <!-- :format="format" для пиккера надо добавить -->
+                            <VueDatePicker 
+                                v-model="form.endEventDate"
+                                locale="ru" 
+                                minutes-grid-increment="2" 
+                                input-class-name="dp-custom-input" 
+                                placeholder="дата"
+                                :enable-time-picker="false"
+                                :transitions="{
+                                    open: 'fade',
+                                    close: 'fade',
+                                }" 
+                            />
+                        </v-col>
+                    </v-row>
+
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-btn> добавить афишу<span>*</span>
