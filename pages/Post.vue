@@ -46,7 +46,7 @@ poster.value = posterFromDB.value
 let postersActiveMiniature = ref([])
 
 let getPostersMiniatureAndChangePoster = async (posterId) => {
-  postersActiveMiniature.value = await posterStore.getPostersMiniature(poster.value.organizer, posterId, 'active')
+  postersActiveMiniature.value = await posterStore.getPostersMiniature(poster.value.organizer, posterId)
   poster.value = await posterStore.getById(posterId)
 }
 
@@ -120,7 +120,9 @@ onMounted(async () => {
               <div v-if="poster.phone"> <b>Телефон:</b> <a :href="getHref(`tel:${poster.phone}`)"> {{ poster.phone }}</a>
               </div>
             </div>
-            <div class="container d-flex justify-start mb-16 mt-5 w-100">
+            <v-divider class="ma-4"></v-divider>
+            <div v-if="postersActiveMiniature.length"><b>Другие от&nbsp; {{ poster.organizer }}</b></div>
+            <div class="container d-flex justify-start w-100">   
               <v-col :cols="3" v-for="item of postersActiveMiniature" :key="item._id" class="pa-1">
                 <Miniature @click = "getPostersMiniatureAndChangePoster(item._id)" :poster="item" :id='item._id' />
               </v-col>

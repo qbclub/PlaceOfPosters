@@ -22,9 +22,9 @@ export const usePoster = defineStore('poster', {
                 console.log(error);
             }
         },
-        async getPostersMiniature(organizer,poster_id, posterStatus) {
+        async getPostersMiniature(organizer,poster_id) {
             try {
-                let response = await PosterService.getPostersMiniature(organizer,poster_id, posterStatus)
+                let response = await PosterService.getPostersMiniature(organizer,poster_id)
                 return response.data
             } catch (error) {
                 console.log(error);

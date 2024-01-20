@@ -8,7 +8,7 @@ export default {
         return $api.get(`/poster/get-posters?user_id=${userId}&poster_status=${posterStatus}`)
     },
     getPostersMiniature(organizer,poster_id, posterStatus) {
-        return $api.get(`/poster/get-posters-miniature?organizer=${organizer}&poster_id=${poster_id}&poster_status=${posterStatus}`)
+        return $api.get(`/poster/get-posters-miniature?organizer=${organizer}&poster_id=${poster_id}`)
     },
     createPosterDraft(poster, userId) {
         return $api.post('/poster/create-draft', { poster, userId })

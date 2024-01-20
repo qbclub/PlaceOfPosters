@@ -2,7 +2,6 @@
 
 const { poster, isFrame } = defineProps(["poster", "isFrame"]);
 let checkRout = () => {
-  console.log(isFrame,poster)
 
   if (isFrame) {
     return '/framepost'
