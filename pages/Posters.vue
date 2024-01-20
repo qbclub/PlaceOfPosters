@@ -27,7 +27,6 @@ let radio = computed(() => {
 let handleScroll = async () => {
   let triggerHeight =
     wrapper.value.scrollTop + wrapper.value.offsetHeight + 5
-  console.log(triggerHeight)
   if (triggerHeight >= 1500) {
     topVisible.value = true
   }
@@ -123,13 +122,13 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
         <v-progress-linear indeterminate color="accent" />
       </v-col>
     </v-row>
-
-  </div>
-  <Transition name="move">
+<Transition name="move">
     <v-btn v-if="topVisible" @click="goToTop" icon="mdi-chevron-double-up" color="accent"
       class="topbtn d-none d-md-block">
     </v-btn>
   </Transition>
+  </div>
+  
 </template>
 
 <style lang="scss" scoped>
