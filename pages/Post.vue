@@ -4,6 +4,8 @@ const runtimeConfig = useRuntimeConfig()
 import { useShare } from '@vueuse/core'
 import dates from "~/utility/dates"
 
+let posterStore = usePoster()
+
 let router = useRouter()
 const route = useRoute();
 let poster = ref({})
@@ -40,6 +42,19 @@ let { data: posterFromDB, pending } = await useFetch('/poster/get-by-id', {
   query: { _id: posterId }
 })
 poster.value = posterFromDB.value
+
+let postersActiveMiniature = ref([])
+
+let getPostersMiniatureAndChangePoster = async (posterId) => {
+  postersActiveMiniature.value = await posterStore.getPostersMiniature(poster.value.organizer, posterId)
+  poster.value = await posterStore.getById(posterId)
+}
+
+onMounted(async () => {
+  getPostersMiniatureAndChangePoster(posterId)
+
+});
+
 </script>
 <template>
   <v-container>
@@ -105,6 +120,13 @@ poster.value = posterFromDB.value
               <div v-if="poster.phone"> <b>Телефон:</b> <a :href="getHref(`tel:${poster.phone}`)"> {{ poster.phone }}</a>
               </div>
             </div>
+            <v-divider class="ma-4"></v-divider>
+            <div v-if="postersActiveMiniature.length"><b>Другие от&nbsp; {{ poster.organizer }}</b></div>
+            <div class="container d-flex justify-start w-100">   
+              <v-col :cols="3" v-for="item of postersActiveMiniature" :key="item._id" class="pa-1">
+                <Miniature @click = "getPostersMiniatureAndChangePoster(item._id)" :poster="item" :id='item._id' />
+              </v-col>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -116,6 +138,12 @@ poster.value = posterFromDB.value
   height: 80dvh;
   overflow: auto;
 
+}
+
+.container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .front {
