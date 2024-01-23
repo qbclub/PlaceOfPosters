@@ -13,7 +13,7 @@ let loading = ref(false)
 
 let locations = await getEventLocations()
 let active_categories = await getActiveCategories()
-let categories =  _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);  
+let categories =  _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name'])
 
 let selectedLocation = ref('')
 
@@ -23,12 +23,13 @@ let date_items = [
     'Скоро',
 ]
 
-let filter = ref({
+let filter = useState('filter', () => ({
     searchText: '',
     date: '',
     eventType: [],
-    eventSubtype: []
-})
+    eventSubtype: [],
+    posterType: ''
+}))
 
 let shortName = (item) => {
     return item.name.split(' ').pop()
@@ -37,6 +38,7 @@ let shortName = (item) => {
 async function closeDialog() {
     posterStore.posters = []
     posterStore.page = 1
+    console.log(filter.value)
     await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
 }
@@ -56,7 +58,8 @@ function clearFilter() {
         searchText: '',
         date: '',
         eventType: [],
-        eventSubtype: []
+        eventSubtype: [],
+        posterType: ''
     }
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
@@ -133,7 +136,7 @@ if (props.isStartPage) {
                     type="button, button, button, button, button, button, button" />
             </div>
 
-            <v-row class="flex-column justify-center align-center">
+            <v-row v-else class="flex-column justify-center align-center">
                 <v-col v-if="isStartPage" cols="auto" class="pb-0">
                     <h2> Настрой для себя</h2>
                 </v-col>
@@ -165,6 +168,25 @@ if (props.isStartPage) {
                     <v-divider />
                 </v-col>
 
+                <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
+                    <v-btn @click="filter.posterType == 'event' ? filter.posterType = '' : filter.posterType = 'event'"
+                        :class="filter.posterType == 'event' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
+                    >
+                        Событие
+                    </v-btn>
+
+                    <v-btn @click="filter.posterType == 'place' ? filter.posterType = '' : filter.posterType = 'place'"
+                        :class="filter.posterType == 'place' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
+                    >
+                        Место
+                    </v-btn>
+                </v-col>
+
+                <v-col cols="8">
+                    <v-divider />
+                </v-col>
 
                 <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="category, index in categories" @click="selectCategory(index)"

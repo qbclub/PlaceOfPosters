@@ -23,6 +23,7 @@ let form = reactive({
     site: '',
     email: '',
     date: [],//
+    posterType: '',
     endEventDate: null,//
     image: '',//
     description: ''//
@@ -32,6 +33,17 @@ let visibleCropperModal = ref(false)
 let blobImage;
 let preview = ref()
 let imagePreviewOverlay = ref(false)
+
+let posterTypes = [
+    {
+        name: 'Событие',
+        value: 'event'
+    },
+    {
+        name: 'Место',
+        value: 'place'
+    }
+]
 
 let contract = ref('')
 
@@ -55,6 +67,7 @@ function resetForm() {
     form.date = []
     form.endEventDate = null
     form.image = ''
+    form.posterType = ''
     form.description = '<p><br></p>'
     localStorage.setItem('createPosterForm', '')
     localStorage.setItem('posterFormImage', '')
@@ -127,6 +140,9 @@ let rules = {
     },
     price(value) {
         return true
+    },
+    posterType(value) {
+        return !!value
     },
     site(value) {
         if (value.length != 0 && value.length < 4) return 'минимум 4 символа'
@@ -527,6 +543,22 @@ function getCategory(category) {
                                     open: 'fade',
                                     close: 'fade',
                                 }" 
+                            />
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
+                            <b>Место / событие *</b>
+
+                            <v-select 
+                                hide-details 
+                                :rules="[rules.posterType]" 
+                                v-model="form.posterType"
+                                item-title="name"
+                                item-value="value" 
+                                :items="posterTypes"
+                                placeholder="Событие" 
+                                variant="outlined" 
+                                density="compact" 
                             />
                         </v-col>
                     </v-row>
