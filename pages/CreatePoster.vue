@@ -467,7 +467,7 @@ function getCategory(category) {
                         <v-col cols="6" md="3">
                             <b>Возраст</b><span>*</span>
                             <v-autocomplete hide-details :rules="[rules.ageLimit]" density="compact" v-model="form.ageLimit"
-                                item-title="name" item-value="name" :items="['0+', '6+', '12+', '14+', '16+', '18+']"
+                                item-title="name" item-value="name" :items="['0+', '6+', '12+', '14+', '16+', '18+', '21+']"
                                 placeholder="12+" no-data-text="нет данных" variant="outlined" />
                         </v-col>
                         <v-col cols="6" md="3">
