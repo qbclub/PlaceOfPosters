@@ -116,7 +116,7 @@ onMounted(async () => {
       </v-container>
     </v-app-bar>
 
-    <v-dialog transition="scale-transition" v-model="showFilter" fullscreen>
+    <v-dialog transition="scale-transition" close-on-back v-model="showFilter" fullscreen>
       <v-card>
         <Filter @closeDialog="closeFilter()" :isStartPage="false" />
       </v-card>
