@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 import PosterService from '../service/PosterService.js'
 
 export const usePoster = defineStore('poster', {
@@ -6,13 +7,16 @@ export const usePoster = defineStore('poster', {
         posters: [],
         isLoaded: false,
         page: 1,
-        filter: {},
+        filter: ref({
+            searchText: '',
+            date: '',
+            eventType: [],
+            eventSubtype: [],
+            posterType: ''
+        }),
         isFetching: false,
         load: true
-
-    }),
-    getters: {
-    },
+    }), 
     actions: {
         async getPosters(userId, posterStatus) {
             try {

@@ -23,13 +23,7 @@ let date_items = [
     'Скоро',
 ]
 
-let filter = useState('filter', () => ({
-    searchText: '',
-    date: '',
-    eventType: [],
-    eventSubtype: [],
-    posterType: ''
-}))
+let { filter } = storeToRefs(usePoster())
 
 let shortName = (item) => {
     return item.name.split(' ').pop()
@@ -50,10 +44,6 @@ async function closePage() {
     navigateTo('/posters')
 }
 function clearFilter() {
-    // selectedLocation.value = ''
-    // localStorage.setItem('location', selectedLocation.value)
-    // locationStore.location = selectedLocation.value
-
     filter.value = {
         searchText: '',
         date: '',
@@ -61,8 +51,6 @@ function clearFilter() {
         eventSubtype: [],
         posterType: ''
     }
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
-    posterStore.filter = filter.value
 }
 
 function selectLocation(index) {
@@ -79,8 +67,6 @@ function selectCategory(index) {
     let name = categories[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
-    posterStore.filter = filter.value
 }
 let selectPeriod = (name) => {
     if (filter.value.date == name) {
@@ -89,32 +75,18 @@ let selectPeriod = (name) => {
     } else {
         filter.value.date = name
     }
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
-    posterStore.filter = filter.value
 }
 
 let isSelectedLocation = (name) => selectedLocation.value == name
 
 let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventType.includes(name) : false
 
-watch(() => filter.value.searchText, () => {
-    localStorage.setItem('filterForm', JSON.stringify(filter.value))
-    posterStore.filter = filter.value
-})
-
 onMounted(() => {
-
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
             selectedLocation.value = localStorage.getItem('location')
         }
     }
-
-    if (localStorage.getItem('filterForm')) {
-        filter.value = JSON.parse(localStorage.getItem('filterForm'))
-        posterStore.filter = filter.value
-    }
-
 })
 
 
@@ -169,15 +141,15 @@ if (props.isStartPage) {
                 </v-col>
 
                 <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
-                    <v-btn @click="filter.posterType == 'event' ? filter.posterType = '' : filter.posterType = 'event'"
-                        :class="filter.posterType == 'event' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                    <v-btn @click="filter.posterType === 'event' ? filter.posterType = '' : filter.posterType = 'event'"
+                        :class="filter.posterType === 'event' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
                         style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
                     >
                         Событие
                     </v-btn>
 
-                    <v-btn @click="filter.posterType == 'place' ? filter.posterType = '' : filter.posterType = 'place'"
-                        :class="filter.posterType == 'place' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+                    <v-btn @click="filter.posterType === 'place' ? filter.posterType = '' : filter.posterType = 'place'"
+                        :class="filter.posterType === 'place' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
                         style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
                     >
                         Место

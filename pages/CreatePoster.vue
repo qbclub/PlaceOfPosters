@@ -530,7 +530,7 @@ function getCategory(category) {
 
                     <v-row>
                         <v-col cols="12" sm="6">
-                            <b>Дата окончания</b>
+                            <b>Время окончания</b>
 
                             <!-- :format="format" для пиккера надо добавить -->
                             <VueDatePicker 
@@ -538,8 +538,7 @@ function getCategory(category) {
                                 locale="ru" 
                                 minutes-grid-increment="2" 
                                 input-class-name="dp-custom-input" 
-                                placeholder="дата"
-                                :enable-time-picker="false"
+                                placeholder="дата и время"
                                 :transitions="{
                                     open: 'fade',
                                     close: 'fade',
@@ -553,7 +552,7 @@ function getCategory(category) {
                             <v-select 
                                 hide-details 
                                 :rules="[rules.posterType]" 
-                                v-model="form.posterType"
+                                v-model="form.posterType" 
                                 item-title="name"
                                 item-value="value" 
                                 :items="posterTypes"
