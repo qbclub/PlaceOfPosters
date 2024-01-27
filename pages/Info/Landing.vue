@@ -102,7 +102,7 @@ onMounted(async () => {
                 <v-hover v-slot="{ isHovering, props }">
                     <v-card userStore. @click="checkIsAuth()" height="100" v-bind="props" color="success"
                         class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
-                        <div class=" text-h6 text-md-h5">Тестовый режим до 28.02.2024</div>
+                        <div class=" text-h6 text-md-h5">Тестовый режим</div>
                         <div class=" text-h6 text-md-h5 text-end font-weight-bold"> Aфиша - 0 рублей </div>
                     </v-card>
                 </v-hover>

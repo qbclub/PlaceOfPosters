@@ -121,7 +121,7 @@ onMounted(async () => {
               </div>
             </div>
             <v-divider class="ma-4"></v-divider>
-            <div v-if="postersActiveMiniature.length"><b>Другие от&nbsp; {{ poster.organizer }}</b></div>
+            <div v-if="postersActiveMiniature?.length"><b>Другие от&nbsp; {{ poster.organizer }}</b></div>
             <div class="container d-flex justify-start w-100">   
               <v-col :cols="3" v-for="item of postersActiveMiniature" :key="item._id" class="pa-1">
                 <Miniature @click = "getPostersMiniatureAndChangePoster(item._id)" :poster="item" :id='item._id' />
