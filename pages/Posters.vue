@@ -68,10 +68,6 @@ watch(mobile, () => {
 onMounted(async () => {
   await setCols()
   await posterStore.fetchPosters(posterStore.filter)
-  if (route.query.location){
-    locationsStore.location = route.query.location
-    localStorage.setItem("location",route.query.location)
-  }
   if (process.client) {
     if (route.hash) {
       let id = route.hash.slice(1)

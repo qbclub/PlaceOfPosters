@@ -1,8 +1,9 @@
 <script setup>
+import { useRoute } from "vue-router";
 let posterStore = usePoster()
 let locationsStore = useLocations()
 let authStore = useAuth()
-
+let route = useRoute()
 let { location } = storeToRefs(locationsStore)
 let filter = reactive({
 
@@ -12,7 +13,6 @@ let drawer = ref(false)
 let showFilter = ref(false)
 let showAddPlace = ref(false)
 let isFiltered = ref(false)
-
 
 let shortLocationName = computed(() => {
   return location.value.split(" ").at(-1)
@@ -81,6 +81,10 @@ let setApp = async () => {
 }
 onMounted(async () => {
   await setApp()
+  if (route.query.location){
+    locationsStore.location = route.query.location
+    localStorage.setItem("location",route.query.location)
+  }
   checkFilter()
 })
 </script>
