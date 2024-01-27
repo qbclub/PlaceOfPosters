@@ -10,21 +10,7 @@ useHead({
     { name: 'og:url', content: 'https://plpo.ru/' },
   ],
 })
-if (!process.server) {
-  let { filter } = storeToRefs(usePoster())
-  filter.value = JSON.parse(localStorage.getItem('filterForm')) ?? {
-    searchText: '',
-    date: '',
-    eventType: [],
-    eventSubtype: [],
-    posterType: ''
-  }
-  
-  watch(filter, (value) => {
-    localStorage.setItem('filterForm', JSON.stringify(value))
-    console.log(value)
-  })
-}
+
 </script>
 <template>
 
