@@ -58,15 +58,15 @@ poster.value = posterFromDB.value
     </Head>
 
     <v-responsive>
-      <v-row>
+      <!-- <v-row>
         <v-col>
-          <!-- router.replace({ hash: "#bio" }) -->
+      
           <div @click="router.replace({ path: '/frame', hash: `#${poster._id}` })"
             class="pa-1 cursor-pointer text-body-1">
             <span class="mdi mdi-arrow-left"></span> назад
           </div>
         </v-col>
-      </v-row>
+      </v-row> -->
       <v-row v-if="!pending && poster?._id" class="pb-4">
         <v-col @click="navigateTo({ path: '/frame', hash: `#${poster._id}` })" cols="12" md="6">
           <div class="posterView">
