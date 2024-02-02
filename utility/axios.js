@@ -21,6 +21,11 @@ $api.interceptors.response.use(function (response) {
         console.log("ERROR: ", error)
     }
 
+    if (!process.server && error.response.data.message) {
+        useShowingErrors().value.show = true
+        useShowingErrors().value.message = error.response.data.message
+    }
+
     return error
 });
 
