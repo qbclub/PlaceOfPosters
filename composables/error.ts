@@ -1,0 +1,1 @@
+export let useShowingErrors = () => useState('error', () => ({ show: false, message: '' }))
