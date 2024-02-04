@@ -15,7 +15,7 @@ export function useApi(url, options, settings) {
             options.headers.authorization = `Bearer ${data.value.token}`
         },
         onRequestError({ request, options, error }) {
-            // Handle the request errors
+            
         },
         async onResponse({ request, response, options }) {
            
@@ -23,6 +23,10 @@ export function useApi(url, options, settings) {
         async onResponseError({ request, response, options }) {
             if (response.status == 401) {
                 await useAuth().checkAuth()
+            }
+            if (!process.server && response._data.message) {
+                useShowingErrors().value.show = true
+                useShowingErrors().value.message = response._data.message
             }
         }
     }

@@ -155,6 +155,13 @@ onMounted(async () => {
 
       <NuxtPage />
 
+      <v-snackbar v-model="useShowingErrors().value.show" color="accent" timeout="2000">
+        {{ useShowingErrors().value.message }}
+        <template v-slot:actions>
+          <v-btn @click="useShowingErrors().value.show = false" density="compact" icon="mdi-close"></v-btn>
+        </template>
+      </v-snackbar>
+
     </v-main>
     <ClientOnly>
       <Bottom class="d-flex d-sm-none" />
