@@ -10,3 +10,9 @@ export const getActiveCategories = async () =>
       baseURL: useRuntimeConfig().public.apiBase,
     })
   ).data;
+export const getActiveCities = async () =>
+  (
+    await useFetch("/poster/get-active-cities", {
+      baseURL: useRuntimeConfig().public.apiBase,
+    })
+  ).data;

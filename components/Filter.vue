@@ -11,7 +11,7 @@ let locationStore = useLocations()
 let posterStore = usePoster()
 let loading = ref(false)
 
-let locations = await getEventLocations()
+let locations = await getActiveCities()
 let active_categories = await getActiveCategories()
 let categories =  _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);  
 
@@ -32,7 +32,7 @@ let filter = ref({
 })
 
 let shortName = (item) => {
-    return item.name.split(' ').pop()
+    return item.split(' ').pop()
 }
 
 async function closeDialog() {
@@ -65,11 +65,11 @@ function clearFilter() {
 }
 
 function selectLocation(index) {
-    if (selectedLocation.value == locations.value[index].name) {
+    if (selectedLocation.value == locations.value[index]) {
         selectedLocation.value = ''
         locationStore.location = ''
     } else {
-        locationStore.location = locations.value[index].name
+        locationStore.location = locations.value[index]
         selectedLocation.value = locationStore.location
     }
     localStorage.setItem('location', selectedLocation.value)
@@ -155,7 +155,7 @@ if (props.isStartPage) {
                 </v-col>
                 <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="location, index in locations" @click="selectLocation(index)"
-                        :class="isSelectedLocation(location.name) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
+                        :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
                         :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat">
                         {{ shortName(location) }}
                     </v-btn>
