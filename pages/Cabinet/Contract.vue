@@ -14,22 +14,26 @@ let closeDialog = () => {
         <v-col cols="12">
             <v-container>
                 <h3>Рекламодатели</h3>
-                <v-row>
 
-                    <v-col class="d-flex flex-wrap">
-                        <v-card v-for="contract in userStore.user?.contracts" class="pa-4 ma-2">
+                <v-row class="mt-1">
+                    <v-col cols="auto" v-for="contract in userStore.user?.contracts" class="d-flex flex-wrap">
+                        <v-card class="pa-4">
                             <div>{{ contract.name }}</div>
                             <div>ИНН: {{ contract.inn }}</div>
                         </v-card>
                     </v-col>
                 </v-row>
-                <v-row>
-                    <v-col>
-                        <v-btn @click="contractDialog = true" color="accent" variant="outlined"> Создать</v-btn>
-                    </v-col>
-
-                </v-row>
+                
+                <v-btn 
+                    @click="contractDialog = true" 
+                    color="accent" 
+                    variant="outlined"
+                    class="mt-6"
+                >
+                    Создать
+                </v-btn>
             </v-container>
+            
             <v-snackbar v-model="snackbar" color="success" timeout="2000">
                 {{ snackbarText }}
                 <template v-slot:actions>
