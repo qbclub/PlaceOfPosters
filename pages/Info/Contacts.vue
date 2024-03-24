@@ -12,7 +12,7 @@
                         Глазов, Калинина, 2а</a> </div>
                 <div>E-mail: <a href="mailto:adm-plpo@ya.ru">adm-plpo@ya.ru</a></div>
                 <div class="d-flex align-center">Телеграм: <a href="https://t.me/grachevrv" target="_blank">
-                    https://t.me/grachevrv </a></div>
+                        https://t.me/grachevrv </a></div>
 
                 <div class="text-center">
                     <a href="https://t.me/plporu" target="_blank">
@@ -23,7 +23,10 @@
 
                 </div>
                 <div class="text-center">
-                    <a href="https://qbit-club.com" target="_blank">Сделано в Кубит</a>
+                    <a href="https://qbit-club.com" target="_blank" style="user-select: none;">
+                        <img src="../../assets/images/madewithlove.svg" alt="Кубит сделано с любовью"
+                            style="user-select: none; height: 70px;">
+                    </a>
                 </div>
                 <div class="text-center">
                     © Клуб Кубит, 2023
