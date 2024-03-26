@@ -28,9 +28,6 @@
                             style="user-select: none; height: 70px;">
                     </a>
                 </div>
-                <div class="text-center">
-                    © Клуб Кубит, 2023
-                </div>
             </v-col>
 
         </v-row>
