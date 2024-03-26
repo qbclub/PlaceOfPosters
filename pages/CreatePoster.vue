@@ -554,15 +554,13 @@ function getCategory(category) {
                     <v-row>
                         <v-col cols="12" md="4">
                             <v-btn>добавить изображение<span>*</span>
-                                <v-dialog v-model="visibleCropperModal" activator="parent">
+                                <v-dialog v-model="visibleCropperModal" activator="parent" close-on-back>
                                     <v-row class="justify-center">
                                         <v-col cols="12" md="8" lg="6">
                                             <v-card class="pa-4 rounded-lg">
                                                 <ImageCropper @addImage="addPreview" />
-
                                                 <v-card-actions>
-                                                    <v-btn @click="visibleCropperModal = false" color="error"
-                                                        class="ml-auto">
+                                                    <v-btn @click="visibleCropperModal = false" class="ml-auto">
                                                         закрыть
                                                     </v-btn>
                                                 </v-card-actions>

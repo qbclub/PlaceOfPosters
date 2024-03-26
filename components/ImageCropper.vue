@@ -61,7 +61,6 @@ watch(preview, () => {
         // maxCanvasHeight: 300,
         guides: true,
         center: true,
-        
         // crop(event) {
         //     // croppedImage = event.target.currentSrc;
         //     console.log(event);
@@ -70,8 +69,6 @@ watch(preview, () => {
         //     console.log('ready');
         //     cropperReady.value = true;
         // },
-        cropend(cropper) {
-        }
     });
 });
 </script>
@@ -79,10 +76,6 @@ watch(preview, () => {
     <h3 class="mb-2 text-center">Обработка фотографии</h3>
     <div class="pa-4">
         <input type="file" accept="image/*" ref="imageInput" id="upload" @change="loadImage" style="display: none">
-
-        <div class="d-flex justify-center" v-if="loadedImages.length">
-            <v-btn @click="crop" class="ma-4"> Обрезать </v-btn>
-        </div>
 
         <v-row>
             <v-col cols="12" class="pa-0">
@@ -95,6 +88,11 @@ watch(preview, () => {
                         <span> выбери фото</span>
                     </div>
                 </label>
+            </v-col>
+            <v-col cols="12">
+                <div class="d-flex justify-center" v-if="loadedImages.length">
+                    <v-btn @click="crop" color="accent"> Обрезать </v-btn>
+                </div>
             </v-col>
         </v-row>
     </div>
