@@ -49,6 +49,7 @@ let contract = ref('')
 
 let editPosterId = localStorage.getItem('editPosterId')
 
+let posterDateType = ref('one')
 let locationSearchRequest = ref('')
 let possibleLocations = ref([]);
 let buyDialog = ref(false)
@@ -507,16 +508,32 @@ function getCategory(category) {
                                 placeholder="my-super-event@gmail.com" variant="outlined" />
                         </v-col>
                     </v-row>
+                    <v-radio-group v-model="posterDateType" inline density="comfortable">
+                        <v-radio value="one">
+                            <template v-slot:label>
+                                Обычное событие
+                            </template>
+                        </v-radio>
+                        <v-radio value="many">
+                            <template v-slot:label>
+                                Повторяющееся событие
+                            </template>
+                        </v-radio>
+                    </v-radio-group>
                     <v-row>
+                        <div class="d-flex align-end h-100">
+                            <v-btn @click="form.date.push(null)">Добавить время</v-btn>
+                        </div>
+                    </v-row>
+                    <!-- <v-row>
                         <v-col cols="12" sm="6">
-                            <div class="d-flexalign-end h-100">
+                            <div class="d-flex align-end h-100">
                                 <v-btn @click="form.date.push(null)">Добавить время</v-btn>
                             </div>
                         </v-col>
                         <v-col cols="12" sm="6">
                             <b v-if="form.date.length">Время начала </b>
                             <div v-for="date, index in form.date " :key="index" class="d-flex align-center">
-                                <!-- :format="format" для пиккера надо добавить -->
                                 <VueDatePicker locale="ru" v-model="form.date[index]" class="mb-1"
                                     minutes-grid-increment="2" input-class-name="dp-custom-input"
                                     placeholder="дата и время" :transitions="{
@@ -533,8 +550,6 @@ function getCategory(category) {
                     <v-row>
                         <v-col cols="12" sm="6">
                             <b>Время окончания</b>
-
-                            <!-- :format="format" для пиккера надо добавить -->
                             <VueDatePicker v-model="form.endEventDate" locale="ru" minutes-grid-increment="2"
                                 input-class-name="dp-custom-input" placeholder="дата и время" :transitions="{
                             open: 'fade',
@@ -549,7 +564,7 @@ function getCategory(category) {
                                 item-title="name" item-value="value" :items="posterTypes" placeholder="Событие"
                                 variant="outlined" density="compact" />
                         </v-col>
-                    </v-row>
+                    </v-row> -->
 
                     <v-row>
                         <v-col cols="12" md="4">
