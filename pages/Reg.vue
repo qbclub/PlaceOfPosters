@@ -44,8 +44,7 @@ const phone = useField('phone')
 const password = useField('password')
 
 const register = handleSubmit(async (values) => {
-	await authStore.registration(values)
-	router.push('/posters')
+	await authStore.registration(values).then(() => navigateTo('/posters'))
 })
 </script>
 <template>

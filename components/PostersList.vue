@@ -105,12 +105,11 @@ let acceptAction = () => {
     }
     if (selectedAction.value == 'edit') {
         dialog.value = false;
-        localStorage.setItem('editPosterId', selectedPoster.value._id)
         if (isAdminPage) {
-            navigateTo('/createposter?hotfix=true')
+            navigateTo({ path: '/editposter', query: { hotfix: 'true', _id: selectedPoster.value._id } })
         }
         else {
-            navigateTo('/createposter')
+            navigateTo('/editposter')
         }
     }
 }
