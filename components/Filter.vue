@@ -11,9 +11,11 @@ let locationStore = useLocations()
 let posterStore = usePoster()
 let loading = ref(false)
 
+let showDatePicker = ref(false)
+
 let locations = await getActiveCities()
 let active_categories = await getActiveCategories()
-let categories =  _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);  
+let categories = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
 
 let selectedLocation = ref('')
 
@@ -94,7 +96,6 @@ let selectPeriod = (name) => {
 let selectPosterType = (type) => {
     if (filter.value.posterType == type) {
         filter.value.posterType = ''
-
     } else {
         filter.value.posterType = type
     }
@@ -109,6 +110,7 @@ let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventTy
 watch(() => filter.value.searchText, () => {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
+    console.log(filter)
 })
 
 onMounted(() => {
@@ -156,7 +158,8 @@ if (props.isStartPage) {
                 <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="location, index in locations" @click="selectLocation(index)"
                         :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn"
-                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;" variant="flat">
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink;"
+                        variant="flat">
                         {{ shortName(location) }}
                     </v-btn>
                 </v-col>
@@ -168,9 +171,20 @@ if (props.isStartPage) {
                 <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="item, index in date_items" @click="selectPeriod(item)"
                         :class="filter.date == item ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
-                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'"
+                        variant="flat">
                         {{ item }}
                     </v-btn>
+                    <v-btn icon="mdi-calendar" density="comfortable" variant="flat" @click="showDatePicker=!showDatePicker" :ripple="false" />
+
+                </v-col>
+                <v-col cols="auto" v-show="showDatePicker">
+                    <v-date-picker
+                        v-model="filter.date"
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                        <template v-slot:append-outer>
+                        </template>
+                    </v-date-picker>
                 </v-col>
 
                 <v-col cols="8">
@@ -178,17 +192,15 @@ if (props.isStartPage) {
                 </v-col>
 
                 <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
-                    <v-btn @click="selectPosterType('event')"
-                        :class="filter.posterType == 'event' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
-                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
-                    >
+                    <v-btn @click="selectPosterType('event')" :class="filter.posterType == 'event' ? 'bg-red' : ''"
+                        class="rounded-pill btn" :ripple="false" style="animation: blink;"
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
                         Событие
                     </v-btn>
 
-                    <v-btn @click="selectPosterType('place')"
-                        :class="filter.posterType == 'place' ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
-                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat"
-                    >
+                    <v-btn @click="selectPosterType('place')" :class="filter.posterType == 'place' ? 'bg-red' : ''"
+                        class="rounded-pill btn" :ripple="false" style="animation: blink;"
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
                         Место
                     </v-btn>
                 </v-col>
@@ -198,12 +210,14 @@ if (props.isStartPage) {
                 </v-col>
                 <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="category, index in categories" @click="selectCategory(index)"
-                        :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
-                        style="animation: blink;" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                        :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn"
+                        :ripple="false" style="animation: blink;"
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
                         {{ category.name }}
                     </v-btn>
                     <v-btn class="rounded-pill btn text-accent " :ripple="false" style="animation: blink;"
-                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined" @click="clearFilter()">
+                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined"
+                        @click="clearFilter()">
                         убрать
                     </v-btn>
                 </v-col>
@@ -250,5 +264,3 @@ $white: #ffffff;
     animation: blink 1s;
 }
 </style>
-
-
