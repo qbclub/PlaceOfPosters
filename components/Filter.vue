@@ -1,6 +1,7 @@
 <script setup>
 import { useDisplay } from 'vuetify/lib/framework.mjs';
 import _ from 'lodash'
+import { useDate } from 'vuetify'
 
 const props = defineProps(['isStartPage'])
 let emit = defineEmits(['closeDialog'])
@@ -25,6 +26,9 @@ let date_items = [
     'Скоро',
 ]
 
+const adapter = useDate()
+let date = adapter.date(adapter.toJsDate(Date.now()))
+
 let filter = ref({
     searchText: '',
     date: '',
@@ -40,7 +44,9 @@ let shortName = (item) => {
 async function closeDialog() {
     posterStore.posters = []
     posterStore.page = 1
-    await posterStore.fetchPosters(filter.value)
+    filter.value.date= Date.parse(adapter.toJsDate(date))
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    
     emit('closeDialog')
 }
 async function closePage() {
@@ -110,7 +116,6 @@ let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventTy
 watch(() => filter.value.searchText, () => {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
-    console.log(filter)
 })
 
 onMounted(() => {
@@ -175,15 +180,14 @@ if (props.isStartPage) {
                         variant="flat">
                         {{ item }}
                     </v-btn>
+
                     <v-btn icon="mdi-calendar" density="comfortable" variant="flat" @click="showDatePicker=!showDatePicker" :ripple="false" />
 
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
                     <v-date-picker
-                        v-model="filter.date"
+                        v-model="date"
                         :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
-                        <template v-slot:append-outer>
-                        </template>
                     </v-date-picker>
                 </v-col>
 
