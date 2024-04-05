@@ -5,8 +5,11 @@ definePageMeta({
 
 import getPossibleLocations from "~/utility/dadata";
 
+import gsap from 'gsap'
+import TextPlugin from "gsap/TextPlugin";
+
 let router = useRouter()
-let appState =  useAppStore()
+let appState = useAppStore()
 let userStore = useAuth()
 let posterStore = usePoster()
 let priceStore = usePrice()
@@ -22,7 +25,7 @@ let form = reactive({
     price: '',//
     site: '',
     email: '',
-    date: [],//
+    date: [null],//
     posterType: '',
     endEventDate: null,//
     image: '',//
@@ -49,12 +52,20 @@ let contract = ref('')
 
 let editPosterId = localStorage.getItem('editPosterId')
 
+let haveDateEnd = ref(false)
 let locationSearchRequest = ref('')
 let possibleLocations = ref([]);
 let buyDialog = ref(false)
 let snackbar = ref(false)
 let snackbarText = ref('')
 let contractDialog = ref(false);
+
+let isStartDateFilled = computed(() => {
+    for (let date of form.date) {
+        if (date) return true
+    }
+    return false
+})
 
 let formComponent = ref()
 
@@ -392,6 +403,14 @@ onMounted(async () => {
 
     await priceStore.fetchPrices()
 
+    gsap.registerPlugin(TextPlugin)
+    gsap.to('.gsap-text-animation', {
+        duration: 5,
+        text: "Удмуртская Респ, г Глазов, ул Калинина, д 2а",
+        repeat: -1,
+        repeatDelay: 4,
+        ease: 'none'
+    });
 })
 onBeforeUnmount(() => {
     localStorage.setItem('editPosterId', '')
@@ -432,8 +451,9 @@ function getCategory(category) {
                     <v-row>
                         <v-col cols="12" md="6">
                             <b>Название</b><span>*</span>
-                            <v-textarea maxlength="140" :rules="[rules.title]" rows="1" auto-grow placeholder="День двора"
-                                v-model="form.title" variant="outlined" density="compact"></v-textarea>
+                            <v-textarea maxlength="140" :rules="[rules.title]" rows="1" auto-grow
+                                placeholder="День двора" v-model="form.title" variant="outlined"
+                                density="compact"></v-textarea>
                         </v-col>
                         <v-col cols="12" md="6">
                             <b>Организатор</b><span>*</span>
@@ -443,34 +463,38 @@ function getCategory(category) {
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12">
                             <b>Категории</b><span>*</span>
                             <v-select hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
                                 item-value="name" :items="appState.appState.eventTypes" no-data-text="нет данных"
                                 placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
                         </v-col>
-                        <v-col cols="12" md="6">
+                        <!-- <v-col cols="12" md="6">
                             <b>Подкатегории</b>
                             <v-select hide-details :rules="[rules.eventSubtype]" density="compact"
                                 v-model="form.eventSubtype" item-title="name" item-value="name" :items="subcategories"
                                 placeholder="Концерт" no-data-text="нет данных" variant="outlined" multiple chips
                                 disabled />
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                     <v-row>
                         <v-col cols="12">
                             <b>Место</b><span>*</span>
                             <v-autocomplete hide-details :rules="[rules.eventLocation]" density="compact"
                                 v-model="form.eventLocation" v-model:search="locationSearchRequest"
-                                :items="possibleLocations" item-title="name" placeholder="Место" item-value="geo"
+                                :items="possibleLocations" item-title="name"
+                                placeholder="Удмуртская Респ, г Глазов, ул Калинина, д 2а" item-value="geo"
                                 variant="outlined" clearable>
                                 <template v-slot:no-data>
                                     <div class="pt-2 pr-4 pb-2 pl-4">
                                         {{
-                                            locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
+                            locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
                                             </div>
                                 </template>
                             </v-autocomplete>
+                            <div style="font-size: 14px;"><span>Пример:&#160;</span>
+                                <span class="gsap-text-animation" style="min-height: 16px;"></span>
+                            </div>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -482,9 +506,10 @@ function getCategory(category) {
 
                         <v-col cols="6" md="3">
                             <b>Возраст</b><span>*</span>
-                            <v-autocomplete hide-details :rules="[rules.ageLimit]" density="compact" v-model="form.ageLimit"
-                                item-title="name" item-value="name" :items="['0+', '6+', '12+', '14+', '16+', '18+', '21+']"
-                                placeholder="12+" no-data-text="нет данных" variant="outlined" />
+                            <v-autocomplete hide-details :rules="[rules.ageLimit]" density="compact"
+                                v-model="form.ageLimit" item-title="name" item-value="name"
+                                :items="['0+', '6+', '12+', '14+', '16+', '18+', '21+']" placeholder="12+"
+                                no-data-text="нет данных" variant="outlined" />
                         </v-col>
                         <v-col cols="6" md="3">
                             <b>Стоимость</b>
@@ -505,22 +530,33 @@ function getCategory(category) {
                                 placeholder="my-super-event@gmail.com" variant="outlined" />
                         </v-col>
                     </v-row>
+
                     <v-row>
                         <v-col cols="12" sm="6">
-                            <div class="d-flexalign-end h-100">
-                                <v-btn @click="form.date.push(null)">Добавить время</v-btn>
+                            <b>Место / событие *</b>
+
+                            <v-select hide-details :rules="[rules.posterType]" v-model="form.posterType"
+                                item-title="name" item-value="value" :items="posterTypes" placeholder="Событие"
+                                variant="outlined" density="compact" />
+                        </v-col>
+                    </v-row>
+
+                    <v-row v-if="form.posterType == 'event'">
+                        <v-col cols="12" sm="6">
+                            <div class="d-flex justify-start h-100" style="flex-direction: column; font-size: 14px;">
+                                <v-btn @click="form.date.push(null)" color="accent" variant="outlined"
+                                    :disabled="haveDateEnd">Добавить
+                                    время</v-btn>
+                                <span>Пример:<b>время</b> начала мастер-класса</span>
                             </div>
                         </v-col>
-                        <v-col cols="12" sm="6">
+                        <v-col v-if="!haveDateEnd" cols="12" sm="6">
                             <b v-if="form.date.length">Время начала </b>
-                            <div v-for="date, index in form.date " :key="index" class="d-flex align-center">
-                                <!-- :format="format" для пиккера надо добавить -->
-                                <VueDatePicker locale="ru" v-model="form.date[index]" class="mb-1"
-                                    minutes-grid-increment="2" input-class-name="dp-custom-input" placeholder="дата и время"
-                                    :transitions="{
-                                        open: 'fade',
-                                        close: 'fade',
-                                    }" />
+                            <div v-for="date, index in form.date " :key="index" class="d-flex align-center mb-1">
+                                <VueDatePicker locale="ru" v-model="form.date[index]" input-class-name="dp-custom-input"
+                                    cancel-text="отмена" select-text="выбрать" placeholder="дата и время"
+                                    :transitions="{ open: 'fade', close: 'fade', }" :flow="['calendar', 'time']"
+                                    format="dd/MM/yyyy HH:mm" />
 
                                 <v-icon icon="mdi-trash-can-outline" color="accent" style="cursor:pointer"
                                     @click="form.date.splice(index, 1);"></v-icon>
@@ -528,53 +564,35 @@ function getCategory(category) {
                         </v-col>
                     </v-row>
 
-                    <v-row>
+                    <v-row v-if="form.posterType == 'event'">
                         <v-col cols="12" sm="6">
-                            <b>Время окончания</b>
-
-                            <!-- :format="format" для пиккера надо добавить -->
-                            <VueDatePicker 
-                                v-model="form.endEventDate"
-                                locale="ru" 
-                                minutes-grid-increment="2" 
-                                input-class-name="dp-custom-input" 
-                                placeholder="дата и время"
-                                :transitions="{
-                                    open: 'fade',
-                                    close: 'fade',
-                                }" 
-                            />
+                            <div class="d-flex justify-start h-100" style="flex-direction: column; font-size: 14px;">
+                                <v-btn @click="haveDateEnd = !haveDateEnd; form.date = [null]" color="accent"
+                                    variant="outlined" :disabled="isStartDateFilled">
+                                    <span v-if="!haveDateEnd">Добавить&#160;</span><span v-else>Убрать&#160;</span>
+                                    дату окончания
+                                    события</v-btn>
+                                <span>Пример: <b>дата</b> окончания выставки, конкурса</span>
+                            </div>
                         </v-col>
-
-                        <v-col cols="12" sm="6">
-                            <b>Место / событие *</b>
-
-                            <v-select 
-                                hide-details 
-                                :rules="[rules.posterType]" 
-                                v-model="form.posterType" 
-                                item-title="name"
-                                item-value="value" 
-                                :items="posterTypes"
-                                placeholder="Событие" 
-                                variant="outlined" 
-                                density="compact" 
-                            />
+                        <v-col cols="12" sm="6" v-if="haveDateEnd">
+                            <b>Дата окончания события</b>
+                            <VueDatePicker v-model="form.endEventDate" locale="ru" minutes-grid-increment="2"
+                                cancel-text="отмена" select-text="выбрать" input-class-name="dp-custom-input"
+                                placeholder="дата и время" :transitions="{ open: 'fade', close: 'fade', }" />
                         </v-col>
                     </v-row>
 
                     <v-row>
                         <v-col cols="12" md="4">
-                            <v-btn> добавить афишу<span>*</span>
-                                <v-dialog v-model="visibleCropperModal" activator="parent">
+                            <v-btn color="accent" variant="outlined">добавить изображение<span>*</span>
+                                <v-dialog v-model="visibleCropperModal" activator="parent" close-on-back>
                                     <v-row class="justify-center">
                                         <v-col cols="12" md="8" lg="6">
                                             <v-card class="pa-4 rounded-lg">
                                                 <ImageCropper @addImage="addPreview" />
-
                                                 <v-card-actions>
-                                                    <v-btn @click="visibleCropperModal = false" color="error"
-                                                        class="ml-auto">
+                                                    <v-btn @click="visibleCropperModal = false" class="ml-auto">
                                                         закрыть
                                                     </v-btn>
                                                 </v-card-actions>
@@ -597,15 +615,15 @@ function getCategory(category) {
                             <b>Описание </b><span>*</span>
                             <ClientOnly fallback-tag="span" fallback="Loading on server...">
 
-                                <QuillEditor theme="snow" ref="quill" contentType="html" v-model:content="form.description"
-                                    :toolbar="[
-                                        ['bold', 'italic', 'underline'],
-                                        [{ list: 'ordered' }, { list: 'bullet' }],
-                                        [{ color: ['#000000', '#ED413E'] }],
-                                        [{ align: [] }],
-                                        ['link'],
-                                        ['clean']
-                                    ]" :options="options">
+                                <QuillEditor theme="snow" ref="quill" contentType="html"
+                                    v-model:content="form.description" :toolbar="[
+                            ['bold', 'italic', 'underline'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ color: ['#000000', '#ED413E'] }],
+                            [{ align: [] }],
+                            ['link'],
+                            ['clean']
+                        ]" :options="options">
 
                                 </QuillEditor>
                             </ClientOnly>
