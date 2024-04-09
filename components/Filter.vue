@@ -46,12 +46,14 @@ async function closeDialog() {
     posterStore.page = 1
     filter.value.date= Date.parse(adapter.toJsDate(date))
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
-    
+    posterStore.filter = filter.value
+    await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
 }
 async function closePage() {
     posterStore.posters = []
     posterStore.page = 1
+    filter.value.date= Date.parse(adapter.toJsDate(date))
     posterStore.filter = filter.value
     await posterStore.fetchPosters(filter.value)
     navigateTo('/posters')
