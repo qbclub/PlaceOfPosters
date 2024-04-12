@@ -1,5 +1,7 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import DateFnsAdapter from '@date-io/date-fns'
+import ruRU from 'date-fns/locale/ru'
 import { createVuetify } from 'vuetify'
 
 export default defineNuxtPlugin((app) => {
@@ -15,6 +17,12 @@ export default defineNuxtPlugin((app) => {
               secondary:"#ED8F3E"
             },
           },
+        },
+      },
+      date: {
+        adapter: DateFnsAdapter,
+        locale: {
+          ru: ruRU,
         },
       },
       display: {
