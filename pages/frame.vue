@@ -88,7 +88,7 @@ onMounted(async () => {
 </ClientOnly> -->
      
     <div class="pt-0 d-flex justify-center ">
-      <v-row class="justify-center flex-wrap w-100">
+      <v-row class="justify-center flex-wrap w-100 pa-1 pb-4">
         <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
           <PosterCard :poster="item" :id='item._id' :isFrame="true" />
