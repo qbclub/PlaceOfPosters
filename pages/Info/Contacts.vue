@@ -24,7 +24,7 @@
                 </div>
                 <div class="text-center">
                     <a href="https://qbit-club.com" target="_blank" style="user-select: none;">
-                        <img src="../../assets/images/madewithlove.svg" alt="Кубит сделано с любовью"
+                        <img src="../../assets/images/madewithlove.png" alt="Кубит сделано с любовью"
                             style="user-select: none; height: 70px;">
                     </a>
                 </div>
