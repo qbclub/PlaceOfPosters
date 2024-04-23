@@ -28,6 +28,7 @@ let date_items = [
 
 const adapter = useDate()
 let date = adapter.date(adapter.toJsDate(Date.now()))
+let enter_date = adapter.date(adapter.toJsDate(Date.now()))
 
 let filter = ref({
     searchText: '',
@@ -44,7 +45,6 @@ let shortName = (item) => {
 async function closeDialog() {
     posterStore.posters = []
     posterStore.page = 1
-    filter.value.date= Date.parse(adapter.toJsDate(date))
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
     await posterStore.fetchPosters(filter.value)
@@ -53,7 +53,6 @@ async function closeDialog() {
 async function closePage() {
     posterStore.posters = []
     posterStore.page = 1
-    filter.value.date= Date.parse(adapter.toJsDate(date))
     posterStore.filter = filter.value
     await posterStore.fetchPosters(filter.value)
     navigateTo('/posters')
@@ -94,7 +93,8 @@ function selectCategory(index) {
 let selectPeriod = (name) => {
     if (filter.value.date == name) {
         filter.value.date = ''
-
+    } else if(enter_date!=date){
+        filter.value.date= Date.parse(adapter.toJsDate(date))
     } else {
         filter.value.date = name
     }
@@ -188,7 +188,8 @@ if (props.isStartPage) {
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
                     <v-date-picker
-                        v-model="date"
+                        @click="selectPeriod(date)" 
+                        v-model="date" 
                         :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
                     </v-date-picker>
                 </v-col>
