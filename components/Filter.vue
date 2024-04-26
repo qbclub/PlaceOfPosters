@@ -27,7 +27,7 @@ let date_items = [
 ]
 
 const adapter = useDate()
-let date = adapter.date(adapter.toJsDate(Date.now()))
+let date = ref()
 let enter_date = adapter.date(adapter.toJsDate(Date.now()))
 
 let filter = ref({
@@ -93,8 +93,8 @@ function selectCategory(index) {
 let selectPeriod = (name) => {
     if (filter.value.date == name) {
         filter.value.date = ''
-    } else if(enter_date!=date){
-        filter.value.date= Date.parse(adapter.toJsDate(date))
+    } else if(enter_date!=date.value){
+        filter.value.date= Date.parse(adapter.toJsDate(date.value))
     } else {
         filter.value.date = name
     }
@@ -189,8 +189,9 @@ if (props.isStartPage) {
                 <v-col cols="auto" v-show="showDatePicker">
                     <v-date-picker
                         @click="selectPeriod(date)" 
+                        :hide-header="true"
                         v-model="date" 
-                        :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
+                        >
                     </v-date-picker>
                 </v-col>
 
