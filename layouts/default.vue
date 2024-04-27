@@ -24,7 +24,6 @@ let routeTo = (path) => {
 }
 
 let closeFilter = async () => {
-
   filter = JSON.parse(localStorage.getItem('filterForm'))
   posterStore.filter = filter
   showFilter.value = false
@@ -38,7 +37,8 @@ let checkFilter = async () => {
         if (filter.eventType.length)
           isFiltered.value = true
         break
-      } else {
+      } 
+      else {
         if (filter[key]) {
           isFiltered.value = true
           break
