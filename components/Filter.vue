@@ -27,8 +27,8 @@ let date_items = [
 ]
 
 const adapter = useDate()
-let date = ref()
-let enter_date = adapter.date(adapter.toJsDate(Date.now()))
+let date = ref(null)
+
 
 let filter = ref({
     searchText: '',
@@ -61,7 +61,7 @@ function clearFilter() {
     // selectedLocation.value = ''
     // localStorage.setItem('location', selectedLocation.value)
     // locationStore.location = selectedLocation.value
-
+    date.value = null
     filter.value = {
         searchText: '',
         date: '',
@@ -90,17 +90,32 @@ function selectCategory(index) {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
 }
-let selectPeriod = (name) => {
-    if (filter.value.date == name) {
+let selectPeriod = (item) => {
+
+    if (filter.value.date == item) {
         filter.value.date = ''
-    } else if(enter_date!=date.value){
-        filter.value.date= Date.parse(adapter.toJsDate(date.value))
     } else {
-        filter.value.date = name
+        filter.value.date = item
     }
+    date.value = null
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
 }
+let selectDate = (item) => {
+
+    if (filter.value.date == item.getTime()) {
+        filter.value.date = ''
+        date.value = null
+    } else {
+        filter.value.date = item.getTime()
+    }
+    showDatePicker.value = false
+    localStorage.setItem('datePickerDate', JSON.stringify(date.value))
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
+    posterStore.filter = filter.value
+}
+
+
 let selectPosterType = (type) => {
     if (filter.value.posterType == type) {
         filter.value.posterType = ''
@@ -122,6 +137,7 @@ watch(() => filter.value.searchText, () => {
 
 onMounted(() => {
 
+
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
             selectedLocation.value = localStorage.getItem('location')
@@ -130,6 +146,9 @@ onMounted(() => {
 
     if (localStorage.getItem('filterForm')) {
         filter.value = JSON.parse(localStorage.getItem('filterForm'))
+        if (typeof filter.value.date == 'number') {
+            date.value = new Date(filter.value.date)
+        }
         posterStore.filter = filter.value
     }
 
@@ -174,7 +193,6 @@ if (props.isStartPage) {
                     <v-divider />
                 </v-col>
 
-
                 <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px;">
                     <v-btn v-for="item, index in date_items" @click="selectPeriod(item)"
                         :class="filter.date == item ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
@@ -183,15 +201,13 @@ if (props.isStartPage) {
                         {{ item }}
                     </v-btn>
 
-                    <v-btn icon="mdi-calendar" density="comfortable" variant="flat" @click="showDatePicker=!showDatePicker" :ripple="false" />
+                    <v-btn :class="typeof filter.date == 'number' ? 'bg-red' : ''" icon="mdi-calendar"
+                        density="comfortable" variant="flat" @click="showDatePicker = !showDatePicker"
+                        :ripple="false" />
 
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
-                    <v-date-picker
-                        @click="selectPeriod(date)" 
-                        :hide-header="true"
-                        v-model="date" 
-                        >
+                    <v-date-picker @click="selectDate(date)" :hide-header="true" v-model="date">
                     </v-date-picker>
                 </v-col>
 
