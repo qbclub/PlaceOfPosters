@@ -40,7 +40,6 @@ let filter = ref({
 
 let shortName = (item) => {
     let name = item.split(' ')
-    console.log(name)
     if (name[1]=='р-н'){
         return name.toString()
     }
@@ -54,6 +53,9 @@ async function closeDialog() {
     posterStore.page = 1
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
+    filter.value.date=filter.value.date.setHours(12,-1 * new Date(filter.value.date).getTimezoneOffset() -1 ,0,0)
+    // console.log(-1 * new Date(filter.value.date).getTimezoneOffset())
+    // console.log(filter)
     await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
 }
@@ -98,7 +100,6 @@ function selectCategory(index) {
     posterStore.filter = filter.value
 }
 let selectPeriod = (item) => {
-
     if (filter.value.date == item) {
         filter.value.date = ''
     } else {
@@ -109,7 +110,6 @@ let selectPeriod = (item) => {
     posterStore.filter = filter.value
 }
 let selectDate = (item) => {
-
     if (filter.value.date == item.getTime()) {
         filter.value.date = ''
         date.value = null
@@ -214,8 +214,10 @@ if (props.isStartPage) {
 
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
-                    <v-date-picker @click="selectDate(date)" :hide-header="true" v-model="date">
-                    </v-date-picker>
+                    <VueDatePicker locale="ru" v-model="filter.date" input-class-name="dp-custom-input" :enable-time-picker="false"
+                                    cancel-text="отмена" select-text="выбрать" placeholder="дата" timezone='UTC'
+                                    :transitions="{ open: 'fade', close: 'fade', }" :flow="['calendar']"
+                                    format="dd/MM/yyyy" />
                 </v-col>
 
                 <v-col cols="8">
