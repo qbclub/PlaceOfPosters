@@ -27,7 +27,7 @@ let date_items = [
 ]
 
 const adapter = useDate()
-let date = ref(null)
+let date = ref()
 
 
 let filter = ref({
