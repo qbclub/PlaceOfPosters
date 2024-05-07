@@ -28,7 +28,7 @@ let date_items = [
 
 const adapter = useDate()
 let date = ref()
-
+let date_picked=ref(false)
 
 let filter = ref({
     searchText: '',
@@ -53,9 +53,6 @@ async function closeDialog() {
     posterStore.page = 1
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
-    filter.value.date=filter.value.date.setHours(12,-1 * new Date(filter.value.date).getTimezoneOffset() -1 ,0,0)
-    // console.log(-1 * new Date(filter.value.date).getTimezoneOffset())
-    // console.log(filter)
     await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
 }
@@ -70,7 +67,7 @@ function clearFilter() {
     // selectedLocation.value = ''
     // localStorage.setItem('location', selectedLocation.value)
     // locationStore.location = selectedLocation.value
-    date.value = null
+    // date.value = null
     filter.value = {
         searchText: '',
         date: '',
@@ -110,13 +107,21 @@ let selectPeriod = (item) => {
     posterStore.filter = filter.value
 }
 let selectDate = (item) => {
-    if (filter.value.date == item.getTime()) {
-        filter.value.date = ''
-        date.value = null
-    } else {
-        filter.value.date = item.getTime()
+    // if (filter.value.date == item.getTime()) {
+    //     filter.value.date = ''
+    //     date.value = null
+    // } else {
+    //     filter.value.date = item.getTime()
+    // }
+    // showDatePicker.value = false
+    // filter.value.date=filter.value.date.setHours(12,-1 * new Date(filter.value.date).getTimezoneOffset() -1 ,0,0)
+    // console.log(filter.value.date)
+    if (item===null){
+        filter.value.date=''
     }
-    showDatePicker.value = false
+    else{
+        filter.value.date.setUTCHours(12,0,0,0)
+    }
     localStorage.setItem('datePickerDate', JSON.stringify(date.value))
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
@@ -158,7 +163,6 @@ onMounted(() => {
         }
         posterStore.filter = filter.value
     }
-
 })
 
 
@@ -208,13 +212,14 @@ if (props.isStartPage) {
                         {{ item }}
                     </v-btn>
 
-                    <v-btn :class="typeof filter.date == 'number' ? 'bg-red' : ''" icon="mdi-calendar"
+                    <v-btn :class="new Date(filter.date)!='Invalid Date' ? 'bg-red' : ''" icon="mdi-calendar"
                         density="comfortable" variant="flat" @click="showDatePicker = !showDatePicker"
                         :ripple="false" />
 
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
                     <VueDatePicker locale="ru" v-model="filter.date" input-class-name="dp-custom-input" :enable-time-picker="false"
+                                    @update:model-value="selectDate(filter.date)"
                                     cancel-text="отмена" select-text="выбрать" placeholder="дата" timezone='UTC'
                                     :transitions="{ open: 'fade', close: 'fade', }" :flow="['calendar']"
                                     format="dd/MM/yyyy" />
