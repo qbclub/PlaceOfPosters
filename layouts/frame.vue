@@ -98,17 +98,18 @@ onMounted(async () => {
           <div>
             <a href="https://plpo.ru" target="_blank">
 
-              <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;:"
+              <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;"
                /></a>
           </div>
           <div class="d-flex align-center">
 
-            <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline" @click="showFilter = !showFilter"></v-icon>
+            <div @click="showFilter = !showFilter"  class="d-flex align-center pa-1 ml-4" style="cursor: pointer;">
+              <v-icon>mdi-map-marker-outline</v-icon>
 
-            <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular disabled"
-              style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
-              {{ location ? shortLocationName : "Место" }}
-            </v-btn>
+              <div class="text-body-1 font-weight-regular" style="letter-spacing: normal !important; margin-left: 8px;">
+                {{ location ? shortLocationName : "Везде" }}
+              </div>
+            </div>
 
           </div>
         </v-row>
