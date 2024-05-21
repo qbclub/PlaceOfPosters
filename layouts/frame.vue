@@ -6,7 +6,11 @@ let authStore = useAuth()
 let route = useRoute()
 let { location } = storeToRefs(locationsStore)
 let filter = reactive({
-
+  searchText: "",
+  date: "",
+  eventType: [],
+  eventSubtype: [],
+  posterType: ""
 })
 let locationQuery = ref('')
 let drawer = ref(false)
@@ -81,54 +85,59 @@ let setApp = async () => {
 }
 onMounted(async () => {
   await setApp()
-  if (route.query.location){
+  if (route.query.location) {
+
     locationsStore.location = route.query.location
-    localStorage.setItem("location",route.query.location)
+    localStorage.setItem("location", route.query.location)
   }
+  localStorage.setItem('filterForm', JSON.stringify(filter))
   checkFilter()
 })
 </script>
 
 <template>
   <v-app>
-    <v-app-bar :elevation="0">
-      <v-container>
-        <v-row class="d-flex flex-nowrap justify-space-between align-center">
-          <!-- <h2>Афиши</h2> -->
-          <div>
-            <a href="https://plpo.ru" target="_blank">
+    <ClientOnly>
+      <v-app-bar :elevation="0">
+        <v-container>
+          <v-row class="d-flex flex-nowrap justify-space-between align-center">
+            <!-- <h2>Афиши</h2> -->
+            <div>
+              <a href="https://plpo.ru" target="_blank">
 
-              <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;:"
-               /></a>
-          </div>
-          <div class="d-flex align-center">
+                <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;:" /></a>
+            </div>
+            <div class="d-flex align-center">
 
-            <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline" @click="showFilter = !showFilter"></v-icon>
+              <v-icon :class="{ active: isFiltered }" icon="mdi-filter-outline"
+                @click="showFilter = !showFilter"></v-icon>
 
-            <v-btn :ripple="false" class="rounded text-body-1 font-weight-regular disabled"
-              style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
-              {{ location ? shortLocationName : "Место" }}
-            </v-btn>
+              <v-btn @click="showFilter = !showFilter" :ripple="false"
+                class="rounded text-body-1 font-weight-regular disabled"
+                style="letter-spacing: normal !important; height: 40px;" prepend-icon="mdi-map-marker-outline">
+                {{ location ? shortLocationName : "Место" }}
+              </v-btn>
 
-          </div>
-        </v-row>
+            </div>
+          </v-row>
 
-      </v-container>
-    </v-app-bar>
+        </v-container>
+      </v-app-bar>
 
-    <v-dialog transition="scale-transition" v-model="showFilter" fullscreen>
-      <v-card>
-        <Filter @closeDialog="closeFilter()" :isStartPage="false" />
-      </v-card>
-    </v-dialog>
+      <v-dialog transition="scale-transition" v-model="showFilter" fullscreen>
+        <v-card>
+          <Filter @closeDialog="closeFilter()" :isStartPage="false" />
+        </v-card>
+      </v-dialog>
 
-    <v-main>
+      <v-main>
 
-      <NuxtPage />
+        <NuxtPage />
 
-    </v-main>
+      </v-main>
 
-    <!-- <Bottom class="d-flex d-sm-none" /> -->
+      <!-- <Bottom class="d-flex d-sm-none" /> -->
+    </ClientOnly>
   </v-app>
 </template>
 
