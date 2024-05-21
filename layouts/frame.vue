@@ -105,7 +105,7 @@ onMounted(async () => {
             <div>
               <a href="https://plpo.ru" target="_blank">
 
-                <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;:" /></a>
+                <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;" /></a>
             </div>
             <div class="d-flex align-center">
 
