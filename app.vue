@@ -9,6 +9,12 @@ useHead({
     { name: 'og:image', content: 'https://plpo.ru/android-chrome-512x512.png' },
     { name: 'og:url', content: 'https://plpo.ru/' },
   ],
+  noscript: [
+      { innerHTML: '<div><img src="https://mc.yandex.ru/watch/97443215" style="position:absolute; left:-9999px;" alt="" /></div>' }
+    ],
+    __dangerouslyDisableSanitizersByTagID: {
+      'noscript': ['innerHTML']
+    }
 })
 
 </script>
@@ -17,4 +23,9 @@ useHead({
   <NuxtPwaManifest />
   <NuxtLayout>
   </NuxtLayout>
+  <noscript>
+    <div>
+      <img src="https://mc.yandex.ru/watch/97443215" style="position:absolute; left:-9999px;" alt="" />
+    </div>
+  </noscript>
 </template>
