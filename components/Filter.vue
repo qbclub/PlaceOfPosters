@@ -39,13 +39,11 @@ let filter = ref({
 })
 
 let shortName = (item) => {
+    console.log(item);
     let name = item.split(' ')
-    if (name[1]=='р-н'){
-        return name.toString()
-    }
-    else{
+
         return name.pop()
-    }
+    
 }
 
 async function closeDialog() {
