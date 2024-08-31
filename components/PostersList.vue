@@ -109,7 +109,7 @@ let acceptAction = () => {
             navigateTo({ path: '/editposter', query: { hotfix: 'true', _id: selectedPoster.value._id } })
         }
         else {
-            navigateTo('/editposter')
+            navigateTo({ path: '/editposter', query: { hotfix: 'false', _id: selectedPoster.value._id } })
         }
     }
 }
