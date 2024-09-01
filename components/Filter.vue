@@ -15,8 +15,10 @@ let loading = ref(false)
 let showDatePicker = ref(false)
 
 let locations = await getActiveCities()
-let active_categories = await getActiveCategories()
-let categories = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
+let active_categories = ref([])
+let categories = ref([])
+
+// let categories = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
 
 let selectedLocation = ref('')
 
@@ -28,7 +30,7 @@ let date_items = [
 
 const adapter = useDate()
 let date = ref()
-let date_picked=ref(false)
+let date_picked = ref(false)
 
 let filter = ref({
     searchText: '',
@@ -39,11 +41,9 @@ let filter = ref({
 })
 
 let shortName = (item) => {
-    console.log(item);
     let name = item.split(' ')
+    return name.pop()
 
-        return name.pop()
-    
 }
 
 async function closeDialog() {
@@ -77,6 +77,14 @@ function clearFilter() {
     posterStore.filter = filter.value
 }
 
+async function setActiveCategory() {
+    let res = await getActiveCategories(locationStore.location)
+    active_categories.value = res.value
+    if (active_categories.value.length) {
+        categories.value = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
+    }
+}
+
 function selectLocation(index) {
     if (selectedLocation.value == locations.value[index]) {
         selectedLocation.value = ''
@@ -88,7 +96,7 @@ function selectLocation(index) {
     localStorage.setItem('location', selectedLocation.value)
 }
 function selectCategory(index) {
-    let name = categories[index].name
+    let name = categories.value[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -114,11 +122,11 @@ let selectDate = (item) => {
     // showDatePicker.value = false
     // filter.value.date=filter.value.date.setHours(12,-1 * new Date(filter.value.date).getTimezoneOffset() -1 ,0,0)
     // console.log(filter.value.date)
-    if (item===null){
-        filter.value.date=''
+    if (item === null) {
+        filter.value.date = ''
     }
-    else{
-        filter.value.date.setUTCHours(12,0,0,0)
+    else {
+        filter.value.date.setUTCHours(12, 0, 0, 0)
     }
     localStorage.setItem('datePickerDate', JSON.stringify(date.value))
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -140,13 +148,19 @@ let isSelectedLocation = (name) => selectedLocation.value == name
 
 let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventType.includes(name) : false
 
+watch(selectedLocation, async () => {
+    filter.value.eventType = []
+    await setActiveCategory()
+})
+
 watch(() => filter.value.searchText, () => {
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
     posterStore.filter = filter.value
 })
 
-onMounted(() => {
+onMounted(async () => {
 
+    await setActiveCategory()
 
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
@@ -210,17 +224,16 @@ if (props.isStartPage) {
                         {{ item }}
                     </v-btn>
 
-                    <v-btn :class="new Date(filter.date)!='Invalid Date' ? 'bg-red' : ''" icon="mdi-calendar"
+                    <v-btn :class="new Date(filter.date) != 'Invalid Date' ? 'bg-red' : ''" icon="mdi-calendar"
                         density="comfortable" variant="flat" @click="showDatePicker = !showDatePicker"
                         :ripple="false" />
 
                 </v-col>
                 <v-col cols="auto" v-show="showDatePicker">
-                    <VueDatePicker locale="ru" v-model="filter.date" input-class-name="dp-custom-input" :enable-time-picker="false"
-                                    @update:model-value="selectDate(filter.date)"
-                                    cancel-text="отмена" select-text="выбрать" placeholder="дата" timezone='UTC'
-                                    :transitions="{ open: 'fade', close: 'fade', }" :flow="['calendar']"
-                                    format="dd/MM/yyyy" />
+                    <VueDatePicker locale="ru" v-model="filter.date" input-class-name="dp-custom-input"
+                        :enable-time-picker="false" @update:model-value="selectDate(filter.date)" cancel-text="отмена"
+                        select-text="выбрать" placeholder="дата" timezone='UTC'
+                        :transitions="{ open: 'fade', close: 'fade', }" :flow="['calendar']" format="dd/MM/yyyy" />
                 </v-col>
 
                 <v-col cols="8">

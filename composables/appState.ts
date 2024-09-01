@@ -4,9 +4,9 @@ export const getAppState = async () =>
       baseURL: useRuntimeConfig().public.apiBase,
     })
   ).data;
-export const getActiveCategories = async () =>
+export const getActiveCategories = async (location:string) =>
   (
-    await useFetch("/poster/get-active-categories", {
+    await useFetch(`/poster/get-active-categories?location=${location}`, {
       baseURL: useRuntimeConfig().public.apiBase,
     })
   ).data;
