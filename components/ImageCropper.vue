@@ -42,7 +42,7 @@ async function crop() {
                 } catch (err) {
                     console.log(err);
                 }
-            }, 'image/jpeg', 0.85
+            }, 'image/jpeg', 0.95
                 // quality is
                 // 0.9,
             )
