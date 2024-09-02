@@ -95,8 +95,8 @@ function selectLocation(index) {
     }
     localStorage.setItem('location', selectedLocation.value)
 }
-function selectCategory(index) {
-    let name = categories.value[index].name
+function selectCategory(name) {
+    // let name = categories.value[index].name
     let place = filter.value.eventType.indexOf(name)
     place == -1 ? filter.value.eventType.push(name) : filter.value.eventType.splice(place, 1)
     localStorage.setItem('filterForm', JSON.stringify(filter.value))
@@ -148,8 +148,11 @@ let isSelectedLocation = (name) => selectedLocation.value == name
 
 let isSelectedCategory = (name) => filter.value.eventType ? filter.value.eventType.includes(name) : false
 
-watch(selectedLocation, async () => {
-    filter.value.eventType = []
+watch(selectedLocation, async (start, end) => {
+    if (end) {
+        filter.value.eventType = []
+    }
+    localStorage.setItem('filterForm', JSON.stringify(filter.value))
     await setActiveCategory()
 })
 
@@ -159,8 +162,6 @@ watch(() => filter.value.searchText, () => {
 })
 
 onMounted(async () => {
-
-    await setActiveCategory()
 
     if (!selectedLocation.value.length) {
         if (localStorage.getItem('location')) {
@@ -175,6 +176,7 @@ onMounted(async () => {
         }
         posterStore.filter = filter.value
     }
+    await setActiveCategory()
 })
 
 
@@ -258,7 +260,7 @@ if (props.isStartPage) {
                     <v-divider />
                 </v-col>
                 <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px;">
-                    <v-btn v-for="category, index in categories" @click="selectCategory(index)"
+                    <v-btn v-for="category, index in categories" @click="selectCategory(category.name)"
                         :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn"
                         :ripple="false" style="animation: blink;"
                         :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
@@ -270,7 +272,6 @@ if (props.isStartPage) {
                         убрать
                     </v-btn>
                 </v-col>
-
                 <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
                     <v-btn @click="isStartPage ? closePage() : closeDialog()" class="rounded-lg text-accent "
                         variant="outlined" :ripple="false" size="large">
