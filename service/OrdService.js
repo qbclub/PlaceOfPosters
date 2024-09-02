@@ -4,9 +4,6 @@ export default {
     getOrganization() {
         return $api.get('/ord/get-organisation')
     },
-   
-
-
     // яндекс орд методы
     createOrganisation(form) {
 

@@ -8,9 +8,9 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
     },
   },
-  plugins: [
-    { src: '~/plugins/yandex-metrika.js', mode: 'client' }
-  ],
+  // plugins: [
+  //   { src: '~/plugins/yandex-metrika.js', mode: 'client' }
+  // ],
   css: ["~/assets/main.scss"],
   components: [
     {
