@@ -3,7 +3,7 @@ import { useDisplay } from 'vuetify/lib/framework.mjs';
 import _ from 'lodash'
 import { useDate } from 'vuetify'
 
-const props = defineProps(['isStartPage'])
+const props = defineProps(['isStartPage','activateCategory'])
 let emit = defineEmits(['closeDialog'])
 
 let router = useRouter()
