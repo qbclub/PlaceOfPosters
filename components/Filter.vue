@@ -53,6 +53,7 @@ async function closeDialog() {
     posterStore.filter = filter.value
     await posterStore.fetchPosters(filter.value)
     emit('closeDialog')
+   
 }
 async function closePage() {
     posterStore.posters = []

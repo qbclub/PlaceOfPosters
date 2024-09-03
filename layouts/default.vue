@@ -26,7 +26,9 @@ let routeTo = (path) => {
 let closeFilter = async () => {
   filter = JSON.parse(localStorage.getItem('filterForm'))
   posterStore.filter = filter
+  navigateTo('/posters')
   showFilter.value = false
+ 
 }
 let checkFilter = async () => {
   if (localStorage.getItem('filterForm')) {
