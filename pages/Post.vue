@@ -58,6 +58,7 @@ onMounted(async () => {
 async function changeFilter(event) {
   posterStore.posters = []
   posterStore.page = 1
+  posterStore.filter.eventType = []
   posterStore.filter.eventType.push(event)
   await posterStore.fetchPosters(posterStore.filter)
   localStorage.setItem('filterForm', JSON.stringify(posterStore.filter))
