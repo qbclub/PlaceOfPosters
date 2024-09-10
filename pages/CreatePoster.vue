@@ -286,7 +286,8 @@ async function submit() {
     let validationResult = await formComponent.value.validate()
 
     let onModeration = await posterStore.getPosters(userStore.user._id, 'onModeration')
-    if (!userStore.user.subscription.count || onModeration.length == userStore.user.subscription.count) {
+    let rejected = await posterStore.getPosters(userStore.user._id, 'rejected')
+    if (!userStore.user.subscription.count || (onModeration.length + rejected.length)  == userStore.user.subscription.count) {
         buyDialog.value = true
         return
     }
