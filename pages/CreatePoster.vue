@@ -31,7 +31,7 @@ let form = reactive({
     image: '',//
     description: ''//
 })
-let subcategories = ref([])
+// let subcategories = ref([])
 let visibleCropperModal = ref(false)
 let blobImage;
 let preview = ref()
@@ -338,16 +338,16 @@ watch(form, (value) => {
         contractDialog.value = true;
     }
 })
-watch(() => form.eventType, (newValue, oldValue) => {
-    // subtype затирается при редактировании, когда заходишь на страницу
-    if (oldValue.length)
-        form.eventSubtype = []
-    updateSubcategories()
-})
-function updateSubcategories() {
-    subcategories.value = []
-    appState.appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
-}
+// watch(() => form.eventType, (newValue, oldValue) => {
+//     // subtype затирается при редактировании, когда заходишь на страницу
+//     if (oldValue.length)
+//         form.eventSubtype = []
+//     updateSubcategories()
+// })
+// function updateSubcategories() {
+//     subcategories.value = []
+//     appState.appState.eventTypes?.filter(category => form.eventType.includes(category.name)).map(category => subcategories.value = [...subcategories.value, ...category.subcategories])
+// }
 watch(locationSearchRequest, async (value) => {
     possibleLocations.value = await getPossibleLocations(value);
 });
@@ -357,7 +357,7 @@ onMounted(async () => {
     if (!appState.appState) {
         await appStateStore.getAppState()
     }
-    updateSubcategories()
+    // updateSubcategories()
 
     if (!userStore?.user.contracts.length) {
         contractDialog.value = true;
@@ -417,9 +417,9 @@ onBeforeUnmount(() => {
     localStorage.setItem('editPosterId', '')
 })
 
-function getCategory(category) {
-    return appState.appState.eventTypes.find(item => item.name === category)
-}
+// function getCategory(category) {
+//     return appState.appState.eventTypes.find(item => item.name === category)
+// }
 </script>
 <template>
     <v-container>
@@ -466,7 +466,7 @@ function getCategory(category) {
                     <v-row>
                         <v-col cols="12">
                             <b>Категории</b><span>*</span>
-                            <v-select hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
+                            <v-combobox hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
                                 item-value="name" :items="appState.appState.eventTypes" no-data-text="нет данных"
                                 placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
                         </v-col>
