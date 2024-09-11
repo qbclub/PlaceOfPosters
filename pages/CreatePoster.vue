@@ -466,7 +466,8 @@ onBeforeUnmount(() => {
                     <v-row>
                         <v-col cols="12">
                             <b>Категории</b><span>*</span>
-                            <v-combobox hide-details :rules="[rules.eventType]" v-model="form.eventType.name" item-title="name"
+                        
+                            <v-autocomplete hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
                                 item-value="name" :items="appState.appState.eventTypes" no-data-text="нет данных"
                                 placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
                         </v-col>
