@@ -123,12 +123,17 @@ const options = reactive({
 
 let rules = {
     title(value) {
-        if (value.length <= 5) return 'нужно больше 5 символов'
+        if (value.length <= 3) return 'нужно больше 2 символов'
 
         return true
     },
     eventType(value) {
-        if (!value?.length) return 'укажите тип'
+        if (!value?.length) {    
+            return 'укажите тип'
+        } 
+        if (value?.length > 3) {
+                return 'не больше трех категорий'
+            }
         return true
     },
     eventSubtype(value) {
@@ -258,6 +263,11 @@ async function createDraft() {
 async function createPoster() {
     try {
         if (userStore?.user.contracts.length) {
+            if ( form.eventType.length > 3) {
+                errorSnackbar.value = true
+                firstErrorText.value = 'Выберите не больше 3х категорий'
+                validationResult.valid = false
+            }
 
             form.date = form.date
                 .filter((item) => { return item })
@@ -273,7 +283,7 @@ async function createPoster() {
             imagesFormData.append("poster-image", new File([blobImage], _id + ".jpg"), _id + ".jpg");
             await posterStore.uploadImage(imagesFormData, _id);
             resetForm()
-            navigateTo("/cabinet/posters/postersonmoderation");
+            navigateTo("/posters");
         }
     } catch (error) {
         console.log(error);
@@ -287,7 +297,7 @@ async function submit() {
 
     let onModeration = await posterStore.getPosters(userStore.user._id, 'onModeration')
     let rejected = await posterStore.getPosters(userStore.user._id, 'rejected')
-    if (!userStore.user.subscription.count || (onModeration.length + rejected.length)  == userStore.user.subscription.count) {
+    if (!userStore.user.subscription.count || (onModeration.length + rejected.length) == userStore.user.subscription.count) {
         buyDialog.value = true
         return
     }
@@ -303,6 +313,11 @@ async function submit() {
             if (form.description == '<p><br></p>' || form.description.split('p').length < 3) {
                 errorSnackbar.value = true
                 firstErrorText.value = 'Слишком короткое описание'
+                validationResult.valid = false
+            }
+            if ( form.eventType.length > 3) {
+                errorSnackbar.value = true
+                firstErrorText.value = 'Выберите не больше 3х категорий'
                 validationResult.valid = false
             }
 
@@ -466,10 +481,15 @@ onBeforeUnmount(() => {
                     <v-row>
                         <v-col cols="12">
                             <b>Категории</b><span>*</span>
-                        
-                            <v-autocomplete hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
-                                item-value="name" :items="appState.appState.eventTypes" no-data-text="нет данных"
-                                placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
+
+                            <v-autocomplete hide-details :rules="[rules.eventType]" v-model="form.eventType"
+                                item-title="name" item-value="name" :items="appState.appState.eventTypes"
+                                no-data-text="нет данных" placeholder="Концерт" variant="outlined" density="compact"
+                                multiple chips clearable > 
+                            </v-autocomplete>
+                            <div style="font-size: 14px;">
+                                Не больше 3х категорий
+                            </div>
                         </v-col>
                         <!-- <v-col cols="12" md="6">
                             <b>Подкатегории</b>
@@ -490,7 +510,7 @@ onBeforeUnmount(() => {
                                 <template v-slot:no-data>
                                     <div class="pt-2 pr-4 pb-2 pl-4">
                                         {{
-                            locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
+                                            locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }}
                                             </div>
                                 </template>
                             </v-autocomplete>
@@ -619,13 +639,13 @@ onBeforeUnmount(() => {
 
                                 <QuillEditor theme="snow" ref="quill" contentType="html"
                                     v-model:content="form.description" :toolbar="[
-                            ['bold', 'italic', 'underline'],
-                            [{ list: 'ordered' }, { list: 'bullet' }],
-                            [{ color: ['#000000', '#ED413E'] }],
-                            [{ align: [] }],
-                            ['link'],
-                            ['clean']
-                        ]" :options="options">
+                                        ['bold', 'italic', 'underline'],
+                                        [{ list: 'ordered' }, { list: 'bullet' }],
+                                        [{ color: ['#000000', '#ED413E'] }],
+                                        [{ align: [] }],
+                                        ['link'],
+                                        ['clean']
+                                    ]" :options="options">
 
                                 </QuillEditor>
                             </ClientOnly>

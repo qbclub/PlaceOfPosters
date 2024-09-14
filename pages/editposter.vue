@@ -76,7 +76,7 @@ const options = {
 
 let rules = {
     title(value) {
-        if (value.length <= 5) return 'нужно больше 5 символов'
+        if (value.length <= 2) return 'нужно больше 2 символов'
         return true
     },
     eventType(value) {
@@ -238,19 +238,26 @@ function getCategory(category) {
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="24">
                             <b>Категории</b><span>*</span>
-                            <v-select hide-details :rules="[rules.eventType]" v-model="form.eventType" item-title="name"
-                                item-value="name" :items="appState.eventTypes" no-data-text="нет данных"
-                                placeholder="Концерт" variant="outlined" density="compact" multiple chips clearable />
+
+                                <v-autocomplete hide-details :rules="[rules.eventType]" v-model="form.eventType"
+                                item-title="name" item-value="name" :items="appState.eventTypes"
+                                no-data-text="нет данных" placeholder="Концерт" variant="outlined" density="compact"
+                                multiple chips clearable > 
+                            </v-autocomplete>
+                            <div style="font-size: 14px;">
+                                Не больше 3х категорий
+                            </div>
+                                  
                         </v-col>
-                        <v-col cols="12" md="6">
+                        <!-- <v-col cols="12" md="6">
                             <b>Подкатегории</b>
                             <v-select hide-details :rules="[rules.eventSubtype]" density="compact"
                                 v-model="form.eventSubtype" item-title="name" item-value="name" :items="subcategories"
                                 placeholder="Концерт" no-data-text="нет данных" variant="outlined" multiple chips
                                 disabled />
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                     <v-row>
                         <v-col cols="12">
