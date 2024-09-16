@@ -10,6 +10,14 @@ export const useAuth = defineStore('auth', {
 	getters: {
 	},
 	actions: {
+		async getByEmail(email) {
+			try {
+				let response = await AuthService.getByEmail(email)
+				return response
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async resetPassword(password, token, user_id) {
 			let response = await AuthService.resetPassword(password, token, user_id)
 			if (response.data.accessToken)

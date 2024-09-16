@@ -1,6 +1,9 @@
 import $api from "../utility/axios";
 
 export default {
+    async getByEmail(email) {
+        return $api.get(`/auth/get-by-email?email=${email}`)
+    },
     async resetPassword(password, token, user_id) {
         return $api.post('/auth/reset-password', { password, token, user_id })
     },
