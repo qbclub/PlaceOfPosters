@@ -38,5 +38,8 @@ export default {
     },
     async addLocationToEmail(email, select, location) {
         return $api.post('/auth/add-location-to-email', { email: email, select: select, location: location })
-    }
+    },
+    async removeManagerIn(email){
+        return $api.post('/auth/remove-manager-in', { email: email })
+    },
 }
