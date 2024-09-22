@@ -135,5 +135,12 @@ export const useAuth = defineStore('auth', {
 				console.log(error);
 			}
 		},
+		async getToEmail() {
+			try {
+				return await AuthService.getToEmail();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 })

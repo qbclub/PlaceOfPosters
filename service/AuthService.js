@@ -42,4 +42,7 @@ export default {
     async removeManagerIn(email){
         return $api.post('/auth/remove-manager-in', { email: email })
     },
+    async getToEmail(){
+        return $api.get('/auth/get-to-email')
+    },
 }

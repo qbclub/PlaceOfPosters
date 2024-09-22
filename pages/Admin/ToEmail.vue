@@ -24,6 +24,9 @@ async function getUserManagerIn() {
     managerCard.managerIn = user.value.data.managerIn;
     managerCard.email = email.value
   }
+  else{
+    user.value =null
+  }
 }
 
 async function removeLocationToEmail(managerIn) {
@@ -94,7 +97,7 @@ watch(locationSearchRequest, async (value) => {
         </v-card>
       </v-col>
 
-      <v-col lg="6" cols="12" v-show="user.value != null">
+      <v-col lg="6" cols="12" v-show="user != null">
         <h3>Добавить локацию для рассылки</h3>
         <v-radio-group inline v-model="select" :hide-details="true">
           <v-radio label="Город" value="city_with_type"></v-radio>
@@ -115,6 +118,8 @@ watch(locationSearchRequest, async (value) => {
 
       </v-col>
     </v-row>
+    <v-divider class="pb-8"></v-divider>
+    <manager-list></manager-list>
   </v-container>
   <v-dialog v-model="showDialog" width="auto">
     <v-card>
