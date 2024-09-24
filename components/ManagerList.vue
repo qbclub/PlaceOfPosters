@@ -4,26 +4,32 @@ let managersList = ref([]);
 let selectedUser = ref();
 let showDialog = ref(false);
 
-async function getToEmail() {
-  managersList.value = await userStore.getToEmail();
+let props = defineProps({
+  email:String
+})
+watch(props,()=>{
+  getOtherManagers()
+})
+
+
+async function getOtherManagers() {
+  managersList.value = await userStore.getOtherManagers(props.email);
 }
 async function removeManagerIn(email) {
   await userStore.removeManagerIn(email);
-  getToEmail()
+  getOtherManagers()
 }
 async function removeLocationToEmail(selectedUser) {
     console.log(selectedUser)
   await userStore.removeLocationToEmail(selectedUser.managerIn,selectedUser.email);
   showDialog.value = !showDialog.value;
-  getToEmail()
+  getOtherManagers()
 }
 let openDialog = (managerIn,email) => {
   showDialog.value = !showDialog.value;
   selectedUser.value = {managerIn:managerIn,email:email};
 };
-onMounted(() => {
-  getToEmail();
-});
+getOtherManagers();
 </script>
 <template>
   <v-row>

@@ -33,16 +33,17 @@ export default {
     async getSubscriptionCount(_id) {
         return $api.post('/auth/subscription-count', { _id: _id })
     },
+    
     async removeLocationToEmail(managerIn, email) {
         return $api.post('/auth/remove-location-to-email', { managerIn: managerIn, email: email })
     },
     async addLocationToEmail(email, select, location) {
         return $api.post('/auth/add-location-to-email', { email: email, select: select, location: location })
     },
-    async removeManagerIn(email){
+    async removeManagerIn(email) {
         return $api.post('/auth/remove-manager-in', { email: email })
     },
-    async getToEmail(){
-        return $api.get('/auth/get-to-email')
+    async getOtherManagers(email) {
+        return $api.get('/auth/get-other-managers',{email:email})
     },
 }

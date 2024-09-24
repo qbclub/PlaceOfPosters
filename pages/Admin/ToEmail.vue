@@ -4,6 +4,7 @@ import getPossibleLocations from "~/utility/dadata";
 let showDialog = ref(false);
 let email = ref("");
 let user = ref(null)
+let refreshList = ref(false)
 let select = ref("city_with_type");
 let selectedManagerIn = ref();
 let location = ref("");
@@ -23,10 +24,12 @@ async function getUserManagerIn() {
     managerCard.lastname = user.value.data.lastname;
     managerCard.managerIn = user.value.data.managerIn;
     managerCard.email = email.value
+    refreshList.value = !refreshList.value
   }
-  else{
-    user.value =null
+  else {
+    user.value = null
   }
+  console.log(refreshList.value)
 }
 
 async function removeLocationToEmail(managerIn) {
@@ -119,7 +122,7 @@ watch(locationSearchRequest, async (value) => {
       </v-col>
     </v-row>
     <v-divider class="pb-8"></v-divider>
-    <manager-list></manager-list>
+    <manager-list :email="managerCard.email"></manager-list>
   </v-container>
   <v-dialog v-model="showDialog" width="auto">
     <v-card>
