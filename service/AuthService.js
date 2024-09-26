@@ -43,7 +43,7 @@ export default {
     async removeManagerIn(email) {
         return $api.post('/auth/remove-manager-in', { email: email })
     },
-    async getOtherManagers(email) {
-        return $api.get('/auth/get-other-managers',{email:email})
+    async getManagers() {
+        return $api.get('/auth/get-managers')
     },
 }

@@ -135,9 +135,9 @@ export const useAuth = defineStore('auth', {
 				console.log(error);
 			}
 		},
-		async getOtherManagers(email) {
+		async getManagers() {
 			try {
-				return await AuthService.getOtherManagers(email);
+				return await AuthService.getManagers();
 			} catch (error) {
 				console.log(error);
 			}

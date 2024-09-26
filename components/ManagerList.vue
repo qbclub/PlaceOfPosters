@@ -1,33 +1,40 @@
 <script setup>
 const userStore = useAuth();
+const emit = defineEmits(["change-in-list"])
 let managersList = ref([]);
 let selectedUser = ref();
 let showDialog = ref(false);
+let showRemoveDialog = ref(false);
 
-let props = defineProps({
-  email:String
-})
-watch(props,()=>{
-  getOtherManagers()
-})
+const props = defineProps(["change"]);
+// let change= 
 
+watch(props, () => {
+  getOtherManagers();
+});
 
 async function getOtherManagers() {
-  managersList.value = await userStore.getOtherManagers(props.email);
+  managersList.value = await userStore.getManagers();
 }
-async function removeManagerIn(email) {
-  await userStore.removeManagerIn(email);
-  getOtherManagers()
+async function removeManagerIn() {
+  await userStore.removeManagerIn(selectedUser.value.email);
+  showRemoveDialog.value = !showRemoveDialog.value;
+  getOtherManagers();
+  emit("change-in-list")
 }
 async function removeLocationToEmail(selectedUser) {
-    console.log(selectedUser)
-  await userStore.removeLocationToEmail(selectedUser.managerIn,selectedUser.email);
+  await userStore.removeLocationToEmail(selectedUser.managerIn, selectedUser.email);
   showDialog.value = !showDialog.value;
-  getOtherManagers()
+  getOtherManagers();
+  emit("change-in-list")
 }
-let openDialog = (managerIn,email) => {
+let openDialog = (managerIn, email) => {
   showDialog.value = !showDialog.value;
-  selectedUser.value = {managerIn:managerIn,email:email};
+  selectedUser.value = { managerIn: managerIn, email: email };
+};
+let openRemoveDialog = (managerIn, email) => {
+  showRemoveDialog.value = !showRemoveDialog.value;
+  selectedUser.value = { managerIn: managerIn, email: email };
 };
 getOtherManagers();
 </script>
@@ -38,7 +45,7 @@ getOtherManagers();
         <v-card-title class="pb-0">
           Менеджер: {{ managerCard.firstname + " " + managerCard.lastname }}
           <v-icon
-            @click="removeManagerIn(managerCard.email)"
+            @click="openRemoveDialog(managerCard.managerIn, managerCard.email)"
             icon="mdi-close-circle"
             style="position: absolute; left: 90%; cursor: pointer"
           ></v-icon>
@@ -47,7 +54,7 @@ getOtherManagers();
           managerCard.email
         }}</span>
         <v-card-text v-for="managerIn in managerCard.managerIn" class="pb-2 pt-2">
-          <span class="cursor-pointer" @click="openDialog(managerIn,managerCard.email)"
+          <span class="cursor-pointer" @click="openDialog(managerIn, managerCard.email)"
             >{{
               managerIn.type == "city_with_type"
                 ? "Город"
@@ -68,6 +75,17 @@ getOtherManagers();
         <div class="d-flex justify-space-around">
           <v-btn @click="removeLocationToEmail(selectedUser)">Да</v-btn>
           <v-btn @click="showDialog = !showDialog"> Нет</v-btn>
+        </div>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="showRemoveDialog" width="auto">
+    <v-card>
+      <v-card-text class="d-flex flex-column">
+        Удалить локацию для рассылки?
+        <div class="d-flex justify-space-around">
+          <v-btn @click="removeManagerIn()">Да</v-btn>
+          <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
         </div>
       </v-card-text>
     </v-card>

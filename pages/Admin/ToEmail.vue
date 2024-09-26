@@ -2,9 +2,10 @@
 const userStore = useAuth();
 import getPossibleLocations from "~/utility/dadata";
 let showDialog = ref(false);
+let showRemoveDialog = ref(false);
 let email = ref("");
-let user = ref(null)
-let refreshList = ref(false)
+let user = ref(null);
+let change = ref(false);
 let select = ref("city_with_type");
 let selectedManagerIn = ref();
 let location = ref("");
@@ -14,7 +15,7 @@ let managerCard = reactive({
   firstname: "",
   lastname: "",
   managerIn: [],
-  email: ""
+  email: "",
 });
 
 async function getUserManagerIn() {
@@ -23,19 +24,17 @@ async function getUserManagerIn() {
     managerCard.firstname = user.value.data.firstname;
     managerCard.lastname = user.value.data.lastname;
     managerCard.managerIn = user.value.data.managerIn;
-    managerCard.email = email.value
-    refreshList.value = !refreshList.value
+    managerCard.email = email.value;
+    change.value = !change.value;
+  } else {
+    user.value = null;
   }
-  else {
-    user.value = null
-  }
-  console.log(refreshList.value)
 }
 
 async function removeLocationToEmail(managerIn) {
   await userStore.removeLocationToEmail(managerIn, email.value);
   getUserManagerIn();
-  showDialog.value = !showDialog.value
+  showDialog.value = !showDialog.value;
 }
 
 async function addLocationToEmail() {
@@ -56,14 +55,15 @@ async function addLocationToEmail() {
 }
 
 async function removeManagerIn() {
-  await userStore.removeManagerIn(email.value)
-  getUserManagerIn()
+  await userStore.removeManagerIn(email.value);
+  showRemoveDialog.value = !showRemoveDialog.value;
+  getUserManagerIn();
 }
 
 let openDialog = (managerIn) => {
-  showDialog.value = !showDialog.value
-  selectedManagerIn.value = managerIn
-}
+  showDialog.value = !showDialog.value;
+  selectedManagerIn.value = managerIn;
+};
 
 watch(locationSearchRequest, async (value) => {
   possibleLocations.value = await getPossibleLocations(value);
@@ -75,7 +75,13 @@ watch(locationSearchRequest, async (value) => {
       <v-col cols="12">
         <h3>Выбрать менеджера для рассылки</h3>
         <div class="d-flex mt-4">
-          <v-text-field variant="outlined" label="Электронная почта" v-model="email" density="compact" class="mr-4" />
+          <v-text-field
+            variant="outlined"
+            label="Электронная почта"
+            v-model="email"
+            density="compact"
+            class="mr-4"
+          />
           <v-btn @click="getUserManagerIn()"> Выбрать</v-btn>
         </div>
       </v-col>
@@ -83,19 +89,26 @@ watch(locationSearchRequest, async (value) => {
         <v-card style="outlined" min-height="150" class="main-card">
           <v-card-title class="pb-0">
             Менеджер: {{ managerCard.firstname + " " + managerCard.lastname }}
-            <v-icon @click="removeManagerIn()" icon="mdi-close-circle"
-              style="position: absolute; left: 90%; cursor:pointer"></v-icon>
+            <v-icon
+              @click="showRemoveDialog = !showRemoveDialog;"
+              icon="mdi-close-circle"
+              style="position: absolute; left: 90%; cursor: pointer"
+            ></v-icon>
           </v-card-title>
-          <span class="ml-4" style="font-size: 0.8em;opacity:0.5">{{ managerCard.email }}</span>
+          <span class="ml-4" style="font-size: 0.8em; opacity: 0.5">{{
+            managerCard.email
+          }}</span>
           <v-card-text v-for="managerIn in managerCard.managerIn" class="pb-2 pt-2">
-            <span class="cursor-pointer" @click="openDialog(managerIn)">{{
-              managerIn.type == "city_with_type"
-                ? "Город"
-                : managerIn.type == "area_with_type"
+            <span class="cursor-pointer" @click="openDialog(managerIn)"
+              >{{
+                managerIn.type == "city_with_type"
+                  ? "Город"
+                  : managerIn.type == "area_with_type"
                   ? "Район"
                   : "Область/Край/Республика"
-            }}
-              - {{ managerIn.name }}</span>
+              }}
+              - {{ managerIn.name }}</span
+            >
           </v-card-text>
         </v-card>
       </v-col>
@@ -107,22 +120,35 @@ watch(locationSearchRequest, async (value) => {
           <v-radio label="Регион" value="area_with_type"></v-radio>
           <v-radio label="Область" value="region_with_type"></v-radio>
         </v-radio-group>
-        <v-autocomplete hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
-          :items="possibleLocations" item-title="name" placeholder="Удмуртская Респ, г Глазов, ул Калинина, д 2а"
-          item-value="geo" variant="outlined" clearable>
+        <v-autocomplete
+          hide-details
+          density="compact"
+          v-model="location"
+          v-model:search="locationSearchRequest"
+          :items="possibleLocations"
+          item-title="name"
+          placeholder="Удмуртская Респ, г Глазов, ул Калинина, д 2а"
+          item-value="geo"
+          variant="outlined"
+          clearable
+        >
           <template v-slot:no-data>
             <div class="pt-2 pr-4 pb-2 pl-4">
               {{
-                locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
+                locationSearchRequest.trim().length < 3
+                  ? "Минимум 3 символа"
+                  : "Не найдено"
+              }}
+            </div>
           </template>
         </v-autocomplete>
 
         <v-btn @click="addLocationToEmail()" class="mt-4">Добавить</v-btn>
-
       </v-col>
     </v-row>
     <v-divider class="pb-8"></v-divider>
-    <manager-list :email="managerCard.email"></manager-list>
+
+    <manager-list :change="change" @change-in-list="getUserManagerIn()"></manager-list>
   </v-container>
   <v-dialog v-model="showDialog" width="auto">
     <v-card>
@@ -131,6 +157,17 @@ watch(locationSearchRequest, async (value) => {
         <div class="d-flex justify-space-around">
           <v-btn @click="removeLocationToEmail(selectedManagerIn)">Да</v-btn>
           <v-btn @click="showDialog = !showDialog"> Нет</v-btn>
+        </div>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="showRemoveDialog" width="auto">
+    <v-card>
+      <v-card-text class="d-flex flex-column">
+        Удалить локацию для рассылки?
+        <div class="d-flex justify-space-around">
+          <v-btn @click="removeManagerIn()">Да</v-btn>
+          <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
         </div>
       </v-card-text>
     </v-card>
