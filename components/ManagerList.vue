@@ -41,13 +41,13 @@ getOtherManagers();
 <template>
   <v-row>
     <v-col cols="12" lg="4" v-for="managerCard in managersList.data">
-      <v-card style="outlined" min-height="150" class="main-card">
+      <v-card style="outlined" min-height="150" class="main-card h-100">
         <v-card-title class="pb-0">
           Менеджер: {{ managerCard.firstname + " " + managerCard.lastname }}
           <v-icon
             @click="openRemoveDialog(managerCard.managerIn, managerCard.email)"
-            icon="mdi-close-circle"
-            style="position: absolute; left: 90%; cursor: pointer"
+            icon="mdi-close"
+            style="position: absolute; right:0;top:0; cursor: pointer"
           ></v-icon>
         </v-card-title>
         <span class="ml-4" style="font-size: 0.8em; opacity: 0.5">{{

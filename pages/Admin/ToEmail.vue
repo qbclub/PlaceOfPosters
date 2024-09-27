@@ -71,79 +71,62 @@ watch(locationSearchRequest, async (value) => {
 </script>
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row justify="center" class="pb-4">
       <v-col cols="12">
         <h3>Выбрать менеджера для рассылки</h3>
         <div class="d-flex mt-4">
-          <v-text-field
-            variant="outlined"
-            label="Электронная почта"
-            v-model="email"
-            density="compact"
-            class="mr-4"
-          />
+          <v-text-field variant="outlined" label="Электронная почта" v-model="email" density="compact" class="mr-4" />
           <v-btn @click="getUserManagerIn()"> Выбрать</v-btn>
         </div>
       </v-col>
       <v-col lg="6" cols="12" v-show="user != null">
-        <v-card style="outlined" min-height="150" class="main-card">
+        <v-card style="outlined" min-height="150" class="main-card h-100">
           <v-card-title class="pb-0">
             Менеджер: {{ managerCard.firstname + " " + managerCard.lastname }}
-            <v-icon
-              @click="showRemoveDialog = !showRemoveDialog;"
-              icon="mdi-close-circle"
-              style="position: absolute; left: 90%; cursor: pointer"
-            ></v-icon>
+            <v-icon @click="showRemoveDialog = !showRemoveDialog;" icon="mdi-close"
+              style="position: absolute; right:0;top:0; cursor: pointer"></v-icon>
           </v-card-title>
           <span class="ml-4" style="font-size: 0.8em; opacity: 0.5">{{
             managerCard.email
           }}</span>
           <v-card-text v-for="managerIn in managerCard.managerIn" class="pb-2 pt-2">
-            <span class="cursor-pointer" @click="openDialog(managerIn)"
-              >{{
-                managerIn.type == "city_with_type"
-                  ? "Город"
-                  : managerIn.type == "area_with_type"
+            <span class="cursor-pointer" @click="openDialog(managerIn)">{{
+              managerIn.type == "city_with_type"
+                ? "Город"
+                : managerIn.type == "area_with_type"
                   ? "Район"
                   : "Область/Край/Республика"
-              }}
-              - {{ managerIn.name }}</span
-            >
+            }}
+              - {{ managerIn.name }}</span>
           </v-card-text>
         </v-card>
       </v-col>
 
       <v-col lg="6" cols="12" v-show="user != null">
-        <h3>Добавить локацию для рассылки</h3>
-        <v-radio-group inline v-model="select" :hide-details="true">
-          <v-radio label="Город" value="city_with_type"></v-radio>
-          <v-radio label="Регион" value="area_with_type"></v-radio>
-          <v-radio label="Область" value="region_with_type"></v-radio>
-        </v-radio-group>
-        <v-autocomplete
-          hide-details
-          density="compact"
-          v-model="location"
-          v-model:search="locationSearchRequest"
-          :items="possibleLocations"
-          item-title="name"
-          placeholder="Удмуртская Респ, г Глазов, ул Калинина, д 2а"
-          item-value="geo"
-          variant="outlined"
-          clearable
-        >
-          <template v-slot:no-data>
-            <div class="pt-2 pr-4 pb-2 pl-4">
-              {{
-                locationSearchRequest.trim().length < 3
-                  ? "Минимум 3 символа"
-                  : "Не найдено"
-              }}
+        <v-card style="outlined" class="main-card">
+          <v-card-title class="pb-0">
+            Добавить локацию для рассылки
+          </v-card-title>
+          <v-card-text>
+            <v-radio-group inline v-model="select" :hide-details="true">
+              <v-radio label="Город" value="city_with_type"></v-radio>
+              <v-radio label="Район" value="area_with_type"></v-radio>
+              <v-radio label="Область" value="region_with_type"></v-radio>
+            </v-radio-group>
+            <v-autocomplete hide-details density="compact" v-model="location" v-model:search="locationSearchRequest"
+              :items="possibleLocations" item-title="name" placeholder="Удмуртская Респ, г Глазов, ул Калинина, д 2а"
+              item-value="geo" variant="outlined" clearable>
+              <template v-slot:no-data>
+                <div class="pt-2 pr-4 pb-2 pl-4">
+                  {{
+                    locationSearchRequest.trim().length < 3 ? "Минимум 3 символа" : "Не найдено" }} </div>
+              </template>
+            </v-autocomplete>
+            <div class="d-flex justify-center">
+              <v-btn @click="addLocationToEmail()" class="mt-4">Добавить</v-btn>
             </div>
-          </template>
-        </v-autocomplete>
-
-        <v-btn @click="addLocationToEmail()" class="mt-4">Добавить</v-btn>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <v-divider class="pb-8"></v-divider>
