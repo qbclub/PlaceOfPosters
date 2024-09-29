@@ -85,9 +85,10 @@ let setApp = async () => {
 }
 onMounted(async () => {
   await setApp()
-  if (route.query.location) {
 
-    locationsStore.location = route.query.location
+  if (route.query.location) {
+    // undefined
+    locationsStore.location = route.query.location == 'undefined'? '': route.query.location
     localStorage.setItem("location", route.query.location)
   }
   localStorage.setItem('filterForm', JSON.stringify(filter))
@@ -109,7 +110,11 @@ onMounted(async () => {
                /></a>
           </div>
           <div class="d-flex align-center">
-
+            <v-icon
+              :class="{ active: isFiltered }"
+              icon="mdi-filter-outline"
+              @click="showFilter = !showFilter"
+            ></v-icon>
             <div @click="showFilter = !showFilter"  class="d-flex align-center pa-1 ml-4" style="cursor: pointer;">
               <v-icon>mdi-map-marker-outline</v-icon>
 

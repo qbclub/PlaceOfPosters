@@ -63,7 +63,7 @@ poster.value = posterFromDB.value
       
           <div @click="navigateTo({ path: '/frame', hash: `#${poster._id}` })"
             class="pa-1 cursor-pointer text-body-1">
-            <v-btn icon="mdi-chevron-double-left" density="comfortable"></v-btn> 
+            <v-icon icon="mdi-chevron-double-left" density="comfortable"></v-icon> афиши
           </div>
         </v-col>
       </v-row>
