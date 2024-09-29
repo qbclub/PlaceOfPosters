@@ -118,7 +118,12 @@ poster.value = posterFromDB.value
 .posterView {
   height: 80dvh;
   overflow: auto;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 
+}
+.posterView::-webkit-scrollbar {
+  display: none; 
 }
 
 .front {
