@@ -15,7 +15,6 @@ let loading = ref(false);
 let showDatePicker = ref(false);
 
 let locations = await getActiveCities();
-locations.value.sort()
 
 let active_categories = ref([]);
 let categories = ref([]);
@@ -168,6 +167,7 @@ watch(
 );
 
 onMounted(async () => {
+  locations.value.sort()
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
       selectedLocation.value = localStorage.getItem("location");

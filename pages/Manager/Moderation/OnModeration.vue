@@ -1,6 +1,7 @@
 <script setup>
 
 let posterStore = usePoster()
+let userStore = useAuth()
 
 let postersOnModeration = ref([])
 let dialog = ref(false);
@@ -36,7 +37,9 @@ async function checkPoster(id) {
 
 
 let getPostersOnModeration = async () => {
-    postersOnModeration.value = await posterStore.getPostersOnModeration('onmoderation')
+    locations = userStore?.user?.managerIn
+    types = userStore?.user?.managerIn
+    postersOnModeration.value = await posterStore.getManagerPostersOnModeration('onmoderation',userStore?.user?.)
 }
 
 onMounted(async () => {

@@ -4,6 +4,9 @@ export default {
     getPostersOnModeration(status) {
         return $api.get(`/poster/get-posters-on-moderation?status=${status}`)
     },
+    getManagerPostersOnModeration(status,user_id) {
+        return $api.get(`/poster/get-manager-posters-on-moderation?status=${status}&user_id=${user_id}`)
+    },
     getPosters(userId, posterStatus) {
         return $api.get(`/poster/get-posters?user_id=${userId}&poster_status=${posterStatus}`)
     },
