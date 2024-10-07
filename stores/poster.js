@@ -135,9 +135,9 @@ export const usePoster = defineStore('poster', {
                 console.log(error)
             }
         },
-        async getManagerPostersOnModeration(status,types,locations) {
+        async getManagerPostersOnModeration(status,cities,areas,regions) {
             try {
-                let response = await PosterService.getManagerPostersOnModeration(status,types,locations)
+                let response = await PosterService.getManagerPostersOnModeration(status,cities,areas,regions)
                 return response.data
             } catch (error) {
                 console.log(error)

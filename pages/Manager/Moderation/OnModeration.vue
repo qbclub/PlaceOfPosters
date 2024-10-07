@@ -8,8 +8,9 @@ let dialog = ref(false);
 let dialogTitle = ref('');
 let selectedAction = ref('');
 let selectedPoster = ref({});
-let types = userStore?.user?.managerIn.map((item)=>item.type)
-let locations = userStore?.user?.managerIn.map((item)=>item.name)
+let cities = ref([]);
+let areas = ref([]);
+let regions = ref([]);
 
 let actionDialog = (poster, action, title) => {
     dialog.value = true;
@@ -40,11 +41,17 @@ async function checkPoster(id) {
 
 let getPostersOnModeration = async () => {
     // console.log(types,locations)
-    postersOnModeration.value = await posterStore.getManagerPostersOnModeration('onmoderation',types,locations)
+    postersOnModeration.value = await posterStore.getManagerPostersOnModeration('onmoderation',cities.value,areas.value,regions.value)
 }
 
 onMounted(async () => {
+    for (let loc of userStore?.user?.managerIn){
+        if (loc.type == "city_with_type") { cities.value.push(loc.name) }
+        if (loc.type == "area_with_type") { areas.value.push(loc.name) }
+        if (loc.type == "region_with_type") { regions.value.push(loc.name) }
+    }
     getPostersOnModeration()
+    // console.log(cities.value,areas.value,regions.value)
 })
 </script>
 <template>
