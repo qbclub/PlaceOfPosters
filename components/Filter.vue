@@ -38,7 +38,7 @@ let filter = ref({
 });
 
 let shortName = (item) => {
-  let name = item.split(" ");
+  let name = item.replace("(","").replace(")","").split(" ");
   return name.pop();
 };
 
@@ -167,6 +167,7 @@ watch(
 );
 
 onMounted(async () => {
+  locations.value=locations.value.map((loc)=>shortName(loc))
   locations.value.sort()
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
@@ -236,7 +237,7 @@ if (props.isStartPage) {
             style="animation: blink"
             variant="flat"
           >
-            {{ shortName(location) }}
+            {{ location }}
           </v-btn>
         </v-col>
         <v-col cols="8" v-if="!isStartPage">

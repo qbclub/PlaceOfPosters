@@ -38,6 +38,9 @@ async function checkPoster(id) {
     navigateTo(`/manager/moderation/moderateposter?_id=${id}`)
 }
 
+async function editPoster(_id){
+    navigateTo({ path: '/editposter', query: { hotfix: 'true', _id: _id } })
+}
 
 let getPostersOnModeration = async () => {
     // console.log(types,locations)
@@ -65,7 +68,9 @@ onMounted(async () => {
                 <v-icon @click="checkPoster(poster._id)" icon="mdi-check-all" size="small"
                     class="action-button">
                 </v-icon>
-               
+                <v-icon @click="editPoster(poster._id)" icon="mdi-image-edit-outline" size="small"
+                    class="action-button">
+                </v-icon>
             </div>
 
             

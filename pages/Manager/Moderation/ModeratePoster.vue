@@ -23,14 +23,14 @@ async function moderate() {
   if (res.status == 200) {
     // обновить свои остатки афиш
     userStore.getSubscriptionCount(userStore.user._id)
-    navigateTo('/manager/moderation/onmoderation')
+    navigateTo('/admin/moderation/onmoderation')
   }
 
 }
 async function reject() {
   let res = await posterStore.rejectPoster(poster.value._id, poster.value.moderationMessage)
   if (res.status == 200) {
-    navigateTo('/manager/moderation/onmoderation')
+    navigateTo('/admin/moderation/onmoderation')
   }
 }
 
