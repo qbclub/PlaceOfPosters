@@ -38,17 +38,17 @@ async function checkPoster(id) {
     navigateTo(`/manager/moderation/moderateposter?_id=${id}`)
 }
 
-async function editPoster(_id){
+async function editPoster(_id) {
     navigateTo({ path: '/editposter', query: { hotfix: 'true', _id: _id } })
 }
 
 let getPostersOnModeration = async () => {
     // console.log(types,locations)
-    postersOnModeration.value = await posterStore.getManagerPostersOnModeration('onmoderation',cities.value,areas.value,regions.value)
+    postersOnModeration.value = await posterStore.getManagerPostersOnModeration('onmoderation', cities.value, areas.value, regions.value)
 }
 
 onMounted(async () => {
-    for (let loc of userStore?.user?.managerIn){
+    for (let loc of userStore?.user?.managerIn) {
         if (loc.type == "city_with_type") { cities.value.push(loc.name) }
         if (loc.type == "area_with_type") { areas.value.push(loc.name) }
         if (loc.type == "region_with_type") { regions.value.push(loc.name) }
@@ -59,21 +59,25 @@ onMounted(async () => {
 </script>
 <template>
     <v-row v-if="postersOnModeration.length">
+        <v-col cols="12">
+    <span> Постеры из городов: </span><span v-for="city in cities">{{ city }}</span><br/>
+    <span>Постеры из районов:</span> <span v-for="area in areas">{{ area }}</span><br/>
+    <span>Постеры из регионов:</span> <span v-for="region in regions">{{ region }}</span>
+    </v-col>
         <v-col cols="6" sm="3" md="2" class="pa-2" v-for="poster of postersOnModeration" :key="poster._id">
             <ModerationPosterCard :poster="poster"></ModerationPosterCard>
             <div class="d-flex justify-center pa-1">
                 <v-icon @click="actionDialog(poster, 'delete', 'Удалить?')" icon="mdi-trash-can-outline" size="small"
                     class="action-button">
                 </v-icon>
-                <v-icon @click="checkPoster(poster._id)" icon="mdi-check-all" size="small"
-                    class="action-button">
+                <v-icon @click="checkPoster(poster._id)" icon="mdi-check-all" size="small" class="action-button">
                 </v-icon>
                 <v-icon @click="editPoster(poster._id)" icon="mdi-image-edit-outline" size="small"
                     class="action-button">
                 </v-icon>
             </div>
 
-            
+
         </v-col>
         <v-dialog v-model="dialog" width="auto">
             <v-card>
@@ -97,6 +101,4 @@ onMounted(async () => {
     cursor: pointer;
     margin: 4px;
 }
-
-
 </style>~/stores/poster

@@ -1,12 +1,17 @@
 <script setup>
 
 let posterStore = usePoster()
+let userStore = useAuth()
 
 let rejectedPosters = ref([])
 let dialog = ref(false);
 let dialogTitle = ref('');
 let selectedAction = ref('');
 let selectedPoster = ref({});
+
+let cities = ref([]);
+let areas = ref([]);
+let regions = ref([]);
 
 let message = ref(false);
 let messageText = ref('');
@@ -39,13 +44,27 @@ function showMessage(moderationMessage) {
     message.value = true
     messageText.value = moderationMessage
 }
+let getPostersOnModeration = async () => {
+    // console.log(types,locations)
+    rejectedPosters.value = await posterStore.getManagerPostersOnModeration('rejected', cities.value, areas.value, regions.value)
+}
 
 onMounted(async () => {
-    rejectedPosters.value = await posterStore.getPostersOnModeration('rejected')
+    for (let loc of userStore?.user?.managerIn) {
+        if (loc.type == "city_with_type") { cities.value.push(loc.name) }
+        if (loc.type == "area_with_type") { areas.value.push(loc.name) }
+        if (loc.type == "region_with_type") { regions.value.push(loc.name) }
+    }
+    getPostersOnModeration()
 })
 </script>
 <template>
     <v-row v-if="rejectedPosters.length">
+        <v-col cols="12">
+    <span> Постеры из городов: </span><span v-for="city in cities">{{ city }}</span><br/>
+    <span>Постеры из районов:</span> <span v-for="area in areas">{{ area }}</span><br/>
+    <span>Постеры из регионов:</span> <span v-for="region in regions">{{ region }}</span>
+</v-col>
         <v-col cols="6" sm="3" md="2" class="pa-2" v-for="poster of rejectedPosters" :key="poster._id">
             <ModerationPosterCard :poster="poster"></ModerationPosterCard>
             <div class="d-flex justify-center pa-1">
