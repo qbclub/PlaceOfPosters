@@ -59,11 +59,6 @@ onMounted(async () => {
 </script>
 <template>
     <v-row v-if="postersOnModeration.length">
-        <v-col cols="12">
-    <span> Постеры из городов: </span><span v-for="city in cities">{{ city }}</span><br/>
-    <span>Постеры из районов:</span> <span v-for="area in areas">{{ area }}</span><br/>
-    <span>Постеры из регионов:</span> <span v-for="region in regions">{{ region }}</span>
-    </v-col>
         <v-col cols="6" sm="3" md="2" class="pa-2" v-for="poster of postersOnModeration" :key="poster._id">
             <ModerationPosterCard :poster="poster"></ModerationPosterCard>
             <div class="d-flex justify-center pa-1">
@@ -76,9 +71,9 @@ onMounted(async () => {
                     class="action-button">
                 </v-icon>
             </div>
-
-
         </v-col>
+
+
         <v-dialog v-model="dialog" width="auto">
             <v-card>
                 <v-card-title> {{ dialogTitle }} </v-card-title>
@@ -90,7 +85,7 @@ onMounted(async () => {
         </v-dialog>
     </v-row>
     <v-row v-else>
-        <v-col>
+        <v-col cols="12">
             всё проверено
         </v-col>
     </v-row>

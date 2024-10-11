@@ -132,29 +132,29 @@ watch(locationSearchRequest, async (value) => {
     <v-divider class="pb-8"></v-divider>
 
     <manager-list :change="change" @change-in-list="getUserManagerIn()"></manager-list>
+    <v-dialog v-model="showDialog" width="auto">
+      <v-card>
+        <v-card-text class="d-flex flex-column">
+          Удалить локацию для рассылки?
+          <div class="d-flex justify-space-around">
+            <v-btn @click="removeLocationToEmail(selectedManagerIn)">Да</v-btn>
+            <v-btn @click="showDialog = !showDialog"> Нет</v-btn>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="showRemoveDialog" width="auto">
+      <v-card>
+        <v-card-text class="d-flex flex-column">
+          Удалить локацию для рассылки?
+          <div class="d-flex justify-space-around">
+            <v-btn @click="removeManagerIn()">Да</v-btn>
+            <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
-  <v-dialog v-model="showDialog" width="auto">
-    <v-card>
-      <v-card-text class="d-flex flex-column">
-        Удалить локацию для рассылки?
-        <div class="d-flex justify-space-around">
-          <v-btn @click="removeLocationToEmail(selectedManagerIn)">Да</v-btn>
-          <v-btn @click="showDialog = !showDialog"> Нет</v-btn>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
-  <v-dialog v-model="showRemoveDialog" width="auto">
-    <v-card>
-      <v-card-text class="d-flex flex-column">
-        Удалить локацию для рассылки?
-        <div class="d-flex justify-space-around">
-          <v-btn @click="removeManagerIn()">Да</v-btn>
-          <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
-        </div>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
 </template>
 <style type="scss" scoped>
 .main_card {

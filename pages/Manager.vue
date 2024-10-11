@@ -16,7 +16,7 @@ watch(tab, () => {
       <v-col cols="12">
         <v-tabs class="d-flex" v-model="tab">
           <v-tab value="/manager/moderation/onmoderation">Модерация</v-tab>
-          <!-- <v-tab value="/manager/appsettings/interface">Настройки</v-tab> -->
+          <v-tab value="/manager/posters">Настройки</v-tab>
         </v-tabs>
         <NuxtPage />
       </v-col>
