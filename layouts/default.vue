@@ -197,6 +197,16 @@ onMounted(async () => {
           >
             Админ
           </v-list-item>
+          <v-list-item
+            class="cursor-pointer"
+            prepend-icon="mdi-account-group-outline"
+            to="/manager/moderation/onmoderation"
+            exact
+            :ripple="false"
+            v-if="authStore.user?.managerIn?.length"
+          >
+            Менеджер
+          </v-list-item>
         </v-list>
       </ClientOnly>
     </v-navigation-drawer>

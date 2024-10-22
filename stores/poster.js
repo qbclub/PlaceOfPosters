@@ -135,6 +135,14 @@ export const usePoster = defineStore('poster', {
                 console.log(error)
             }
         },
+        async getManagerPostersOnModeration(status,cities,areas,regions) {
+            try {
+                let response = await PosterService.getManagerPostersOnModeration(status,cities,areas,regions)
+                return response.data
+            } catch (error) {
+                console.log(error)
+            }
+        },
         async uploadImage(image, posterId) {
             try {
                 let response = await PosterService.uploadImage(image, posterId)
@@ -166,17 +174,6 @@ export const usePoster = defineStore('poster', {
                 let response = await PosterService.prolongPosterById(_id, publicationStart, publicationEnd, userId)
 
                 return response
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-
-
-        async getPostersOnModeraion() {
-            try {
-                let response = await PosterService.getPostersOnModeraion()
-                return response.data
             } catch (error) {
                 console.log(error);
             }

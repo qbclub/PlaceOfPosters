@@ -10,6 +10,14 @@ export const useAuth = defineStore('auth', {
 	getters: {
 	},
 	actions: {
+		async getByEmail(email) {
+			try {
+				let response = await AuthService.getByEmail(email)
+				return response
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async resetPassword(password, token, user_id) {
 			let response = await AuthService.resetPassword(password, token, user_id)
 			if (response.data.accessToken)
@@ -72,7 +80,7 @@ export const useAuth = defineStore('auth', {
 
 				this.isAuth = true
 				this.user = response.data.value.user
-				
+
 				return response
 			} catch (err) {
 			}
@@ -105,6 +113,34 @@ export const useAuth = defineStore('auth', {
 			} catch (error) {
 				console.log(error);
 			}
-		}
+		},
+		async removeLocationToEmail(managerIn, email) {
+			try {
+				return await AuthService.removeLocationToEmail(managerIn, email);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async addLocationToEmail(email, select, location) {
+			try {
+				return await AuthService.addLocationToEmail(email, select, location);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async removeManagerIn(email) {
+			try {
+				return await AuthService.removeManagerIn(email);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getManagers() {
+			try {
+				return await AuthService.getManagers();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 })

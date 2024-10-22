@@ -39,8 +39,29 @@ export default defineNuxtConfig({
     },
     "@pinia/nuxt",
     "@vite-pwa/nuxt",
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
    
   ],
+  site: {
+    hostname: process.env.NUXT_PUBLIC_SITE_URL, // Ваш домен
+    gzip: true, // Опция сжатия карты сайта
+    name:"PlPo - место для афиш",
+    routes: [
+      '/posters',
+      '/post',
+    ],
+    exclude: ['/admin/**', '/сabinet/**', '/info/**', '/manager/**', '/frame/**'],
+    changefreq: 'daily', // Частота изменений страниц
+    priority: 0.8, // Приоритет индексации страниц
+    lastmod: new Date().toISOString(), // Дата последнего изменения
+  },
+  robots: {
+    UserAgent: '*', // Для всех поисковых ботов
+    Disallow: ['/admin', '/сabinet', '/info', '/manager', '/frame'], // Запретить индексацию раздела /admin
+    Allow: '/', // Разрешить индексацию всего остального сайта
+    Sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`, // Указание ссылки на карту сайта
+  },
   pwa: {
     registerType: 'autoUpdate',
     includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'images/apple-touch-icon.png'],
@@ -92,4 +113,5 @@ export default defineNuxtConfig({
     "/cabinet/**": { ssr: false },
     "/posters": { ssr: false },
   },
+  
 });

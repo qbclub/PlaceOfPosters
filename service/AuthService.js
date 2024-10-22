@@ -1,6 +1,9 @@
 import $api from "../utility/axios";
 
 export default {
+    async getByEmail(email) {
+        return $api.get(`/auth/get-by-email?email=${email}`)
+    },
     async resetPassword(password, token, user_id) {
         return $api.post('/auth/reset-password', { password, token, user_id })
     },
@@ -29,5 +32,18 @@ export default {
     },
     async getSubscriptionCount(_id) {
         return $api.post('/auth/subscription-count', { _id: _id })
-    }
+    },
+    
+    async removeLocationToEmail(managerIn, email) {
+        return $api.post('/auth/remove-location-to-email', { managerIn: managerIn, email: email })
+    },
+    async addLocationToEmail(email, select, location) {
+        return $api.post('/auth/add-location-to-email', { email: email, select: select, location: location })
+    },
+    async removeManagerIn(email) {
+        return $api.post('/auth/remove-manager-in', { email: email })
+    },
+    async getManagers() {
+        return $api.get('/auth/get-managers')
+    },
 }

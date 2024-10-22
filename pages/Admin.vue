@@ -19,6 +19,7 @@ watch(tab, () => {
           <v-tab value="/admin/appsettings/interface">Настройки</v-tab>
           <v-tab value="/admin/getusers">Пользователи</v-tab>
           <v-tab value="/admin/ord">ОРД</v-tab>
+          <v-tab value="/admin/toemail">Рассылка</v-tab>
         </v-tabs>
         <NuxtPage />
       </v-col>

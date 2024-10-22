@@ -11,6 +11,8 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/robots": "^4.1.9",
+    "@nuxtjs/sitemap": "^6.1.2",
     "@vite-pwa/nuxt": "^0.3.6",
     "nuxt": "^3.8.1",
     "sass": "^1.69.5",
