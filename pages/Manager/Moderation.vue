@@ -29,12 +29,13 @@ onMounted(async () => {
                 </v-radio-group>
             </v-col>
             <v-col cols=6 class="d-flex flex-column">
-                <h4 v-if="cities.length"><span> Постеры из городов: </span><span v-for="city in cities">{{ city
-                        }}</span></h4>
-                <h4 v-if="areas.length"><span>Постеры из районов:</span> <span v-for="area in areas">{{ area }}</span>
+                <h4 v-if="cities.length"><span> Постеры из городов: </span><br><span v-for="city in cities">{{ city
+                        }}<br></span></h4>
+                <h4 v-if="areas.length"><span>Постеры из районов:</span><br> <span v-for="area in areas">{{ area
+                        }}<br></span>
                 </h4>
-                <h4 v-if="regions.length"><span>Постеры из регионов:</span> <span v-for="region in regions">{{ region
-                        }}</span></h4>
+                <h4 v-if="regions.length"><span>Постеры из регионов:</span><br> <span v-for="region in regions">{{
+                    region}}<br></span></h4>
             </v-col>
         </v-row>
 
