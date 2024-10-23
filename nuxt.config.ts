@@ -43,24 +43,24 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
    
   ],
-  site: {
-    hostname: process.env.NUXT_PUBLIC_SITE_URL, // Ваш домен
-    gzip: true, // Опция сжатия карты сайта
-    name:"PlPo - место для афиш",
+  sitemap: {
+    hostname: process.env.NUXT_PUBLIC_SITE_URL, // Ensure siteUrl is set in your .env file
+    gzip: true, // Enable gzip compression for the sitemap
     routes: [
       '/posters',
       '/post',
     ],
-    exclude: ['/admin/**', '/сabinet/**', '/info/**', '/manager/**', '/frame/**'],
-    changefreq: 'daily', // Частота изменений страниц
-    priority: 0.8, // Приоритет индексации страниц
-    lastmod: new Date().toISOString(), // Дата последнего изменения
+    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/Frame/**', '/FramePost', '/Auth', '/Reg', '/HelloPage','/AddPrice', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    changefreq: 'daily',
+    priority: 0.8,
+    lastmod: new Date().toISOString(), // Set last modification date
   },
   robots: {
     UserAgent: '*', // Для всех поисковых ботов
-    Disallow: ['/admin', '/сabinet', '/info', '/manager', '/frame'], // Запретить индексацию раздела /admin
-    Allow: '/', // Разрешить индексацию всего остального сайта
+    Disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], 
+    Allow: '/', // Разрешить индексацию всего остального сайта 
     Sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`, // Указание ссылки на карту сайта
+    Host: process.env.NUXT_PUBLIC_SITE_URL,
   },
   pwa: {
     registerType: 'autoUpdate',
