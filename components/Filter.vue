@@ -11,6 +11,7 @@ let appState = await getAppState();
 let locationStore = useLocations();
 let posterStore = usePoster();
 let loading = ref(false);
+let locationQuery=ref('')
 
 let showDatePicker = ref(false);
 
@@ -166,9 +167,22 @@ watch(
   }
 );
 
+let filteredLocations = computed(() => {
+
+if (locationQuery.value.length > 2) {
+    localStorage.setItem("locationQuery", locationQuery.value);
+    return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())
+    ).slice(0,6)
+} else {
+    localStorage.setItem("locationQuery", '');
+    return locations.value
+}
+})
+
 onMounted(async () => {
   locations.value=locations.value.map((loc)=>shortName(loc))
   locations.value.sort()
+  locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
       selectedLocation.value = localStorage.getItem("location");
@@ -226,20 +240,27 @@ if (props.isStartPage) {
             clearable
           ></v-text-field>
         </v-col>
-        <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
+        <!-- <v-col cols="8" class="d-flex justify-center" style="gap: 5px"> -->
+          <v-row class="justify-center align-center">
+          <v-col cols="6">
+            <v-text-field label ="Город" variant="underlined" class="w-100" v-model="locationQuery"></v-text-field>
+          </v-col>
+          <v-col cols="6" class="d-flex">
           <v-btn
-            v-for="(location, index) in locations"
+            v-for="(location, index) in filteredLocations"
             @click="selectLocation(index)"
             :class="isSelectedLocation(location) ? 'bg-red' : ''"
             :ripple="false"
-            class="rounded-pill btn"
+            class="rounded-pill btn mt-4"
             :size="useDisplay().mdAndUp.value ? undefined : 'small'"
             style="animation: blink"
             variant="flat"
           >
             {{ location }}
           </v-btn>
-        </v-col>
+          </v-col>
+        </v-row>
+        <!-- </v-col> -->
         <v-col cols="8" v-if="!isStartPage">
           <v-divider />
         </v-col>
