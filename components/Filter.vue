@@ -23,7 +23,7 @@ let categories = ref([]);
 
 // let categories = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
 
-let selectedLocation = ref("");
+let selectedLocation = ref({});
 
 let date_items = ["Сегодня", "На неделе", "Скоро"];
 
@@ -91,12 +91,13 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
+  console.log(index)
   if (selectedLocation.value == locations.value[index]) {
     selectedLocation.value = "";
     locationStore.location = "";
   } else {
-    locationStore.location = locations.value[index];
-    selectedLocation.value = locationStore.location;
+    locationStore.coordinates = locations.value[index].coordinates;
+    selectedLocation.value = locations.value[index];
   }
   localStorage.setItem("location", selectedLocation.value);
 }
@@ -149,7 +150,7 @@ let selectPosterType = (type) => {
   posterStore.filter = filter.value;
 };
 
-let isSelectedLocation = (name) => selectedLocation.value == name;
+let isSelectedLocation = (loc) => selectedLocation.value == loc;
 
 let isSelectedCategory = (name) =>
   filter.value.eventType ? filter.value.eventType.includes(name) : false;
@@ -183,9 +184,7 @@ let filteredLocations = computed(() => {
 })
 
 onMounted(async () => {
-  console.log(locations.value)
-  locations.value = locations.value.map( ({name,cord}) => ({[shortName(name)]:cord}) )
-  console.log(locations.value)
+  locations.value = locations.value.map( ({name,cord}) => ({name:shortName(name),cord}) )
   locations.value.sort()
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   if (!selectedLocation.value.length) {
@@ -238,7 +237,7 @@ if (props.isStartPage) {
             <v-col cols="auto" v-for="(location, index) in filteredLocations" @click="selectLocation(index)">
               <v-btn :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn mt-4"
                 :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
-                {{ location }}
+                {{ location.name }}
               </v-btn>
             </v-col>
           </v-row>
