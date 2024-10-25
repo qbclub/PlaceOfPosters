@@ -4,7 +4,7 @@ export default {
     getPostersOnModeration(status) {
         return $api.get(`/poster/get-posters-on-moderation?status=${status}`)
     },
-    getManagerPostersOnModeration(status,cities,areas,regions) {
+    getManagerPostersOnModeration(status, cities, areas, regions) {
         return $api.get(`/poster/get-manager-posters-on-moderation?status=${status}&cities=${cities}&areas=${areas}&regions=${regions}`)
     },
     getPosters(userId, posterStatus) {

@@ -5,7 +5,8 @@ import LocationsService from '../service/LocationsService.js'
 export const useLocations = defineStore('locations', {
     state: () => ({
         eventlocations: ref([]),
-        location: ref('')
+        location: ref(''),
+        radius: ref()
     }),
     getters: {
     },

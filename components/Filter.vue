@@ -11,7 +11,8 @@ let appState = await getAppState();
 let locationStore = useLocations();
 let posterStore = usePoster();
 let loading = ref(false);
-let locationQuery=ref('')
+let locationQuery = ref('')
+let locationRadius = ref()
 
 let showDatePicker = ref(false);
 
@@ -39,13 +40,14 @@ let filter = ref({
 });
 
 let shortName = (item) => {
-  let name = item.replace("(","").replace(")","").split(" ");
+  let name = item.replace("(", "").replace(")", "").split(" ");
   return name.pop();
 };
 
 async function closeDialog() {
   posterStore.posters = [];
   posterStore.page = 1;
+  locationStore.radius=locationRadius.value
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
@@ -54,6 +56,7 @@ async function closeDialog() {
 async function closePage() {
   posterStore.posters = [];
   posterStore.page = 1;
+  locationStore.radius=locationRadius.value
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
   navigateTo("/posters");
@@ -169,18 +172,20 @@ watch(
 
 let filteredLocations = computed(() => {
 
-if (locationQuery.value.length > 2) {
+  if (locationQuery.value.length > 2) {
     localStorage.setItem("locationQuery", locationQuery.value);
     return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())
-    ).slice(0,6)
-} else {
+    ).slice(0, 6)
+  } else {
     localStorage.setItem("locationQuery", '');
     return locations.value
-}
+  }
 })
 
 onMounted(async () => {
-  locations.value=locations.value.map((loc)=>shortName(loc))
+  console.log(locations.value)
+  locations.value = locations.value.map( ({name,cord}) => ({[shortName(name)]:cord}) )
+  console.log(locations.value)
   locations.value.sort()
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   if (!selectedLocation.value.length) {
@@ -209,21 +214,11 @@ if (props.isStartPage) {
   <v-container>
     <ClientOnly>
       <div v-if="loading" class="mt-10 w-100">
-        <v-skeleton-loader
-          max-width="300"
-          class="ma-auto d-flex justify-center"
-          type="text"
-        />
-        <v-skeleton-loader
-          min-width="100"
-          class="ma-auto d-flex justify-center"
-          type="button, button, button, button, button, button, button, button"
-        />
-        <v-skeleton-loader
-          min-width="100"
-          class="ma-auto d-flex justify-center"
-          type="button, button, button, button, button, button, button"
-        />
+        <v-skeleton-loader max-width="300" class="ma-auto d-flex justify-center" type="text" />
+        <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
+          type="button, button, button, button, button, button, button, button" />
+        <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
+          type="button, button, button, button, button, button, button" />
       </div>
 
       <v-row class="flex-column justify-center align-center">
@@ -231,83 +226,49 @@ if (props.isStartPage) {
           <h2>Настрой для себя</h2>
         </v-col>
         <v-col v-if="!isStartPage" cols="12" sm="6">
-          <v-text-field
-            v-model="filter.searchText"
-            variant="outlined"
-            density="compact"
-            label="Поиск"
-            hide-details
-            clearable
-          ></v-text-field>
+          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
+            clearable></v-text-field>
         </v-col>
-        <!-- <v-col cols="8" class="d-flex justify-center" style="gap: 5px"> -->
-          <v-row class="justify-center align-center">
-          <v-col cols="6">
-            <v-text-field label ="Город" variant="underlined" class="w-100" v-model="locationQuery"></v-text-field>
-          </v-col>
-          <v-col cols="6" class="d-flex">
-          <v-btn
-            v-for="(location, index) in filteredLocations"
-            @click="selectLocation(index)"
-            :class="isSelectedLocation(location) ? 'bg-red' : ''"
-            :ripple="false"
-            class="rounded-pill btn mt-4"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            style="animation: blink"
-            variant="flat"
-          >
-            {{ location }}
-          </v-btn>
-          </v-col>
-        </v-row>
-        <!-- </v-col> -->
+
+        <v-col cols="8" class="d-flex justify-center" style="gap: 5px">
+          <v-row>
+            <v-col cols="2">
+              <v-text-field label="Найти город" variant="underlined" v-model="locationQuery"></v-text-field>
+            </v-col>
+            <v-col cols="auto" v-for="(location, index) in filteredLocations" @click="selectLocation(index)">
+              <v-btn :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn mt-4"
+                :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
+                {{ location }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="8">
+          <span>Поиск по радиус</span>
+          <v-slider v-model="locationRadius" :step="100" :min="100" :max="1800" tooltipPlacement="right"
+            :tipFormatter="(s) => s + ' км'" />
+          <b>Радиус поиска {{ locationRadius }} км.</b>
+        </v-col>
+
         <v-col cols="8" v-if="!isStartPage">
           <v-divider />
         </v-col>
 
-        <v-col
-          v-if="!isStartPage"
-          cols="auto"
-          class="d-flex justify-center flex-wrap"
-          style="gap: 5px"
-        >
-          <v-btn
-            v-for="(item, index) in date_items"
-            @click="selectPeriod(item)"
-            :class="filter.date == item ? 'bg-red' : ''"
-            class="rounded-pill btn"
-            :ripple="false"
-            style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            variant="flat"
-          >
+        <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
+          <v-btn v-for="(item, index) in date_items" @click="selectPeriod(item)"
+            :class="filter.date == item ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+            style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             {{ item }}
           </v-btn>
 
-          <v-btn
-            :class="new Date(filter.date) != 'Invalid Date' ? 'bg-red' : ''"
-            icon="mdi-calendar"
-            density="comfortable"
-            variant="flat"
-            @click="showDatePicker = !showDatePicker"
-            :ripple="false"
-          />
+          <v-btn :class="new Date(filter.date) != 'Invalid Date' ? 'bg-red' : ''" icon="mdi-calendar"
+            density="comfortable" variant="flat" @click="showDatePicker = !showDatePicker" :ripple="false" />
         </v-col>
         <v-col cols="auto" v-show="showDatePicker">
-          <VueDatePicker
-            locale="ru"
-            v-model="filter.date"
-            input-class-name="dp-custom-input"
-            :enable-time-picker="false"
-            @update:model-value="selectDate(filter.date)"
-            cancel-text="отмена"
-            select-text="выбрать"
-            placeholder="дата"
-            timezone="UTC"
-            :transitions="{ open: 'fade', close: 'fade' }"
-            :flow="['calendar']"
-            format="dd/MM/yyyy"
-          />
+          <VueDatePicker locale="ru" v-model="filter.date" input-class-name="dp-custom-input"
+            :enable-time-picker="false" @update:model-value="selectDate(filter.date)" cancel-text="отмена"
+            select-text="выбрать" placeholder="дата" timezone="UTC" :transitions="{ open: 'fade', close: 'fade' }"
+            :flow="['calendar']" format="dd/MM/yyyy" />
         </v-col>
 
         <v-col cols="8">
@@ -315,27 +276,15 @@ if (props.isStartPage) {
         </v-col>
 
         <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
-          <v-btn
-            @click="selectPosterType('event')"
-            :class="filter.posterType == 'event' ? 'bg-red' : ''"
-            class="rounded-pill btn"
-            :ripple="false"
-            style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            variant="flat"
-          >
+          <v-btn @click="selectPosterType('event')" :class="filter.posterType == 'event' ? 'bg-red' : ''"
+            class="rounded-pill btn" :ripple="false" style="animation: blink"
+            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             Событие
           </v-btn>
 
-          <v-btn
-            @click="selectPosterType('place')"
-            :class="filter.posterType == 'place' ? 'bg-red' : ''"
-            class="rounded-pill btn"
-            :ripple="false"
-            style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            variant="flat"
-          >
+          <v-btn @click="selectPosterType('place')" :class="filter.posterType == 'place' ? 'bg-red' : ''"
+            class="rounded-pill btn" :ripple="false" style="animation: blink"
+            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             Место
           </v-btn>
         </v-col>
@@ -344,37 +293,19 @@ if (props.isStartPage) {
           <v-divider />
         </v-col>
         <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px">
-          <v-btn
-            v-for="(category, index) in categories"
-            @click="selectCategory(category.name)"
-            :class="isSelectedCategory(category.name) ? 'bg-red' : ''"
-            class="rounded-pill btn"
-            :ripple="false"
-            style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            variant="flat"
-          >
+          <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
+            :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+            style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             {{ category.name }}
           </v-btn>
-          <v-btn
-            class="rounded-pill btn text-accent"
-            :ripple="false"
-            style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'"
-            variant="outlined"
-            @click="clearFilter()"
-          >
+          <v-btn class="rounded-pill btn text-accent" :ripple="false" style="animation: blink"
+            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined" @click="clearFilter()">
             убрать
           </v-btn>
         </v-col>
         <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
-          <v-btn
-            @click="isStartPage ? closePage() : closeDialog()"
-            class="rounded-lg text-accent"
-            variant="outlined"
-            :ripple="false"
-            size="large"
-          >
+          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="rounded-lg text-accent" variant="outlined"
+            :ripple="false" size="large">
             Показать афиши
           </v-btn>
 
