@@ -11,6 +11,7 @@ let appState = await getAppState();
 let locationStore = useLocations();
 let posterStore = usePoster();
 let loading = ref(false);
+let locationCoordinates=ref([])
 let locationQuery = ref('')
 let locationRadius = ref()
 
@@ -23,7 +24,7 @@ let categories = ref([]);
 
 // let categories = _.sortBy(appState.value.eventTypes.filter(item => active_categories.value.includes(item.name)), ['name']);
 
-let selectedLocation = ref({});
+let selectedLocation = ref('');
 
 let date_items = ["Сегодня", "На неделе", "Скоро"];
 
@@ -91,12 +92,16 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
-  console.log(index)
+  // console.log(locationCoordinates.value[index])
   if (selectedLocation.value == locations.value[index]) {
     selectedLocation.value = "";
     locationStore.location = "";
   } else {
-    locationStore.coordinates = locations.value[index].coordinates;
+    locationStore.location = locations.value[index];
+    if (locationCoordinates.value[index]?.length){
+      console.log(locationCoordinates.value[index])
+      locationStore.coordinates = locationCoordinates.value[index];
+    }
     selectedLocation.value = locations.value[index];
   }
   localStorage.setItem("location", selectedLocation.value);
@@ -150,7 +155,7 @@ let selectPosterType = (type) => {
   posterStore.filter = filter.value;
 };
 
-let isSelectedLocation = (loc) => selectedLocation.value == loc;
+let isSelectedLocation = (name) => selectedLocation.value == name;
 
 let isSelectedCategory = (name) =>
   filter.value.eventType ? filter.value.eventType.includes(name) : false;
@@ -176,7 +181,7 @@ let filteredLocations = computed(() => {
   if (locationQuery.value.length > 2) {
     localStorage.setItem("locationQuery", locationQuery.value);
     return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())
-    ).slice(0, 6)
+    ).slice(0, 3)
   } else {
     localStorage.setItem("locationQuery", '');
     return locations.value
@@ -184,9 +189,11 @@ let filteredLocations = computed(() => {
 })
 
 onMounted(async () => {
-  locations.value = locations.value.map( ({name,cord}) => ({name:shortName(name),cord}) )
+  locationCoordinates.value=locations.value.map((item)=> item.coordinates)
+  locations.value = locations.value.map( (item)=> shortName(item.name) )
   locations.value.sort()
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
+
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
       selectedLocation.value = localStorage.getItem("location");
@@ -237,14 +244,14 @@ if (props.isStartPage) {
             <v-col cols="auto" v-for="(location, index) in filteredLocations" @click="selectLocation(index)">
               <v-btn :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn mt-4"
                 :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
-                {{ location.name }}
+                {{ location }}
               </v-btn>
             </v-col>
           </v-row>
         </v-col>
         <v-col cols="8">
-          <span>Поиск по радиус</span>
-          <v-slider v-model="locationRadius" :step="100" :min="100" :max="1800" tooltipPlacement="right"
+          <span>Поиск по радиусу</span>
+          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
             :tipFormatter="(s) => s + ' км'" />
           <b>Радиус поиска {{ locationRadius }} км.</b>
         </v-col>

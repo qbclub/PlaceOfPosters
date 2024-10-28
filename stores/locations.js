@@ -6,7 +6,8 @@ export const useLocations = defineStore('locations', {
     state: () => ({
         eventlocations: ref([]),
         location: ref(''),
-        radius: ref()
+        coordinates: ref([58.133,52.666]),
+        radius: ref(0)
     }),
     getters: {
     },
