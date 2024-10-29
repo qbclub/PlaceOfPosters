@@ -85,7 +85,7 @@ export const usePoster = defineStore('poster', {
             send.radius = useLocations().radius ? useLocations().radius : ''
             send.coordinates = useLocations().coordinates ? useLocations().coordinates : ''
             send.page = this.page
-            console.log(send)
+            // console.log(send)
             if (this.page == 1) {
                 this.load = true
             }

@@ -2,6 +2,7 @@
 import { useDisplay } from "vuetify/lib/framework.mjs";
 import _ from "lodash";
 import { useDate } from "vuetify";
+import gsap from 'gsap'
 
 const props = defineProps(["isStartPage", "activateCategory"]);
 let emit = defineEmits(["closeDialog"]);
@@ -14,6 +15,7 @@ let loading = ref(false);
 let locationCoordinates=ref([])
 let locationQuery = ref('')
 let locationRadius = ref()
+let tl = gsap.timeline({paused: true})
 
 let showDatePicker = ref(false);
 
@@ -49,6 +51,7 @@ async function closeDialog() {
   posterStore.posters = [];
   posterStore.page = 1;
   locationStore.radius=locationRadius.value
+  localStorage.setItem("locationRadius",locationRadius.value);
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
@@ -99,10 +102,10 @@ function selectLocation(index) {
   } else {
     locationStore.location = locations.value[index];
     if (locationCoordinates.value[index]?.length){
-      console.log(locationCoordinates.value[index])
       locationStore.coordinates = locationCoordinates.value[index];
     }
     selectedLocation.value = locations.value[index];
+    tl.restart()
   }
   localStorage.setItem("location", selectedLocation.value);
 }
@@ -189,10 +192,22 @@ let filteredLocations = computed(() => {
 })
 
 onMounted(async () => {
+  locations.value.sort((a, b) => {
+  let firstName=shortName(a.name)
+  let secondName=shortName(b.name)
+  if (firstName < secondName) {
+    return -1;
+  }
+  if (firstName > secondName) {
+    return 1;
+  }
+  return 0;
+  })
   locationCoordinates.value=locations.value.map((item)=> item.coordinates)
   locations.value = locations.value.map( (item)=> shortName(item.name) )
-  locations.value.sort()
+
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
+  locationRadius.value = Number(localStorage.getItem("locationRadius")) ?? '';
 
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
@@ -208,6 +223,15 @@ onMounted(async () => {
     posterStore.filter = filter.value;
   }
   await setActiveCategory();
+  tl.to('.gsap-radius-show', {
+        duration: 0.25,
+        y:25
+    });
+  tl.to('.gsap-radius-show', {
+        duration: 0.25,
+        opacity: 1,
+        y:0
+    });
 });
 
 if (props.isStartPage) {
@@ -249,7 +273,7 @@ if (props.isStartPage) {
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="8">
+        <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation!=''">
           <span>Поиск по радиусу</span>
           <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
             :tipFormatter="(s) => s + ' км'" />
@@ -346,7 +370,9 @@ $white: #ffffff;
     background: $red;
   }
 }
-
+.gsap-radius-show{
+  opacity:0
+}
 .btn.bg-red {
   animation: blink 1s;
 }
