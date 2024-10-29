@@ -12,10 +12,10 @@ let appState = await getAppState();
 let locationStore = useLocations();
 let posterStore = usePoster();
 let loading = ref(false);
-let locationCoordinates=ref([])
+let locationCoordinates = ref([])
 let locationQuery = ref('')
 let locationRadius = ref()
-let tl = gsap.timeline({paused: true})
+let tl = gsap.timeline({ paused: true })
 
 let showDatePicker = ref(false);
 
@@ -50,8 +50,8 @@ let shortName = (item) => {
 async function closeDialog() {
   posterStore.posters = [];
   posterStore.page = 1;
-  locationStore.radius=locationRadius.value
-  localStorage.setItem("locationRadius",locationRadius.value);
+  locationStore.radius = locationRadius.value
+  localStorage.setItem("locationRadius", locationRadius.value);
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
@@ -60,7 +60,7 @@ async function closeDialog() {
 async function closePage() {
   posterStore.posters = [];
   posterStore.page = 1;
-  locationStore.radius=locationRadius.value
+  locationStore.radius = locationRadius.value
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
   navigateTo("/posters");
@@ -101,7 +101,7 @@ function selectLocation(index) {
     locationStore.location = "";
   } else {
     locationStore.location = locations.value[index];
-    if (locationCoordinates.value[index]?.length){
+    if (locationCoordinates.value[index]?.length) {
       locationStore.coordinates = locationCoordinates.value[index];
     }
     selectedLocation.value = locations.value[index];
@@ -183,8 +183,7 @@ let filteredLocations = computed(() => {
 
   if (locationQuery.value.length > 2) {
     localStorage.setItem("locationQuery", locationQuery.value);
-    return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())
-    ).slice(0, 3)
+    return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())).slice(0, 3)
   } else {
     localStorage.setItem("locationQuery", '');
     return locations.value
@@ -193,18 +192,18 @@ let filteredLocations = computed(() => {
 
 onMounted(async () => {
   locations.value.sort((a, b) => {
-  let firstName=shortName(a.name)
-  let secondName=shortName(b.name)
-  if (firstName < secondName) {
-    return -1;
-  }
-  if (firstName > secondName) {
-    return 1;
-  }
-  return 0;
+    let firstName = shortName(a.name)
+    let secondName = shortName(b.name)
+    if (firstName < secondName) {
+      return -1;
+    }
+    if (firstName > secondName) {
+      return 1;
+    }
+    return 0;
   })
-  locationCoordinates.value=locations.value.map((item)=> item.coordinates)
-  locations.value = locations.value.map( (item)=> shortName(item.name) )
+  locationCoordinates.value = locations.value.map((item) => item.coordinates)
+  locations.value = locations.value.map((item) => shortName(item.name))
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   locationRadius.value = Number(localStorage.getItem("locationRadius")) ?? '';
@@ -224,14 +223,15 @@ onMounted(async () => {
   }
   await setActiveCategory();
   tl.to('.gsap-radius-show', {
-        duration: 0.25,
-        y:25
-    });
+    duration: 0.25,
+    y: 25
+  });
   tl.to('.gsap-radius-show', {
-        duration: 0.25,
-        opacity: 1,
-        y:0
-    });
+    duration: 0.25,
+    opacity: 1,
+    y: 0
+  });
+  tl.play()
 });
 
 if (props.isStartPage) {
@@ -251,7 +251,11 @@ if (props.isStartPage) {
           type="button, button, button, button, button, button, button" />
       </div>
 
-      <v-row class="flex-column justify-center align-center">
+      <v-row class="flex-column justify-center align-center" style="position:relative">
+        <!-- <div class="close-icon"> -->
+          <v-icon @click="emit('closeDialog')" icon="mdi-close" size="large" class="close_icon">
+          </v-icon>
+        <!-- </div> -->
         <v-col v-if="isStartPage" cols="auto" class="pb-0">
           <h2>Настрой для себя</h2>
         </v-col>
@@ -273,7 +277,7 @@ if (props.isStartPage) {
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation!=''">
+        <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation != ''">
           <span>Поиск по радиусу</span>
           <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
             :tipFormatter="(s) => s + ' км'" />
@@ -370,10 +374,17 @@ $white: #ffffff;
     background: $red;
   }
 }
-.gsap-radius-show{
-  opacity:0
+
+.gsap-radius-show {
+  opacity: 0
 }
+
 .btn.bg-red {
   animation: blink 1s;
+}
+.close_icon{
+  position: absolute;
+  right:10px;
+  top:10px
 }
 </style>
