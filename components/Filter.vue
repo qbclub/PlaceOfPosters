@@ -78,6 +78,7 @@ function clearFilter() {
     posterType: "",
   };
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
+  localStorage.setItem("locationRadius", 20);
   posterStore.filter = filter.value;
 }
 
@@ -279,7 +280,7 @@ if (props.isStartPage) {
         </v-col>
         <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation != ''">
           <span>Поиск по радиусу</span>
-          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
+          <v-slider v-model="locationRadius" :step="100" :min="20" :max="1800" tooltipPlacement="right"
             :tipFormatter="(s) => s + ' км'" />
           <b>Радиус поиска {{ locationRadius }} км.</b>
         </v-col>

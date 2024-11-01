@@ -17,7 +17,7 @@ let checkRout = () => {
 
   <div class="card rounded " @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
    
-    <v-img class="h-100" :src="poster.image" cover :class="{ hide: poster.isHidden }">
+    <v-img class="h-100" :src="poster.image" cover :class="{ hide: poster.isHidden }" alt="No internet">
       <!-- <img :srcset="poster.image"  loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/> -->
 
     </v-img>

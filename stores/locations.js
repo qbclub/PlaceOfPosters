@@ -7,7 +7,7 @@ export const useLocations = defineStore('locations', {
         eventlocations: ref([]),
         location: ref(''),
         coordinates: ref([58.133,52.666]),
-        radius: ref(0)
+        radius: ref(20)
     }),
     getters: {
     },
