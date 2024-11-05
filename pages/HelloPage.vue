@@ -21,6 +21,7 @@ onMounted(async () => {
         if (!locationsStore.location.length) {
             if (localStorage.getItem('location')) {
                 locationsStore.location = localStorage.getItem('location')
+                locationsStore.coordinates = localStorage.getItem('locationCoordinates')
             }
         }
 

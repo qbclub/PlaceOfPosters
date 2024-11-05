@@ -80,7 +80,7 @@ export const usePoster = defineStore('poster', {
         async fetchPosters(filter) {
 
             let send = Object.assign({}, filter)
-            // send.eventLocation = useLocations().location ? useLocations().location : ''
+            send.eventLocation = useLocations().location ? useLocations().location : ''
             send.radius = useLocations().radius ? useLocations().radius : ''
             send.coordinates = useLocations().coordinates ? useLocations().coordinates : ''
             send.page = this.page

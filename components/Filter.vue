@@ -14,7 +14,7 @@ let posterStore = usePoster();
 let loading = ref(false);
 let locationCoordinates = ref([])
 let locationQuery = ref('')
-let locationRadius = ref()
+let locationRadius = ref(20)
 let tl = gsap.timeline({ paused: true })
 
 let showDatePicker = ref(false);
@@ -50,9 +50,10 @@ let shortName = (item) => {
 async function closeDialog() {
   posterStore.posters = [];
   posterStore.page = 1;
-  locationStore.radius = locationRadius.value
+  console.log(locationRadius.value,locationStore.location)
   localStorage.setItem("locationRadius", locationRadius.value);
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
+  locationStore.radius = locationRadius.value
   posterStore.filter = filter.value;
   await posterStore.fetchPosters(filter.value);
   emit("closeDialog");
@@ -104,6 +105,7 @@ function selectLocation(index) {
     locationStore.location = locations.value[index];
     if (locationCoordinates.value[index]?.length) {
       locationStore.coordinates = locationCoordinates.value[index];
+      localStorage.setItem("locationCoordinates", selectedLocation.value);
     }
     selectedLocation.value = locations.value[index];
     tl.restart()
@@ -214,7 +216,7 @@ onMounted(async () => {
       selectedLocation.value = localStorage.getItem("location");
     }
   }
-
+  console.log('filter')
   if (localStorage.getItem("filterForm")) {
     filter.value = JSON.parse(localStorage.getItem("filterForm"));
     if (typeof filter.value.date == "number") {
@@ -280,7 +282,7 @@ if (props.isStartPage) {
         </v-col>
         <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation != ''">
           <span>Поиск по радиусу</span>
-          <v-slider v-model="locationRadius" :step="100" :min="20" :max="1800" tooltipPlacement="right"
+          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
             :tipFormatter="(s) => s + ' км'" />
           <b>Радиус поиска {{ locationRadius }} км.</b>
         </v-col>
