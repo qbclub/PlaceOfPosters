@@ -12,7 +12,7 @@ let route = useRoute()
 const { mobile } = useDisplay()
 
 const wrapper = ref(null)
-let observer
+
 let radio = computed(() => {
   if (mobile.value) {
     return [{ label: 1, value: "12" }, { label: 2, value: "6" }, { label: 3, value: "4" }]
@@ -64,6 +64,7 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
+let showImage = ref(false)
 
 onMounted(async () => {
   await setCols()
@@ -74,26 +75,16 @@ onMounted(async () => {
       let el = document.getElementById(id)
       el?.scrollIntoView()
     }
+
+    let amount = Number(cols.value) * 3
+    await Promise.all(posterStore.posters.map(async (poster, index) => {
+      if (index > amount - 1) return
+      await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
+    }))
+    showImage.value = true
   }
   wrapper.value.addEventListener("scroll", handleScroll);
 })
-
-observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        loadImage(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  });
-
-  document.querySelectorAll('.poster').forEach((poster) => {
-    observer.observe(poster);
-  });
-
-  onBeforeUnmount(() => {
-  observer.disconnect();
-});
 
 useNuxtApp().hook('page:finish', () => loading.value = true)
 </script>
@@ -122,7 +113,7 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1 poster">
-          <PosterCard :poster="item" :id='item._id' />
+          <PosterCard :poster="item" :id='item._id' :showImage="showImage" />
         </v-col>
 
       </v-row>

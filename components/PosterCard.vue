@@ -1,6 +1,6 @@
 <script setup>
 
-const { poster, isFrame } = defineProps(["poster", "isFrame"]);
+const { poster, isFrame, showImage } = defineProps(["poster", "isFrame", "showImage"]);
 let checkRout = () => {
 
   if (isFrame) {
@@ -17,7 +17,7 @@ let checkRout = () => {
 
   <div class="card rounded " @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
    
-    <v-img class="h-100" :src="poster.image" cover :class="{ hide: poster.isHidden }">
+    <v-img class="h-100" :src="showImage ? poster.image : undefined" cover :class="{ hide: poster.isHidden }">
       <!-- <img :srcset="poster.image"  loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/> -->
 
     </v-img>
