@@ -21,6 +21,8 @@ let routeTo = (path) => {
 
 let closeFilter = async () => {
   filter.value = JSON.parse(localStorage.getItem("filterForm"));
+  locationsStore.coordinates = localStorage.getItem('locationCoordinates').split(',').map((item)=>parseFloat(item))
+  locationsStore.radius = localStorage.getItem('locationRadius')
   posterStore.filter = filter.value;
   navigateTo("/posters");
   showFilter.value = false;
@@ -80,6 +82,7 @@ watch(location, async (newValue, oldValue) => {
 watch(filter, () => {
   checkFilter();
 },{deep:true});
+
 let setApp = async () => {
   await useAppStore().getAppState();
   await locationsStore.fetchLocations();

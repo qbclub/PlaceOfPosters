@@ -22,6 +22,7 @@ onMounted(async () => {
             if (localStorage.getItem('location')) {
                 locationsStore.location = localStorage.getItem('location')
                 locationsStore.coordinates = localStorage.getItem('locationCoordinates')
+                locationsStore.radius = localStorage.getItem('locationRadius')
             }
         }
 

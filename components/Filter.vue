@@ -13,8 +13,9 @@ let locationStore = useLocations();
 let posterStore = usePoster();
 let loading = ref(false);
 let locationCoordinates = ref([])
+let fullLocations = ref([])
 let locationQuery = ref('')
-let locationRadius = ref(20)
+let locationRadius = ref(0)
 let tl = gsap.timeline({ paused: true })
 
 let showDatePicker = ref(false);
@@ -50,7 +51,6 @@ let shortName = (item) => {
 async function closeDialog() {
   posterStore.posters = [];
   posterStore.page = 1;
-  console.log(locationRadius.value,locationStore.location)
   localStorage.setItem("locationRadius", locationRadius.value);
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
   locationStore.radius = locationRadius.value
@@ -79,7 +79,7 @@ function clearFilter() {
     posterType: "",
   };
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
-  localStorage.setItem("locationRadius", 20);
+  localStorage.setItem("locationRadius", 0);
   posterStore.filter = filter.value;
 }
 
@@ -97,20 +97,19 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
-  // console.log(locationCoordinates.value[index])
   if (selectedLocation.value == locations.value[index]) {
     selectedLocation.value = "";
     locationStore.location = "";
   } else {
-    locationStore.location = locations.value[index];
+    locationStore.location = fullLocations.value[index];
     if (locationCoordinates.value[index]?.length) {
       locationStore.coordinates = locationCoordinates.value[index];
-      localStorage.setItem("locationCoordinates", selectedLocation.value);
+      localStorage.setItem("locationCoordinates", locationCoordinates.value[index]);
     }
     selectedLocation.value = locations.value[index];
     tl.restart()
   }
-  localStorage.setItem("location", selectedLocation.value);
+  localStorage.setItem("location", fullLocations.value[index]);
 }
 function selectCategory(name) {
   // let name = categories.value[index].name
@@ -206,6 +205,7 @@ onMounted(async () => {
     return 0;
   })
   locationCoordinates.value = locations.value.map((item) => item.coordinates)
+  fullLocations.value = locations.value.map((item) => item.fullLocation)
   locations.value = locations.value.map((item) => shortName(item.name))
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
@@ -213,10 +213,10 @@ onMounted(async () => {
 
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
-      selectedLocation.value = localStorage.getItem("location");
+      let index = fullLocations.value.findIndex((item)=> item==localStorage.getItem("location"))
+      selectedLocation.value = locations.value[index]
     }
   }
-  console.log('filter')
   if (localStorage.getItem("filterForm")) {
     filter.value = JSON.parse(localStorage.getItem("filterForm"));
     if (typeof filter.value.date == "number") {
@@ -280,11 +280,10 @@ if (props.isStartPage) {
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="8" class="gsap-radius-show" v-show="selectedLocation != ''">
+        <v-col cols="8" class="gsap-radius-show pt-0" v-show="selectedLocation != ''">
           <span>Поиск по радиусу</span>
-          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" tooltipPlacement="right"
-            :tipFormatter="(s) => s + ' км'" />
-          <b>Радиус поиска {{ locationRadius }} км.</b>
+          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" density="compact" class="ma-0" style="position:relative"/>
+          <b style="position:absolute; top:60px">Радиус поиска {{ locationRadius }} км.</b>
         </v-col>
 
         <v-col cols="8" v-if="!isStartPage">
