@@ -97,17 +97,20 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
-  if (selectedLocation.value == locations.value[index]) {
+  console.log(filteredLocations.value[index])
+  if (selectedLocation.value == filteredLocations.value[index]) {
     selectedLocation.value = "";
     locationStore.location = "";
   } else {
+    if (selectedLocation.value ==""){
+      tl.restart()
+    }
     locationStore.location = fullLocations.value[index];
     if (locationCoordinates.value[index]?.length) {
       locationStore.coordinates = locationCoordinates.value[index];
       localStorage.setItem("locationCoordinates", locationCoordinates.value[index]);
     }
     selectedLocation.value = locations.value[index];
-    tl.restart()
   }
   localStorage.setItem("location", fullLocations.value[index]);
 }
@@ -204,9 +207,9 @@ onMounted(async () => {
     }
     return 0;
   })
-  locationCoordinates.value = locations.value.map((item) => item.coordinates)
-  fullLocations.value = locations.value.map((item) => item.fullLocation)
-  locations.value = locations.value.map((item) => shortName(item.name))
+  // locationCoordinates.value = locations.value.map((item) => item.coordinates)
+  // fullLocations.value = locations.value.map((item) => item.fullLocation)
+  // locations.value = locations.value.map((item) => shortName(item.name))
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   locationRadius.value = Number(localStorage.getItem("locationRadius")) ?? '';
@@ -225,6 +228,7 @@ onMounted(async () => {
     posterStore.filter = filter.value;
   }
   await setActiveCategory();
+
   tl.to('.gsap-radius-show', {
     duration: 0.25,
     y: 25
@@ -235,6 +239,7 @@ onMounted(async () => {
     y: 0
   });
   tl.play()
+  
 });
 
 if (props.isStartPage) {
@@ -262,28 +267,31 @@ if (props.isStartPage) {
         <v-col v-if="isStartPage" cols="auto" class="pb-0">
           <h2>Настрой для себя</h2>
         </v-col>
-        <v-col v-if="!isStartPage" cols="12" sm="6">
+        <v-col v-if="!isStartPage" cols="10" sm="6">
           <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
             clearable></v-text-field>
         </v-col>
 
         <v-col cols="8" class="d-flex justify-center" style="gap: 5px">
-          <v-row>
-            <v-col cols="2">
-              <v-text-field label="Найти город" variant="underlined" v-model="locationQuery"></v-text-field>
-            </v-col>
-            <v-col cols="auto" v-for="(location, index) in filteredLocations" @click="selectLocation(index)">
-              <v-btn :class="isSelectedLocation(location) ? 'bg-red' : ''" :ripple="false" class="rounded-pill btn mt-4"
-                :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
-                {{ location }}
+          <div style="width:100px; margin-right:20px; ">
+          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" hide-details></v-text-field>
+          </div>
+          <div v-for="(location, index) in filteredLocations">
+              <v-btn 
+              @click="selectLocation(index)"
+              :class="isSelectedLocation(location) ? 'bg-red' : ''"
+              :ripple="false"
+              class="rounded-pill btn mt-4"
+              :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
+              {{`${index} ${location}` }} 
               </v-btn>
-            </v-col>
-          </v-row>
+            </div>
         </v-col>
-        <v-col cols="8" class="gsap-radius-show pt-0" v-show="selectedLocation != ''">
-          <span>Поиск по радиусу</span>
-          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" density="compact" class="ma-0" style="position:relative"/>
-          <b style="position:absolute; top:60px">Радиус поиска {{ locationRadius }} км.</b>
+        <v-col cols="2" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
+          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" density="compact" hide-details color="#ED413E" thumb-size="15" />
+          <div style="text-align: center;">
+            {{selectedLocation + ' + ' + locationRadius }} км.
+          </div>
         </v-col>
 
         <v-col cols="8" v-if="!isStartPage">
