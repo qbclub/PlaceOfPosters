@@ -11,6 +11,4 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (localStorage.getItem('locationCoordinates')) {
         useLocations().radius = Number(localStorage.getItem('locationRadius'))
     }
-    // locationsStore.coordinates = localStorage.getItem('locationCoordinates').split(',').map((item)=>parseFloat(item))
-    // locationsStore.radius = localStorage.getItem('locationRadius')
 })

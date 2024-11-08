@@ -98,21 +98,21 @@ async function setActiveCategory() {
 
 function selectLocation(index) {
   console.log(filteredLocations.value[index])
-  if (selectedLocation.value == filteredLocations.value[index]) {
+  if (selectedLocation.value == filteredLocations.value[index].name) {
     selectedLocation.value = "";
     locationStore.location = "";
   } else {
     if (selectedLocation.value ==""){
       tl.restart()
     }
-    locationStore.location = fullLocations.value[index];
-    if (locationCoordinates.value[index]?.length) {
-      locationStore.coordinates = locationCoordinates.value[index];
-      localStorage.setItem("locationCoordinates", locationCoordinates.value[index]);
+    locationStore.location = filteredLocations.value[index].fullLocation;
+    if (locations.value[index]?.name?.length) {
+      locationStore.coordinates = filteredLocations.value[index].coordinates;
+      localStorage.setItem("locationCoordinates", filteredLocations.value[index].coordinates);
     }
-    selectedLocation.value = locations.value[index];
+    selectedLocation.value = filteredLocations.value[index].name;
   }
-  localStorage.setItem("location", fullLocations.value[index]);
+  localStorage.setItem("location", filteredLocations.value[index].fullLocation);
 }
 function selectCategory(name) {
   // let name = categories.value[index].name
@@ -188,7 +188,7 @@ let filteredLocations = computed(() => {
 
   if (locationQuery.value.length > 2) {
     localStorage.setItem("locationQuery", locationQuery.value);
-    return locations.value.filter((loc) => loc.toLowerCase().includes(locationQuery.value.toLowerCase())).slice(0, 3)
+    return locations.value.filter((loc) => loc.name.toLowerCase().includes(locationQuery.value.toLowerCase())).slice(0, 5)
   } else {
     localStorage.setItem("locationQuery", '');
     return locations.value
@@ -196,28 +196,28 @@ let filteredLocations = computed(() => {
 })
 
 onMounted(async () => {
-  locations.value.sort((a, b) => {
-    let firstName = shortName(a.name)
-    let secondName = shortName(b.name)
-    if (firstName < secondName) {
-      return -1;
-    }
-    if (firstName > secondName) {
-      return 1;
-    }
-    return 0;
-  })
-  // locationCoordinates.value = locations.value.map((item) => item.coordinates)
-  // fullLocations.value = locations.value.map((item) => item.fullLocation)
-  // locations.value = locations.value.map((item) => shortName(item.name))
+  locations.value.map((item) => item.name=shortName(item.name))
+  _.sortBy(locations.value, ['name']);
+  // locations.value.sort((a, b) => {
+  //   // if (a.name< b.name) {
+  //   //   return -1;
+  //   // }
+  //   // if (a.name > b.name) {
+  //   //   return 1;
+  //   // }
+  //   // return 0;
+  //   return a.name<b.name ? -1 :
+  //   a.name> b.name ? 1 :
+  //   0
+  // })
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   locationRadius.value = Number(localStorage.getItem("locationRadius")) ?? '';
 
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
-      let index = fullLocations.value.findIndex((item)=> item==localStorage.getItem("location"))
-      selectedLocation.value = locations.value[index]
+      let index = locations.value.findIndex((item)=> item.fullLocation==localStorage.getItem("location"))
+      selectedLocation.value = locations.value[index].name
     }
   }
   if (localStorage.getItem("filterForm")) {
@@ -279,11 +279,11 @@ if (props.isStartPage) {
           <div v-for="(location, index) in filteredLocations">
               <v-btn 
               @click="selectLocation(index)"
-              :class="isSelectedLocation(location) ? 'bg-red' : ''"
+              :class="isSelectedLocation(location.name) ? 'bg-red' : ''"
               :ripple="false"
               class="rounded-pill btn mt-4"
               :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
-              {{`${index} ${location}` }} 
+              {{location.name}}
               </v-btn>
             </div>
         </v-col>
