@@ -288,7 +288,7 @@ if (props.isStartPage) {
             </div>
         </v-col>
         <v-col cols="2" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
-          <v-slider v-model="locationRadius" :step="100" :min="0" :max="1800" density="compact" hide-details color="#ED413E" thumb-size="15" />
+          <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details color="#ED413E" thumb-size="15" />
           <div style="text-align: center;">
             {{selectedLocation + ' + ' + locationRadius }} км.
           </div>

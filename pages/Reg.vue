@@ -15,14 +15,14 @@ const { meta, handleSubmit, handleReset } = useForm({
 			return 'неправильный формат'
 		},
 		firstname(value) {
-			if (value?.length >= 3) return true
+			if (value?.length >= 2) return true
 
-			return 'нужно 3 символа'
+			return 'нужно 2 символа'
 		},
 		lastname(value) {
-			if (value?.length >= 3) return true
+			if (value?.length >= 2) return true
 
-			return 'нужно 3 символа'
+			return 'нужно 2 символа'
 		},
 		phone(value) {
 			if (value?.length > 9 && /[0-9-]+/.test(value)) return true

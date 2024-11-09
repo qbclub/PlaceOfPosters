@@ -10,7 +10,7 @@ let cols = ref('')
 const wrapper = ref(null)
 const route = useRoute();
 let locationsStore = useLocations()
-
+let showImage = ref(false)
 
 
 definePageMeta({
@@ -59,6 +59,20 @@ onMounted(async () => {
       el?.scrollIntoView()
     }
   }
+  if (process.client) {
+    if (route.hash) {
+      let id = route.hash.slice(1)
+      let el = document.getElementById(id)
+      el?.scrollIntoView()
+    }
+
+    let amount = Number(cols.value) * 3
+    await Promise.all(posterStore.posters.map(async (poster, index) => {
+      if (index > amount - 1) return
+      await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
+    }))
+    showImage.value = true
+  }
 
 
   wrapper.value.addEventListener("scroll", handleScroll);
@@ -95,7 +109,7 @@ onMounted(async () => {
         <v-row class="justify-center flex-wrap w-100 pa-1 pb-4">
           <!-- <v-fade-transition group leave-absolute hide-on-leave> -->
           <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1">
-            <PosterCard :poster="item" :id='item._id' :isFrame="true" />
+            <PosterCard :poster="item" :id='item._id' :isFrame="true" :showImage="showImage" />
           </v-col>
           <!-- </v-fade-transition> -->
         </v-row>
