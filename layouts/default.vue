@@ -68,7 +68,8 @@ let checkFilter = async () => {
 
 watch(location, async (newValue, oldValue) => {
   if (location.value) {
-    locationsStore.location = location.value;
+    // locationsStore.location = location.value.split(', ').filter((item)=>item[0]!='у' && (item[0]!='д' || item[1]!='е') && item[0]!='к').join(', ').replace("(", "").replace(")", "").split(" ").pop() ;
+    locationsStore.location = location.value
     localStorage.setItem("location", location.value);
   } else {
     locationsStore.location = "";
