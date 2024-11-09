@@ -251,13 +251,13 @@ if (props.isStartPage) {
 <template>
   <v-container>
     <ClientOnly>
-      <div v-if="loading" class="mt-10 w-100">
+      <!-- <div v-if="loading" class="mt-10 w-100">
         <v-skeleton-loader max-width="300" class="ma-auto d-flex justify-center" type="text" />
         <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
           type="button, button, button, button, button, button, button, button" />
         <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
           type="button, button, button, button, button, button, button" />
-      </div>
+      </div> -->
 
       <v-row class="flex-column justify-center align-center" style="position:relative">
         <!-- <div class="close-icon"> -->
@@ -272,7 +272,7 @@ if (props.isStartPage) {
             clearable></v-text-field>
         </v-col>
 
-        <v-col cols="8" class="d-flex justify-center" style="gap: 5px">
+        <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
           <div style="width:100px; margin-right:20px; ">
           <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" hide-details></v-text-field>
           </div>
