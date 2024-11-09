@@ -97,7 +97,7 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
-  console.log(filteredLocations.value[index])
+
   if (selectedLocation.value == filteredLocations.value[index].name) {
     selectedLocation.value = "";
     locationStore.location = "";
@@ -197,19 +197,8 @@ let filteredLocations = computed(() => {
 
 onMounted(async () => {
   locations.value.map((item) => item.name=shortName(item.name))
+  console.log(locations.value)
   _.sortBy(locations.value, ['name']);
-  // locations.value.sort((a, b) => {
-  //   // if (a.name< b.name) {
-  //   //   return -1;
-  //   // }
-  //   // if (a.name > b.name) {
-  //   //   return 1;
-  //   // }
-  //   // return 0;
-  //   return a.name<b.name ? -1 :
-  //   a.name> b.name ? 1 :
-  //   0
-  // })
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
   locationRadius.value = Number(localStorage.getItem("locationRadius")) ?? '';
@@ -251,13 +240,7 @@ if (props.isStartPage) {
 <template>
   <v-container>
     <ClientOnly>
-      <!-- <div v-if="loading" class="mt-10 w-100">
-        <v-skeleton-loader max-width="300" class="ma-auto d-flex justify-center" type="text" />
-        <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
-          type="button, button, button, button, button, button, button, button" />
-        <v-skeleton-loader min-width="100" class="ma-auto d-flex justify-center"
-          type="button, button, button, button, button, button, button" />
-      </div> -->
+    
 
       <v-row class="flex-column justify-center align-center" style="position:relative">
         <!-- <div class="close-icon"> -->
@@ -268,14 +251,15 @@ if (props.isStartPage) {
           <h2>Настрой для себя</h2>
         </v-col>
         <v-col v-if="!isStartPage" cols="10" sm="6">
-          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
+          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск"  hide-details
             clearable></v-text-field>
         </v-col>
 
         <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
-          <div style="width:100px; margin-right:20px; ">
-          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" hide-details></v-text-field>
+          <div style="width:120px; margin-right:20px; ">
+          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" hide-details clearable></v-text-field>
           </div>
+       
           <div v-for="(location, index) in filteredLocations">
               <v-btn 
               @click="selectLocation(index)"
@@ -287,7 +271,7 @@ if (props.isStartPage) {
               </v-btn>
             </div>
         </v-col>
-        <v-col cols="2" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
+        <v-col cols="6" sm="4" md="3" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
           <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details color="#ED413E" thumb-size="15" />
           <div style="text-align: center;">
             {{selectedLocation + ' + ' + locationRadius }} км.

@@ -31,25 +31,7 @@ let checkFilter = async () => {
   if (localStorage.getItem("filterForm")) {
     // filter.value = JSON.parse(localStorage.getItem('filterForm'))
     posterStore.filter = filter.value;
-    // for (const key in filter) {
-    //   if (key == "eventType") {
-    //     if (filter.value.eventType.length)
-    //       isFiltered.value = true
-    //     break
-    //   }
-    //   else {
-    //     if (filter.value[key]) {
-    //       isFiltered.value = true
-    //       break
-    //     }
-    //   }
-    //   isFiltered.value = false
-    //   if (filter.value[key]) {
-    //     if (filter.value.eventType.length)
-    //       isFiltered.value = true
-    //     break
-    //   }
-    // }
+
     if (
       filter.value.searchText == "" &&
       filter.value.date == "" &&
