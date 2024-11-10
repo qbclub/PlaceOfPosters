@@ -4,10 +4,16 @@ export const getAppState = async () =>
       baseURL: useRuntimeConfig().public.apiBase,
     })
   ).data;
-export const getActiveCategories = async (location:string) =>
+export const getActiveCategories = async (location:string, radius:number, coordinates:[number, number]) =>
   (
-    await useFetch(`/poster/get-active-categories?location=${location}`, {
+    await useFetch('/poster/get-active-categories', {
+      method: 'POST',  
       baseURL: useRuntimeConfig().public.apiBase,
+      body: {         
+        location,
+        radius,
+        coordinates
+      },
     })
   ).data;
 export const getActiveCities = async () =>

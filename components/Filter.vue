@@ -80,13 +80,14 @@ function clearFilter() {
   };
   localStorage.setItem("filterForm", JSON.stringify(filter.value));
   localStorage.setItem("locationRadius", 0);
+  locationRadius.value = 0
   posterStore.filter = filter.value;
 }
 
 async function setActiveCategory() {
-  let res = await getActiveCategories(locationStore.location);
+  let res = await getActiveCategories(locationStore.location, locationRadius.value, locationStore.coordinates);
   active_categories.value = res.value;
-  if (active_categories.value.length) {
+  if (active_categories?.value?.length) {
     categories.value = _.sortBy(
       appState.value.eventTypes.filter((item) =>
         active_categories.value.includes(item.name)
@@ -97,12 +98,17 @@ async function setActiveCategory() {
 }
 
 function selectLocation(index) {
-
+  locationRadius.value = 0;
+  locationStore.radius = 0
+  localStorage.setItem("locationRadius", locationRadius.value);
   if (selectedLocation.value == filteredLocations.value[index].name) {
     selectedLocation.value = "";
     locationStore.location = "";
+
+
+    locationStore.coordinates = [];
   } else {
-    if (selectedLocation.value ==""){
+    if (selectedLocation.value == "") {
       tl.restart()
     }
     locationStore.location = filteredLocations.value[index].fullLocation;
@@ -176,6 +182,9 @@ watch(selectedLocation, async (start, end) => {
   await setActiveCategory();
 });
 
+watch(locationRadius, async () => {
+  await setActiveCategory()
+})
 watch(
   () => filter.value.searchText,
   () => {
@@ -196,8 +205,7 @@ let filteredLocations = computed(() => {
 })
 
 onMounted(async () => {
-  locations.value.map((item) => item.name=shortName(item.name))
-  console.log(locations.value)
+  locations.value.map((item) => item.name = shortName(item.name))
   _.sortBy(locations.value, ['name']);
 
   locationQuery.value = localStorage.getItem("locationQuery") ?? '';
@@ -205,7 +213,7 @@ onMounted(async () => {
 
   if (!selectedLocation.value.length) {
     if (localStorage.getItem("location")) {
-      let index = locations.value.findIndex((item)=> item.fullLocation==localStorage.getItem("location"))
+      let index = locations.value.findIndex((item) => item.fullLocation == localStorage.getItem("location"))
       selectedLocation.value = locations.value[index].name
     }
   }
@@ -228,7 +236,7 @@ onMounted(async () => {
     y: 0
   });
   tl.play()
-  
+
 });
 
 if (props.isStartPage) {
@@ -240,44 +248,42 @@ if (props.isStartPage) {
 <template>
   <v-container>
     <ClientOnly>
-    
+
 
       <v-row class="flex-column justify-center align-center" style="position:relative">
         <!-- <div class="close-icon"> -->
-          <v-icon @click="emit('closeDialog')" icon="mdi-close" size="large" class="close_icon">
-          </v-icon>
+        <v-icon @click="emit('closeDialog')" icon="mdi-close" size="large" class="close_icon">
+        </v-icon>
         <!-- </div> -->
         <v-col v-if="isStartPage" cols="auto" class="pb-0">
           <h2>Настрой для себя</h2>
         </v-col>
         <v-col v-if="!isStartPage" cols="10" sm="6">
-          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск"  hide-details
+          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
             clearable></v-text-field>
         </v-col>
 
-        <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
+        <v-col cols="auto" class="d-flex justify-center flex-wrap">
           <div style="width:120px; margin-right:20px; ">
-          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" hide-details clearable></v-text-field>
+            <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" density="compact"
+              hide-details></v-text-field>
           </div>
-       
-          <div v-for="(location, index) in filteredLocations">
-              <v-btn 
-              @click="selectLocation(index)"
-              :class="isSelectedLocation(location.name) ? 'bg-red' : ''"
-              :ripple="false"
-              class="rounded-pill btn mt-4"
-              :size="useDisplay().mdAndUp.value ? undefined : 'small'" style="animation: blink" variant="flat">
-              {{location.name}}
-              </v-btn>
-            </div>
+
+          <div v-for="(location, index) in filteredLocations" style="gap: 5px">
+            <v-btn @click="selectLocation(index)" :class="isSelectedLocation(location.name) ? 'bg-red' : ''"
+              :ripple="false" class="rounded-pill btn" :size="useDisplay().mdAndUp.value ? undefined : 'small'"
+              style="animation: blink" variant="flat">
+              {{ location.name }}
+            </v-btn>
+          </div>
         </v-col>
         <v-col cols="6" sm="4" md="3" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
-          <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details color="#ED413E" thumb-size="15" />
+          <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details
+            color="#ED413E" thumb-size="15" />
           <div style="text-align: center;">
-            {{selectedLocation + ' + ' + locationRadius }} км.
+            {{ selectedLocation + ' + ' + locationRadius }} км.
           </div>
         </v-col>
-
         <v-col cols="8" v-if="!isStartPage">
           <v-divider />
         </v-col>
@@ -376,9 +382,10 @@ $white: #ffffff;
 .btn.bg-red {
   animation: blink 1s;
 }
-.close_icon{
+
+.close_icon {
   position: absolute;
-  right:10px;
-  top:10px
+  right: 10px;
+  top: 10px
 }
 </style>
