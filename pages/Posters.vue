@@ -64,8 +64,6 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
-let showImage = ref(false)
-
 onMounted(async () => {
   await setCols()
   await posterStore.fetchPosters(posterStore.filter)
@@ -75,13 +73,6 @@ onMounted(async () => {
       let el = document.getElementById(id)
       el?.scrollIntoView()
     }
-
-    let amount = Number(cols.value) * 3
-    await Promise.all(posterStore.posters.map(async (poster, index) => {
-      if (index > amount - 1) return
-      await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
-    }))
-    showImage.value = true
   }
   wrapper.value.addEventListener("scroll", handleScroll);
 })
@@ -113,7 +104,7 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1 poster">
-          <PosterCard :poster="item" :id='item._id' :showImage="showImage" />
+          <PosterCard :poster="item" :id='item._id' />
         </v-col>
 
       </v-row>
