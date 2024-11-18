@@ -266,7 +266,7 @@ if (props.isStartPage) {
         <div class="d-flex" style="height: 56px;">
           <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" style="width:150px;" class="mr-8"
              hide-details></v-text-field>
-          <div class="gsap-radius-show py-0" v-show="selectedLocation != ''" >
+          <div class="gsap-radius-show py-0" v-show="selectedLocation != ''"  style="width:150px;" >
             <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details
               color="#ED413E" thumb-size="15" />
             <div style="text-align: center;">
@@ -339,7 +339,7 @@ if (props.isStartPage) {
             :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined" @click="clearFilter()">
             Очистить
           </v-btn>
-          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="text-accent" variant="outlined"
+          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button" variant="text"
             :ripple="false" size="large">
             Показать
           </v-btn>
@@ -388,5 +388,9 @@ $white: #ffffff;
   position: absolute;
   right: 10px;
   top: 10px
+}
+.main_button{
+  background-color: $red;
+  color: $white;
 }
 </style>
