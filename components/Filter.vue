@@ -249,7 +249,6 @@ if (props.isStartPage) {
   <v-container>
     <ClientOnly>
 
-
       <v-row class="flex-column justify-center align-center" style="position:relative">
         <!-- <div class="close-icon"> -->
         <v-icon @click="emit('closeDialog')" icon="mdi-close" size="large" class="close_icon">
@@ -262,8 +261,9 @@ if (props.isStartPage) {
           <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск по названию" hide-details
             clearable></v-text-field>
         </v-col>
+        
 
-        <div class="d-flex" style="height: 56px;">
+        <div class="d-flex">
           <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" style="width:150px;" class="mr-8"
              hide-details></v-text-field>
           <div class="gsap-radius-show py-0" v-show="selectedLocation != ''"  style="width:150px;" >
@@ -327,28 +327,25 @@ if (props.isStartPage) {
         <v-col cols="8">
           <v-divider />
         </v-col>
+        
         <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
-            :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+            :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn ma-0" :ripple="false"
             style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             {{ category.name }}
           </v-btn>
         </v-col>
-        <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
-          <v-btn class="btn text-accent" :ripple="false" style="animation: blink" size="large"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined" @click="clearFilter()">
+
+        <v-col cols="12" class="d-flex justify-center flex-wrap mb-4">
+          <v-btn class="btn text-accent mb-4" :class="useDisplay().smAndUp.value ? 'mr-8' : ''" :ripple="false" style="animation: blink" variant="outlined" @click="clearFilter()">
             Очистить
           </v-btn>
-          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button" variant="text"
-            :ripple="false" size="large">
+          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button"  variant="text"
+            :ripple="false">
             Показать
           </v-btn>
-
-          <!-- <v-btn v-if="!isStartPage" @click="clearFilter()" class="rounded-lg text-accent" variant="outlined" :ripple="false"
-                    size="large">
-                    Очистить фильтр
-                </v-btn> -->
         </v-col>
+
       </v-row>
     </ClientOnly>
   </v-container>

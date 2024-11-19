@@ -25,11 +25,6 @@ let authStore = useAuth()
       <span>Админ</span>
     </v-btn>
 
-    <v-btn to="/manager/moderation/onmoderation" exact :ripple="false" v-if="authStore.user?.managerIn?.length" class="pa-0 mr-4">
-      <v-icon>mdi-account-group-outline</v-icon>
-      <span>Менеджер</span>
-    </v-btn>
-
   </v-bottom-navigation>
 </template>
 
