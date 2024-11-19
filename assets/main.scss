@@ -22,18 +22,20 @@ i {
 //   padding: 0 24px 0 24px !important;
 // }
 
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px; /* ширина всей полосы прокрутки */
+/* Для браузеров на основе WebKit (Chrome, Safari, Opera) */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0; /* Устанавливаем ширину полосы прокрутки 0 */
+  height: 0; /* Для горизонтальной полосы прокрутки */
 }
 
-*::-webkit-scrollbar-track {
-  background: rgb(248, 248, 248);
+/* Для Firefox */
+html {
+  scrollbar-width: none; /* Скрывает полосу прокрутки */
 }
 
-*::-webkit-scrollbar-thumb {
-  border-radius: 20px; /* округлось бегунка */
-  background-color: rgb(235, 235, 235);
+/* Для Internet Explorer и Edge */
+html, body {
+  -ms-overflow-style: none; /* Отключает отображение полосы прокрутки */
 }
 
 .v-field__input input {
