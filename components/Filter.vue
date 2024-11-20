@@ -328,7 +328,7 @@ if (props.isStartPage) {
           <v-divider />
         </v-col> -->
         
-        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
+        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:35vh;overflow-y: scroll;scrollbar-width: none;">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
             :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn ma-0" :ripple="false"
             style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
