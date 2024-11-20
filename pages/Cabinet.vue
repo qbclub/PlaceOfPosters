@@ -16,7 +16,7 @@ async function logout() {
 watch(tab, (newValue) => {
     navigateTo(newValue)
 })
-let routes = ["/cabinet/me", "/cabinet/contract", "/cabinet/posters/activeposters", "/cabinet/eventlog"]
+let routes = ["/cabinet/me", "/cabinet/contract", "/cabinet/posters/activeposters", "/cabinet/eventlog", "/manager/moderation/onmoderation"]
 onMounted(async () => {
     if (!routes.includes(useRoute().path)) {
         navigateTo('/cabinet/me')
@@ -44,6 +44,7 @@ onMounted(async () => {
                     <v-tab :ripple="false" :value="routes[1]" :to="routes[1]"> Договоры </v-tab>
                     <v-tab :ripple="false" :value="routes[2]" :to="routes[2]"> Афиши </v-tab>
                     <v-tab :ripple="false" :value="routes[3]" :to="routes[3]"> Оплаты </v-tab>
+                    <v-tab :ripple="false" :value="routes[4]" :to="routes[4]" v-if="authStore.user?.managerIn?.length"> Менеджер </v-tab>
                 </v-tabs>
             </v-col>
         </v-row>

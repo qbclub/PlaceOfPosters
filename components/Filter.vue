@@ -249,7 +249,6 @@ if (props.isStartPage) {
   <v-container>
     <ClientOnly>
 
-
       <v-row class="flex-column justify-center align-center" style="position:relative">
         <!-- <div class="close-icon"> -->
         <v-icon @click="emit('closeDialog')" icon="mdi-close" size="large" class="close_icon">
@@ -259,15 +258,24 @@ if (props.isStartPage) {
           <h2>Настрой для себя</h2>
         </v-col>
         <v-col v-if="!isStartPage" cols="10" sm="6">
-          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск" hide-details
+          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск по названию" hide-details
             clearable></v-text-field>
         </v-col>
+        
 
-        <v-col cols="auto" class="d-flex justify-center flex-wrap">
-          <div style="width:120px; margin-right:20px; ">
-            <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" density="compact"
-              hide-details></v-text-field>
+        <div class="d-flex">
+          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" style="width:150px;" class="mr-8"
+             hide-details></v-text-field>
+          <div class="gsap-radius-show py-0" v-show="selectedLocation != ''"  style="width:150px;" >
+            <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details
+              color="#ED413E" thumb-size="15" />
+            <div style="text-align: center;">
+              {{ selectedLocation + ' + ' + locationRadius }} км.
+            </div>
           </div>
+        </div>
+
+        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
 
           <div v-for="(location, index) in filteredLocations" style="gap: 5px">
             <v-btn @click="selectLocation(index)" :class="isSelectedLocation(location.name) ? 'bg-red' : ''"
@@ -275,13 +283,6 @@ if (props.isStartPage) {
               style="animation: blink" variant="flat">
               {{ location.name }}
             </v-btn>
-          </div>
-        </v-col>
-        <v-col cols="6" sm="4" md="3" class="gsap-radius-show py-0" v-show="selectedLocation != ''">
-          <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details
-            color="#ED413E" thumb-size="15" />
-          <div style="text-align: center;">
-            {{ selectedLocation + ' + ' + locationRadius }} км.
           </div>
         </v-col>
         <v-col cols="8" v-if="!isStartPage">
@@ -308,7 +309,7 @@ if (props.isStartPage) {
         <v-col cols="8">
           <v-divider />
         </v-col>
-
+<!-- 
         <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
           <v-btn @click="selectPosterType('event')" :class="filter.posterType == 'event' ? 'bg-red' : ''"
             class="rounded-pill btn" :ripple="false" style="animation: blink"
@@ -325,29 +326,26 @@ if (props.isStartPage) {
 
         <v-col cols="8">
           <v-divider />
-        </v-col>
-        <v-col cols="12" class="d-flex justify-center flex-wrap" style="gap: 5px">
+        </v-col> -->
+        
+        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
-            :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn" :ripple="false"
+            :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn ma-0" :ripple="false"
             style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
             {{ category.name }}
           </v-btn>
-          <v-btn class="rounded-pill btn text-accent" :ripple="false" style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="outlined" @click="clearFilter()">
-            убрать
-          </v-btn>
         </v-col>
-        <v-col cols="12" class="d-flex justify-space-around flex-wrap mb-16">
-          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="rounded-lg text-accent" variant="outlined"
-            :ripple="false" size="large">
-            Показать афиши
-          </v-btn>
 
-          <!-- <v-btn v-if="!isStartPage" @click="clearFilter()" class="rounded-lg text-accent" variant="outlined" :ripple="false"
-                    size="large">
-                    Очистить фильтр
-                </v-btn> -->
+        <v-col cols="12" class="d-flex justify-center flex-wrap mb-4">
+          <v-btn class="btn text-accent mb-4" :class="useDisplay().smAndUp.value ? 'mr-8' : ''" :ripple="false" style="animation: blink" variant="outlined" @click="clearFilter()">
+            Очистить
+          </v-btn>
+          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button"  variant="text"
+            :ripple="false">
+            Показать
+          </v-btn>
         </v-col>
+
       </v-row>
     </ClientOnly>
   </v-container>
@@ -387,5 +385,9 @@ $white: #ffffff;
   position: absolute;
   right: 10px;
   top: 10px
+}
+.main_button{
+  background-color: $red;
+  color: $white;
 }
 </style>
