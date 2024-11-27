@@ -8,16 +8,19 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL,
     },
   },
+
   // plugins: [
   //   { src: '~/plugins/yandex-metrika.js', mode: 'client' }
   // ],
   css: ["~/assets/main.scss"],
+
   components: [
     {
       path: "~/components",
       pathPrefix: false,
     },
   ],
+
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     head: {
@@ -25,9 +28,12 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1',
       link: [
         { rel: "icon", type: "image/png", href: "/favicon.ico" }
-      ]}
+      ]
+    }
   },
+
   devtools: { enabled: true },
+
   build: {
     transpile: ["vuetify"],
   },
@@ -43,27 +49,32 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     '@nuxtjs/robots',
     '@nuxtjs/sitemap',
-   
+
   ],
-  sitemap: {
-    hostname: process.env.NUXT_PUBLIC_SITE_URL, // Ensure siteUrl is set in your .env file
-    gzip: true, // Enable gzip compression for the sitemap
-    routes: [
-      '/posters',
-      '/post',
-    ],
-    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/Frame/**', '/FramePost', '/Auth', '/Reg', '/HelloPage','/AddPrice', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
-    changefreq: 'daily',
-    priority: 0.8,
-    lastmod: new Date().toISOString(), // Set last modification date
-  },
+
   robots: {
-    UserAgent: '*', // Для всех поисковых ботов
-    Disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], 
-    Allow: '/', // Разрешить индексацию всего остального сайта 
-    Sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`, // Указание ссылки на карту сайта
-    Host: process.env.NUXT_PUBLIC_SITE_URL,
+    groups: [
+      { userAgent: '*', disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], allow: '/' },// Для всех поисковых ботов
+      // {disallow:['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame']},
+      // {allow: '/'}, // Разрешить индексацию всего остального сайта
+      // {sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`}, // Указание ссылки на карту сайта
+      // {host: process.env.NUXT_PUBLIC_SITE_URL},
+    ]
   },
+
+  sitemap: {
+    // hostname: process.env.NUXT_PUBLIC_SITE_URL, // Ensure siteUrl is set in your .env file
+    // gzip: true, // Enable gzip compression for the sitemap
+    // include: [
+    // ],
+    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/Frame/**', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    // defaults: {
+    //   changefreq: 'daily',
+    //   priority: 0.8,
+    //   lastmod: new Date().toISOString(), // Set last modification date
+    // }
+  },
+
   pwa: {
     registerType: 'autoUpdate',
     includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'images/apple-touch-icon.png'],
@@ -100,20 +111,34 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   pinia: {
     storesDirs: ["./stores/**"],
   },
+
   vite: {
     vue: {
       template: {
         transformAssetUrls,
       },
     },
+
+    css: {
+      preprocessorOptions: {
+        sass: {
+          api: 'modern',
+          silenceDeprecations: ['legacy-js-api']
+        },
+      },
+    }
+
   },
+
   routeRules: {
     "/createposter": { ssr: false },
     "/cabinet/**": { ssr: false },
     "/posters": { ssr: false },
   },
-  
+
+  compatibilityDate: '2024-11-27',
 });

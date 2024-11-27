@@ -18,6 +18,7 @@
 //   }
 useSeoMeta({
   charset: 'utf-8',
+  lang:'ru',
   viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0',
   title: 'Место для афиш',
   description: 'PlPo:place of posters - место для ваших афиш. Спектакль, концерт, встреча, лекция, распродажа, экскурсия, кино - любое событие может стать плакатом на PlPo"',
@@ -26,6 +27,11 @@ useSeoMeta({
   ogDescription: 'PlPo:place of posters - место для ваших афиш. Спектакль, концерт, встреча, лекция, распродажа, экскурсия, кино - любое событие может стать плакатом на PlPo',
   ogImage: 'https://plpo.ru/android-chrome-512x512.png',
   ogUrl: 'https://plpo.ru/',
+  icon:'https://plpo.ru/favicon-16x16.png',
+  twitterTitle: 'PlPo:place of posters',
+  twitterDescription: 'PlPo:place of posters - место для ваших афиш. Спектакль, концерт, встреча, лекция, распродажа, экскурсия, кино - любое событие может стать плакатом на PlPo"',
+  twitterImage: 'https://plpo.ru/android-chrome-512x512.png',
+  twitterCard: 'summary'
 })
 </script>
 <template>
