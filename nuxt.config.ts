@@ -55,8 +55,6 @@ export default defineNuxtConfig({
   robots: {
     groups: [
       { userAgent: '*', disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], allow: '/' },// Для всех поисковых ботов
-      // {disallow:['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame']},
-      // {allow: '/'}, // Разрешить индексацию всего остального сайта
       // {sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`}, // Указание ссылки на карту сайта
       // {host: process.env.NUXT_PUBLIC_SITE_URL},
     ]
@@ -68,11 +66,11 @@ export default defineNuxtConfig({
     // include: [
     // ],
     exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/Frame/**', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
-    // defaults: {
-    //   changefreq: 'daily',
-    //   priority: 0.8,
-    //   lastmod: new Date().toISOString(), // Set last modification date
-    // }
+    defaults: {
+      changefreq: 'daily',
+      priority: 0.8,
+      lastmod: new Date().toISOString(), // Set last modification date
+    }
   },
 
   pwa: {
@@ -127,7 +125,7 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         sass: {
           api: 'modern',
-          silenceDeprecations: ['legacy-js-api']
+          silenceDeprecations: ['legacy-js-api'],
         },
       },
     }
