@@ -309,7 +309,7 @@ if (props.isStartPage) {
         <v-col cols="8">
           <v-divider />
         </v-col>
-
+<!-- 
         <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
           <v-btn @click="selectPosterType('event')" :class="filter.posterType == 'event' ? 'bg-red' : ''"
             class="rounded-pill btn" :ripple="false" style="animation: blink"
@@ -326,7 +326,7 @@ if (props.isStartPage) {
 
         <v-col cols="8">
           <v-divider />
-        </v-col>
+        </v-col> -->
         
         <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
