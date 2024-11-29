@@ -15,7 +15,7 @@
     "@nuxtjs/sitemap": "^7.0.0",
     "@vite-pwa/nuxt": "^0.3.6",
     "nuxt": "^3.8.1",
-    "sass": "~1.81.0",
+    "sass": "^1.81.0",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",

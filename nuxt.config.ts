@@ -12,6 +12,11 @@ export default defineNuxtConfig({
   // plugins: [
   //   { src: '~/plugins/yandex-metrika.js', mode: 'client' }
   // ],
+  nitro: {
+    compressPublicAssets: {
+      brotli: true
+    }
+  },
   css: ["~/assets/main.scss"],
 
   components: [
@@ -123,8 +128,8 @@ export default defineNuxtConfig({
 
     css: {
       preprocessorOptions: {
-        sass: {
-          api: 'modern',
+        scss: {
+          api: 'modern-compiler',
           silenceDeprecations: ['legacy-js-api'],
         },
       },
