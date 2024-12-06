@@ -16,10 +16,10 @@
 
                 <div class="text-center">
                     <a href="https://t.me/plporu" target="_blank">
-                        <img class="ma-2" src="~/assets/icons/telegram.svg" alt=""></a>
+                        <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a>
 
                     <a href="https://vk.com/plporu" target="_blank"><img class="ma-2" src="~/assets/icons/vk.svg"
-                            alt=""></a>
+                        alt="Изображение не загрузилось"></a>
 
                 </div>
                 <div class="text-center">

@@ -30,7 +30,7 @@ onMounted(() => {
             <v-row v-if="poster" class="pb-4">
                 <v-col cols="12" md="6">
                     <div class="posterView" @click="router.back()">
-                        <v-img :src="preview" class="front">
+                        <v-img :src="preview" class="front" alt="Изображение не загрузилось">
 
                         </v-img>
                     </div>

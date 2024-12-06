@@ -65,7 +65,7 @@ onMounted(async () => {
                   </div>
                 </v-col>
                 <v-col cols="12" sm="6" @click="scale = true" style="cursor: pointer;">
-                  <v-img :src="poster.image">
+                  <v-img :src="poster.image" alt="Изображение не загрузилось">
 
                   </v-img>
                 </v-col>
@@ -109,7 +109,7 @@ onMounted(async () => {
     </v-container>
 
     <v-dialog v-model="scale" width="auto">
-      <v-img :src="poster.image" @click="scale = false" style="height: 95dvh; aspect-ratio: 210 / 297; cursor: pointer;">
+      <v-img :src="poster.image" @click="scale = false" style="height: 95dvh; aspect-ratio: 210 / 297; cursor: pointer;" alt="Изображение не загрузилось">
       </v-img>
     </v-dialog>
   </div>
