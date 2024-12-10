@@ -1,7 +1,6 @@
 <script setup>
 
 const { poster, isFrame, showImage } = defineProps(["poster", "isFrame", "showImage"]);
-console.log(poster)
 let checkRout = () => {
 
   if (isFrame) {
@@ -16,7 +15,7 @@ let checkRout = () => {
 
 <template>
 
-  <div class="card rounded " @click="navigateTo(`${checkRout()}/${poster.eventType.toString()}/${poster._id}`)">
+  <div class="card rounded " @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
    
     <v-img class="h-100" :src="poster.image" cover :class="{ hide: poster.isHidden }" alt="Изображение не загрузилось">
       <!-- <img :srcset="poster.image"  loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/> -->

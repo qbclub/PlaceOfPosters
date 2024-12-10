@@ -70,7 +70,7 @@ export default defineNuxtConfig({
     // gzip: true, // Enable gzip compression for the sitemap
     // include: [
     // ],
-    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/Frame/**', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice','/createposter','/editposter', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
     defaults: {
       changefreq: 'daily',
       priority: 0.8,

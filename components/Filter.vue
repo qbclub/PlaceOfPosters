@@ -100,6 +100,7 @@ async function setActiveCategory() {
 function selectLocation(index) {
   locationRadius.value = 0;
   locationStore.radius = 0
+  // console.log(filteredLocations.value[index])
   localStorage.setItem("locationRadius", locationRadius.value);
   if (selectedLocation.value == filteredLocations.value[index].name) {
     selectedLocation.value = "";

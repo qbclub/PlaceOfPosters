@@ -11,7 +11,7 @@ const route = useRoute();
 let poster = ref({})
 
 let posterLink = computed(() => {
-  return runtimeConfig.public.siteUrl + '/' + poster?.value?.eventType?.toString() + '/' + poster?.value?._id
+  return runtimeConfig.public.siteUrl + '/post?_id=' + poster.value._id
 })
 
 const options = ref({
@@ -20,7 +20,7 @@ const options = ref({
 
 const { isSupported } = useShare(options)
 
-const posterId = route.params?._id
+const posterId = route.query?._id
 
 function startShare() {
   options.value.url = posterLink.value
@@ -92,7 +92,7 @@ async function changeFilter(event) {
       <v-row v-if="!pending && poster?._id" class="pb-4">
         <v-col @click="navigateTo({ path: '/posters', hash: `#${poster._id}` })" cols="12" md="6">
           <div class="posterView">
-            <v-img :src="poster.image" class="front" alt="Изображение не загрузилось">
+            <v-img :src="poster.image" class="front">
             </v-img>
           </div>
         </v-col>
@@ -118,7 +118,7 @@ async function changeFilter(event) {
                   class="mdi mdi-24px mdi-share-variant-outline ma-8 " @click="startShare()" v-if="isSupported">
                 </span></div>
               <div> <b>Место:</b> <a :href="`https://yandex.ru/maps/?text=${poster.eventLocation.name}`">{{
-                poster.eventLocation.name }}</a> </div>
+        poster.eventLocation.name }}</a> </div>
               <div v-if="poster.date?.length" class="d-flex">
                 <div><b>Время начала:&nbsp;</b></div>
                 <div>
