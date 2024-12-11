@@ -385,7 +385,7 @@ function getCategory(category) {
                                     </v-row>
                                 </v-dialog>
                             </v-btn>
-                            <v-img :src="preview" width="200" class="my-2">
+                            <v-img :src="preview" width="200" class="my-2" alt="Изображение не загрузилось">
                                 <v-overlay :open-on-click="true" v-model="imagePreviewOverlay" contained
                                     class="align-center justify-center" activator="parent">
                                     <v-btn color="error" @click="deletePreview" icon>

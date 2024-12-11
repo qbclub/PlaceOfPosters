@@ -14,7 +14,7 @@ let checkRout = () => {
 <template>
   <div class="card rounded" @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
    
-      <v-img :src="poster.image" cover class="h-100 rounded" ></v-img>
+      <v-img :src="poster.image" alt="Изображение не загрузилось" cover class="h-100 rounded" ></v-img>
 
   </div>
 </template>

@@ -107,6 +107,7 @@ onMounted(async () => {
               <a href="https://plpo.ru" target="_blank">
 
               <img src="@/assets/logo.webp" class="logo cursor-pointer" style="height: 30px;"
+              alt="Изображение не загрузилось"
                /></a>
           </div>
           <div class="d-flex align-center">

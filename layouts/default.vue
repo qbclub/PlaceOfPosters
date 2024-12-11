@@ -89,6 +89,7 @@ onMounted(async () => {
               src="@/assets/logo.webp"
               class="logo cursor-pointer"
               @click="navigateTo('/posters')"
+              alt="Изображение не загрузилось"
             />
           </div>
           <div class="d-flex align-center">

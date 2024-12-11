@@ -38,7 +38,7 @@ onMounted(async () => {
         <v-row cols="12">
             <v-col class="d-flex justify-center">
                 <div class="hello-poster">
-                    <img src="../assets/logo.webp" alt="">
+                    <img src="../assets/logo.webp" alt="Изображение не загрузилось">
                     <div class="hello-poster-text">
                         <div>
                             Место
