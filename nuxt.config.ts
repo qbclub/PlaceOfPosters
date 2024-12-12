@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+// import getRoutes from './utility/getRoutes.js'
 
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -15,7 +16,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: {
       brotli: true
-    }
+    },
   },
   css: ["~/assets/main.scss"],
 
@@ -70,7 +71,10 @@ export default defineNuxtConfig({
     // gzip: true, // Enable gzip compression for the sitemap
     // include: [
     // ],
-    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice','/createposter','/editposter', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    // sources: getRoutes(),
+    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/createposter', '/editposter', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    // urls:await getRoutes(),
+    sources:[`${process.env.NUXT_PUBLIC_API_BASE}/poster/get-ids`],
     defaults: {
       changefreq: 'daily',
       priority: 0.8,
