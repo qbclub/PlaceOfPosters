@@ -22,14 +22,16 @@ const { isSupported } = useShare(options)
 
 const posterId = route.query?._id
 
-function startShare() {
+async function startShare() {
   options.value.url = posterLink.value
 
   const { share } = useShare(options)
 
-  return share().catch(err => {
+  try {
+    return await share();
+  } catch (err) {
     console.log(err);
-  })
+  }
 }
 
 let getHref = (link) => {
