@@ -74,6 +74,7 @@ async function changeFilter(event) {
     <Head>
       <Title>{{ poster.title }}</Title>
       <Meta name="og:title" :content="poster.title" />
+      <Meta name="keywords" :content="poster.eventType ? poster?.eventType.join(' | ') : ''" />
       <Meta name="og:image" :content="poster.image" />
       <meta property="vk:image" :content="poster.image" />
       <Meta name="description" :content="poster.eventType ? poster?.eventType.join(' | ') : ''" />
