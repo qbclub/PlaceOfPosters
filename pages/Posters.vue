@@ -49,16 +49,7 @@ let handleScroll = async () => {
     const newPosters = posterStore.posters.slice(initialLength);
 
     // Прелоадим изображения для новых постеров
-    const preloadImages = newPosters.map((poster) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = poster.image;
-        img.onload = resolve;
-        img.onerror = resolve;
-      });
-    });
-
-    await Promise.all(preloadImages); // Ждем загрузки всех изображений
+    await preloadImages (newPosters)
     showImage.value = true; // Показываем изображения
    
   }
@@ -92,10 +83,7 @@ const preloadImages = async (posters) => {
 watch(cols, () => {
   localStorage.setItem("cols", cols.value)
 })
-//это что?
-// watch(mobile, value => {
-//   value ? cols.value = "6" : cols.value = "3"
-// })
+
 watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
@@ -111,17 +99,9 @@ onMounted(async () => {
       let el = document.getElementById(id)
       el?.scrollIntoView()
     }
-    if (process.client) {
+ 
     await preloadImages(posterStore.posters);
     showImage.value = true; // Показываем изображения после загрузки
-  }
-
-    // let amount = Number(cols.value) * 3
-    // await Promise.all(posterStore.posters.map(async (poster, index) => {
-    //   if (index > amount - 1) return
-    //   await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
-    // }))
-    // showImage.value = true
   }
   wrapper.value.addEventListener("scroll", handleScroll);
 })
@@ -166,7 +146,7 @@ onMounted(async () => {
     </v-row>
 
     <v-row class="justify-center">
-      <v-col v-show="!posterStore.isLoaded" cols="12" sm="4" class="ma-0 pa-0">
+      <v-col v-show="!showImage" cols="12" sm="4" class="ma-0 pa-0">
         <v-progress-linear indeterminate color="accent" />
       </v-col>
     </v-row>
