@@ -127,7 +127,7 @@ let getIcon = (poster) => {
 <template>
     <v-row>
         <v-col v-for="poster of posters" cols="4" sm="3" md="2" class="pa-1">
-            <PosterCard :poster="poster" />
+            <PosterCard :poster="poster" :showImage="true"/>
             <div class="text-center" v-if="posterType == 'active' && poster.endDate">до {{ dates.clearDate(poster.endDate)
             }}</div>
             <div class="d-flex justify-center pa-1">
