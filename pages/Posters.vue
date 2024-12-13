@@ -126,7 +126,7 @@ onMounted(async () => {
   wrapper.value.addEventListener("scroll", handleScroll);
 })
 
-useNuxtApp().hook('page:finish', () => loading.value = true)
+
 </script>
 
 <template>
@@ -149,7 +149,7 @@ useNuxtApp().hook('page:finish', () => loading.value = true)
 
 
 
-    <v-container class="pt-0 d-flex justify-center " v-if="loading">
+    <v-container class="pt-0 d-flex justify-center " >
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1 poster">
