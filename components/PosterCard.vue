@@ -15,9 +15,9 @@ let checkRout = () => {
 
 <template>
 
-  <div class="card rounded " @click="navigateTo(`${checkRout()}?_id=${poster._id}`)">
+  <div class="card rounded " @click="navigateTo(`${checkRout()}?_id=${poster._id}`)" v-if="showImage">
    
-    <v-img class="h-100" :src="poster.image" cover :class="{ hide: poster.isHidden }" alt="Изображение не загрузилось">
+    <v-img class="h-100" :src="poster.image" loading="lazy" cover :class="{ hide: poster.isHidden }" alt="Изображение не загрузилось">
       <!-- <img :srcset="poster.image"  loading="lazy" alt="" class="h-100 rounded" :class="{ hide: poster.isHidden }"/> -->
       <!-- <v-img class="h-100" :src="poster.image" cover v-if="!poster.isHidden"> -->
 
@@ -53,12 +53,5 @@ let checkRout = () => {
 }
 
 
-.card-front {
-  position: absolute;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
+
 </style>

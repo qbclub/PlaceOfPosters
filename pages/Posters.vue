@@ -6,6 +6,7 @@ let posterStore = usePoster()
 let cols = ref(3)
 let loading = ref(false)
 let topVisible = ref(false)
+let showImage = ref(false)
 
 let route = useRoute()
 
@@ -37,7 +38,29 @@ let handleScroll = async () => {
     triggerHeight = wrapper.value.scrollHeight
   }
   if (triggerHeight == wrapper.value.scrollHeight) {
-    await posterStore.fetchPosters(posterStore.filter)
+
+
+    const initialLength = posterStore.posters.length;
+
+    // Загружаем новые постеры
+    await posterStore.fetchPosters(posterStore.filter);
+
+    // Получаем только новые постеры
+    const newPosters = posterStore.posters.slice(initialLength);
+
+    // Прелоадим изображения для новых постеров
+    const preloadImages = newPosters.map((poster) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = poster.image;
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
+
+    await Promise.all(preloadImages); // Ждем загрузки всех изображений
+    showImage.value = true; // Показываем изображения
+   
   }
 }
 
@@ -53,6 +76,19 @@ let goToTop = () => {
     behavior: "smooth"
   })
 }
+
+const preloadImages = async (posters) => {
+  const imagePromises = posters.map((poster) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = poster.image;
+      img.onload = resolve;
+      img.onerror = resolve;
+    });
+  });
+  await Promise.all(imagePromises);
+};
+
 watch(cols, () => {
   localStorage.setItem("cols", cols.value)
 })
@@ -64,10 +100,10 @@ watch(mobile, () => {
   mobile.value ? cols.value = "6" : cols.value = "3"
 })
 
-let showImage = ref(false)
+
 
 onMounted(async () => {
-  await setCols()
+  setCols()
   await posterStore.fetchPosters(posterStore.filter)
   if (process.client) {
     if (route.hash) {
@@ -75,13 +111,17 @@ onMounted(async () => {
       let el = document.getElementById(id)
       el?.scrollIntoView()
     }
+    if (process.client) {
+    await preloadImages(posterStore.posters);
+    showImage.value = true; // Показываем изображения после загрузки
+  }
 
-    let amount = Number(cols.value) * 3
-    await Promise.all(posterStore.posters.map(async (poster, index) => {
-      if (index > amount - 1) return
-      await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
-    }))
-    showImage.value = true
+    // let amount = Number(cols.value) * 3
+    // await Promise.all(posterStore.posters.map(async (poster, index) => {
+    //   if (index > amount - 1) return
+    //   await fetch(poster.image, { cache: "force-cache", mode: "no-cors" })
+    // }))
+    // showImage.value = true
   }
   wrapper.value.addEventListener("scroll", handleScroll);
 })
