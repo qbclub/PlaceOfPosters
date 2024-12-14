@@ -74,7 +74,7 @@ const preloadImages = async (posters) => {
       const img = new Image();
       const timeout = setTimeout(() => {
         resolve(false); // Считаем ошибкой, если загрузка заняла больше 200 мс
-      }, 100);
+      }, 200);
 
       img.src = poster.image;
       img.onload = () => {
