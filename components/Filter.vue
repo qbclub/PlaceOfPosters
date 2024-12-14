@@ -286,8 +286,8 @@ if (props.isStartPage) {
             </v-btn>
           </div>
         </v-col>
-        <v-col cols="8" v-if="!isStartPage">
-          <v-divider />
+        <v-col cols="8" v-if="!isStartPage" class="ma-0 pa-0">
+          <v-divider  />
         </v-col>
 
         <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
@@ -307,8 +307,8 @@ if (props.isStartPage) {
             :flow="['calendar']" format="dd/MM/yyyy" />
         </v-col>
 
-        <v-col cols="8">
-          <v-divider />
+        <v-col cols="8" class="ma-0 pa-0">
+          <v-divider  />
         </v-col>
 <!-- 
         <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
@@ -329,7 +329,7 @@ if (props.isStartPage) {
           <v-divider />
         </v-col> -->
         
-        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:35vh;overflow-y: scroll;scrollbar-width: none;">
+        <v-col cols="12" class="d-flex justify-center flex-wrap">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
             :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn ma-0" :ripple="false"
             style="animation: blink" :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
