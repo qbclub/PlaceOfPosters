@@ -73,11 +73,12 @@ const preloadImages = async (posters) => {
     return new Promise((resolve) => {
       const img = new Image();
       img.src = poster.image;
-      img.onload = resolve;
-      img.onerror = resolve;
+      img.onload = () => resolve(true); // Успешно загружено
+      img.onerror = () => resolve(false); // Игнорируем сбой загрузки
     });
   });
-  await Promise.all(imagePromises);
+   // Ждем завершения всех загрузок, но не блокируем отображение
+  await Promise.allSettled(imagePromises);
 };
 
 watch(cols, () => {
