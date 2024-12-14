@@ -49,9 +49,9 @@ let handleScroll = async () => {
     const newPosters = posterStore.posters.slice(initialLength);
 
     // Прелоадим изображения для новых постеров
-    await preloadImages (newPosters)
+    await preloadImages(newPosters)
     showImage.value = true; // Показываем изображения
-   
+
   }
 }
 
@@ -72,12 +72,23 @@ const preloadImages = async (posters) => {
   const imagePromises = posters.map((poster) => {
     return new Promise((resolve) => {
       const img = new Image();
+      const timeout = setTimeout(() => {
+        resolve(false); // Считаем ошибкой, если загрузка заняла больше 200 мс
+      }, 100);
+
       img.src = poster.image;
-      img.onload = () => resolve(true); // Успешно загружено
-      img.onerror = () => resolve(false); // Игнорируем сбой загрузки
+      img.onload = () => {
+        clearTimeout(timeout); // Успешно загрузилось
+        resolve(true);
+      };
+      img.onerror = () => {
+        clearTimeout(timeout); // Произошла ошибка загрузки
+        resolve(false);
+      };
     });
   });
-   // Ждем завершения всех загрузок, но не блокируем отображение
+  
+  // Ждем завершения всех загрузок, но не блокируем отображение
   await Promise.allSettled(imagePromises);
 };
 
@@ -100,7 +111,7 @@ onMounted(async () => {
       let el = document.getElementById(id)
       el?.scrollIntoView()
     }
- 
+
     await preloadImages(posterStore.posters);
     showImage.value = true; // Показываем изображения после загрузки
   }
@@ -122,7 +133,8 @@ onMounted(async () => {
           <a href="https://t.me/plporu" target="_blank">
             <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a>
 
-          <a href="https://vk.com/plporu" target="_blank"><img class="ma-2" src="~/assets/icons/vk.svg" alt="Изображение не загрузилось"></a>
+          <a href="https://vk.com/plporu" target="_blank"><img class="ma-2" src="~/assets/icons/vk.svg"
+              alt="Изображение не загрузилось"></a>
 
         </div>
       </v-row>
@@ -130,7 +142,7 @@ onMounted(async () => {
 
 
 
-    <v-container class="pt-0 d-flex justify-center " >
+    <v-container class="pt-0 d-flex justify-center ">
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1 poster">
@@ -151,13 +163,13 @@ onMounted(async () => {
         <v-progress-linear indeterminate color="accent" />
       </v-col>
     </v-row>
-<Transition name="move">
-    <v-btn v-if="topVisible" @click="goToTop" icon="mdi-chevron-double-up" color="accent"
-      class="topbtn d-none d-md-block">
-    </v-btn>
-  </Transition>
+    <Transition name="move">
+      <v-btn v-if="topVisible" @click="goToTop" icon="mdi-chevron-double-up" color="accent"
+        class="topbtn d-none d-md-block">
+      </v-btn>
+    </Transition>
   </div>
-  
+
 </template>
 
 <style lang="scss" scoped>
