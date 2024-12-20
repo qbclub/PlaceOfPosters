@@ -16,8 +16,8 @@ watch(props, () => {
 async function getOtherManagers() {
   managersList.value = await userStore.getManagers();
 }
-async function removeManagerIn() {
-  await userStore.removeManagerIn(selectedUser.value.email);
+async function removeManager() {
+  await userStore.removeManager(selectedUser.value.email);
   showRemoveDialog.value = !showRemoveDialog.value;
   getOtherManagers();
   emit("change-in-list")
@@ -46,7 +46,7 @@ getOtherManagers();
           Менеджер: {{ managerCard.firstname + " " + managerCard.lastname }}
           <v-icon
             @click="openRemoveDialog(managerCard.managerIn, managerCard.email)"
-            icon="mdi-close"
+            icon="mdi-trash-can-outline"
             style="position: absolute; right:0;top:0; cursor: pointer"
           ></v-icon>
         </v-card-title>
@@ -82,9 +82,9 @@ getOtherManagers();
   <v-dialog v-model="showRemoveDialog" width="auto">
     <v-card>
       <v-card-text class="d-flex flex-column">
-        Удалить локацию для рассылки?
+        Удалить менеджера?
         <div class="d-flex justify-space-around">
-          <v-btn @click="removeManagerIn()">Да</v-btn>
+          <v-btn @click="removeManager()">Да</v-btn>
           <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
         </div>
       </v-card-text>

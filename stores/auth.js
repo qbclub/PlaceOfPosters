@@ -128,9 +128,16 @@ export const useAuth = defineStore('auth', {
 				console.log(error);
 			}
 		},
-		async removeManagerIn(email) {
+		async removeManagerInLocations(email) {
 			try {
-				return await AuthService.removeManagerIn(email);
+				return await AuthService.removeManagerInLocations(email);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async removeManager(email) {
+			try {
+				return await AuthService.removeManager(email);
 			} catch (error) {
 				console.log(error);
 			}
