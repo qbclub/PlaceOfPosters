@@ -54,8 +54,8 @@ async function addLocationToEmail() {
   getUserManagerIn();
 }
 
-async function removeManagerIn() {
-  await userStore.removeManagerIn(email.value);
+async function removeManagerInLocations() {
+  await userStore.removeManagerInLocations(email.value);
   showRemoveDialog.value = !showRemoveDialog.value;
   getUserManagerIn();
 }
@@ -146,9 +146,9 @@ watch(locationSearchRequest, async (value) => {
     <v-dialog v-model="showRemoveDialog" width="auto">
       <v-card>
         <v-card-text class="d-flex flex-column">
-          Удалить локацию для рассылки?
+          Удалить локации для рассылки?
           <div class="d-flex justify-space-around">
-            <v-btn @click="removeManagerIn()">Да</v-btn>
+            <v-btn @click="removeManagerInLocations()">Да</v-btn>
             <v-btn @click="showRemoveDialog = !showRemoveDialog"> Нет</v-btn>
           </div>
         </v-card-text>
