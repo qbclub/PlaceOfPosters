@@ -116,14 +116,14 @@ function selectLocation(index) {
       tl.restart()
     }
     locationStore.location = filteredLocations.value[index].fullLocation;
-    locationStore.selectedShortName  = filteredLocations.value[index].name
+    locationStore.selectedShortName = filteredLocations.value[index].name
     if (locations.value[index]?.name?.length) {
       locationStore.coordinates = filteredLocations.value[index].coordinates;
       localStorage.setItem("locationCoordinates", filteredLocations.value[index].coordinates);
       localStorage.setItem("selectedShortName", filteredLocations.value[index].name)
     }
     selectedLocation.value = filteredLocations.value[index].name;
-    locationStore.selectedShortName  = filteredLocations.value[index].name
+    locationStore.selectedShortName = filteredLocations.value[index].name
   }
   localStorage.setItem("location", filteredLocations.value[index].fullLocation);
   localStorage.setItem("selectedShortName", filteredLocations.value[index].name)
@@ -205,10 +205,11 @@ let filteredLocations = computed(() => {
 
   if (locationQuery.value.length > 2) {
     localStorage.setItem("locationQuery", locationQuery.value);
-    return locations.value.filter((loc) => loc.name.toLowerCase().includes(locationQuery.value.toLowerCase())).slice(0, 5)
+    let tempLoc = locations.value.filter((loc) => loc.name.toLowerCase().includes(locationQuery.value.toLowerCase())).slice(0, 5)
+    return _.uniqBy(tempLoc, 'name');
   } else {
     localStorage.setItem("locationQuery", '');
-    return locations.value
+    return _.uniqBy(locations.value, 'name') 
   }
 })
 
@@ -267,15 +268,15 @@ if (props.isStartPage) {
           <h2>Настрой для себя</h2>
         </v-col>
         <v-col v-if="!isStartPage" cols="10" sm="6">
-          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск по названию" hide-details
-            clearable></v-text-field>
+          <v-text-field v-model="filter.searchText" variant="outlined" density="compact" label="Поиск по названию"
+            hide-details clearable></v-text-field>
         </v-col>
-        
+
 
         <div class="d-flex">
-          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" style="width:150px;" class="mr-8"
-             hide-details></v-text-field>
-          <div class="gsap-radius-show py-0" v-show="selectedLocation != ''"  style="width:150px;" >
+          <v-text-field label="Найти город" variant="underlined" v-model="locationQuery" style="width:150px;"
+            class="mr-8" hide-details></v-text-field>
+          <div class="gsap-radius-show py-0" v-show="selectedLocation != ''" style="width:150px;">
             <v-slider v-model="locationRadius" :step="50" :min="0" :max="1000" density="compact" hide-details
               color="#ED413E" thumb-size="15" />
             <div style="text-align: center;">
@@ -284,7 +285,8 @@ if (props.isStartPage) {
           </div>
         </div>
 
-        <v-col cols="12" class="d-flex justify-center flex-wrap" style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
+        <v-col cols="12" class="d-flex justify-center flex-wrap"
+          style="max-height:30vh;overflow-y: scroll;scrollbar-width: none;">
 
           <div v-for="(location, index) in filteredLocations" style="gap: 5px">
             <v-btn @click="selectLocation(index)" :class="isSelectedLocation(location.name) ? 'bg-red' : ''"
@@ -295,7 +297,7 @@ if (props.isStartPage) {
           </div>
         </v-col>
         <v-col cols="8" v-if="!isStartPage" class="ma-0 pa-0">
-          <v-divider  />
+          <v-divider />
         </v-col>
 
         <v-col v-if="!isStartPage" cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
@@ -316,10 +318,10 @@ if (props.isStartPage) {
         </v-col>
 
         <v-col cols="8" class="ma-0 pa-0">
-          <v-divider  />
+          <v-divider />
         </v-col>
 
-        
+
         <v-col cols="12" class="d-flex justify-center flex-wrap">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"
             :class="isSelectedCategory(category.name) ? 'bg-red' : ''" class="rounded-pill btn ma-0" :ripple="false"
@@ -329,11 +331,11 @@ if (props.isStartPage) {
         </v-col>
 
         <v-col cols="12" class="d-flex justify-center flex-wrap mb-4">
-          <v-btn class="btn text-accent mb-4" :class="useDisplay().smAndUp.value ? 'mr-8' : ''" :ripple="false" style="animation: blink" variant="outlined" @click="clearFilter()">
+          <v-btn class="btn text-accent mb-4" :class="useDisplay().smAndUp.value ? 'mr-8' : ''" :ripple="false"
+            style="animation: blink" variant="outlined" @click="clearFilter()">
             Очистить
           </v-btn>
-          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button"  variant="text"
-            :ripple="false">
+          <v-btn @click="isStartPage ? closePage() : closeDialog()" class="main_button" variant="text" :ripple="false">
             Показать
           </v-btn>
         </v-col>
@@ -378,7 +380,8 @@ $white: #ffffff;
   right: 10px;
   top: 10px
 }
-.main_button{
+
+.main_button {
   background-color: $red;
   color: $white;
 }
