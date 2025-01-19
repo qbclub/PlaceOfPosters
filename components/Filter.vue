@@ -97,29 +97,36 @@ async function setActiveCategory() {
   }
 }
 
+
+// shortName
+// selectedShortName
 function selectLocation(index) {
   locationRadius.value = 0;
   locationStore.radius = 0
+  locationStore.selectedShortName = ''
   // console.log(filteredLocations.value[index])
   localStorage.setItem("locationRadius", locationRadius.value);
   if (selectedLocation.value == filteredLocations.value[index].name) {
     selectedLocation.value = "";
     locationStore.location = "";
-
-
+    locationStore.selectedShortName = "";
     locationStore.coordinates = [];
   } else {
     if (selectedLocation.value == "") {
       tl.restart()
     }
     locationStore.location = filteredLocations.value[index].fullLocation;
+    locationStore.selectedShortName  = filteredLocations.value[index].name
     if (locations.value[index]?.name?.length) {
       locationStore.coordinates = filteredLocations.value[index].coordinates;
       localStorage.setItem("locationCoordinates", filteredLocations.value[index].coordinates);
+      localStorage.setItem("selectedShortName", filteredLocations.value[index].name)
     }
     selectedLocation.value = filteredLocations.value[index].name;
+    locationStore.selectedShortName  = filteredLocations.value[index].name
   }
   localStorage.setItem("location", filteredLocations.value[index].fullLocation);
+  localStorage.setItem("selectedShortName", filteredLocations.value[index].name)
 }
 function selectCategory(name) {
   // let name = categories.value[index].name
@@ -216,6 +223,7 @@ onMounted(async () => {
     if (localStorage.getItem("location")) {
       let index = locations.value.findIndex((item) => item.fullLocation == localStorage.getItem("location"))
       selectedLocation.value = locations.value[index].name
+      locationStore.selectedShortName = locations.value[index].name
     }
   }
   if (localStorage.getItem("filterForm")) {
@@ -310,24 +318,7 @@ if (props.isStartPage) {
         <v-col cols="8" class="ma-0 pa-0">
           <v-divider  />
         </v-col>
-<!-- 
-        <v-col cols="auto" class="d-flex justify-center flex-wrap" style="gap: 5px">
-          <v-btn @click="selectPosterType('event')" :class="filter.posterType == 'event' ? 'bg-red' : ''"
-            class="rounded-pill btn" :ripple="false" style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
-            Событие
-          </v-btn>
 
-          <v-btn @click="selectPosterType('place')" :class="filter.posterType == 'place' ? 'bg-red' : ''"
-            class="rounded-pill btn" :ripple="false" style="animation: blink"
-            :size="useDisplay().mdAndUp.value ? undefined : 'small'" variant="flat">
-            Место
-          </v-btn>
-        </v-col>
-
-        <v-col cols="8">
-          <v-divider />
-        </v-col> -->
         
         <v-col cols="12" class="d-flex justify-center flex-wrap">
           <v-btn v-for="(category, index) in categories" @click="selectCategory(category.name)"

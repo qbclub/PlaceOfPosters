@@ -76,6 +76,10 @@ onMounted(async () => {
   await setApp();
   filter.value = JSON.parse(localStorage.getItem("filterForm"));
   checkFilter();
+  if (localStorage.getItem("selectedShortName")) {
+
+    locationsStore.selectedShortName = localStorage.getItem("selectedShortName")
+    }
 });
 </script>
 
@@ -110,7 +114,7 @@ onMounted(async () => {
                 class="text-body-1 font-weight-regular"
                 style="letter-spacing: normal !important; margin-left: 8px"
               >
-                {{ location ? shortLocationName : "Везде" }}
+                {{ location ? locationsStore.selectedShortName : "Везде" }}
               </div>
             </div>
 
