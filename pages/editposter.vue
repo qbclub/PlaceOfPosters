@@ -32,7 +32,6 @@ let form = reactive(Object.assign({
     image: '',
     description: ''
 }, poster))
-console.log(form)
 
 let subcategories = ref([])
 let visibleCropperModal = ref(false)
