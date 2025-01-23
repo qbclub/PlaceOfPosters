@@ -10,10 +10,13 @@ const isActive = ref(false)
 let posterId = ref('')
 let poster = ref()
 let scale = ref(false)
+let giftPosters = ref(0)
 
+let snackbar = ref(false)
+let snackbarText = ref('')
 async function getPoster(id) {
   poster.value = await posterStore.getById(id)
-  console.log(poster.value);
+
 }
 
 async function moderate() {
@@ -21,18 +24,28 @@ async function moderate() {
 
 
   let res = await posterStore.moderatePoster(poster.value._id, poster.value.creator)
-  if (res.status == 200) {
-    // обновить свои остатки афиш
-    userStore.getSubscriptionCount(userStore.user._id)
-    navigateTo('/admin/moderation/onmoderation')
-  }
 
+  console.log(res)
+  if (res.status == 200) {
+    if (res.data.message) {
+      snackbarText.value = res.data.message
+      snackbar.value = true
+    } else {
+      // обновить свои остатки афиш юзера
+      userStore.getSubscriptionCount(poster.value.creator)
+      navigateTo('/admin/moderation/onmoderation')
+    }
+  }
 }
 async function reject() {
   let res = await posterStore.rejectPoster(poster.value._id, poster.value.moderationMessage)
   if (res.status == 200) {
     navigateTo('/admin/moderation/onmoderation')
   }
+
+}
+async function incrementPaidPosters () {
+  let res = await userStore.incrementPaidPosters(poster.value.creator, giftPosters.value )
 }
 
 onMounted(async () => {
@@ -41,7 +54,7 @@ onMounted(async () => {
 
 })
 </script>
-<template >
+<template>
   <div>
     <v-container class="pa-0">
       <v-responsive>
@@ -63,6 +76,13 @@ onMounted(async () => {
                   <div class="d-flex justify-space-between  flex-sm-column ">
                     <v-btn class="ma-1" color="accent" @click="reject" :flat="true">отказать</v-btn>
                     <v-btn class="ma-1" @click="moderate" color="success" :flat="true">принять</v-btn>
+                    <div class="d-flex">
+                      <v-text-field  v-model.number="giftPosters" type="number" variant="outlined" density="compact"></v-text-field>
+                      <v-btn class="ma-1" @click="incrementPaidPosters" :flat="true">Дать
+                        афиш</v-btn>
+                    </div>
+
+
                   </div>
                 </v-col>
                 <v-col cols="12" sm="6" @click="scale = true" style="cursor: pointer;">
@@ -77,7 +97,8 @@ onMounted(async () => {
           <v-col cols="12" md="6">
             <div class="posterView pb-16">
               <div class="title">
-                <div class="text-center text-lowercase">{{ poster.eventType ? poster?.eventType.join(' | ') : '' }}</div>
+                <div class="text-center text-lowercase">{{ poster.eventType ? poster?.eventType.join(' | ') : '' }}
+                </div>
                 <!-- <div class="text-center text-lowercase">{{ poster.eventSubtype.join(', ') }}</div> -->
                 <h3 class="text-center">{{ poster.title }}</h3>
                 <v-divider class="md-4"></v-divider>
@@ -108,9 +129,15 @@ onMounted(async () => {
       </v-responsive>
 
     </v-container>
-
+    <v-snackbar v-model="snackbar" color="error" :timeout="2000">
+      {{ snackbarText }}
+      <template v-slot:actions>
+        <v-btn @click="snackbar = false" density="compact" icon="mdi-close"></v-btn>
+      </template>
+    </v-snackbar>
     <v-dialog v-model="scale" width="auto">
-      <v-img :src="poster.image" @click="scale = false" style="height: 95dvh; aspect-ratio: 210 / 297; cursor: pointer;" alt="Изображение не загрузилось">
+      <v-img :src="poster.image" @click="scale = false" style="height: 95dvh; aspect-ratio: 210 / 297; cursor: pointer;"
+        alt="Изображение не загрузилось">
       </v-img>
     </v-dialog>
   </div>

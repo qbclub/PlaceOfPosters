@@ -19,7 +19,7 @@ onMounted(async () => {
   <v-row>
     <v-col cols="12">
       <div v-if="activePosters.length">
-        <PostersList :actions="['delete', 'hide', 'prolong']" :posters="activePosters" @getPosters="getPosters"
+        <PostersList :actions="['edit','delete', 'hide', 'prolong']" :posters="activePosters" @getPosters="getPosters"
           :posterType="'active'" />
       </div>
 

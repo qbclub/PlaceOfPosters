@@ -33,6 +33,9 @@ export default {
     async getSubscriptionCount(_id) {
         return $api.post('/auth/subscription-count', { _id: _id })
     },
+    async incrementPaidPosters(_id, amount) {
+        return $api.post('/auth/increment-paid-posters', { _id, amount})
+    },
     async removeLocationToEmail(managerIn, email) {
         return $api.post('/auth/remove-location-to-email', { managerIn: managerIn, email: email })
     },

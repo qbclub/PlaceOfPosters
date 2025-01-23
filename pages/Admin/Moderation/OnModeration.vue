@@ -46,7 +46,10 @@ onMounted(async () => {
 <template>
     <v-row v-if="postersOnModeration.length">
         <v-col cols="6" sm="3" md="2" class="pa-2" v-for="poster of postersOnModeration" :key="poster._id">
+           
             <ModerationPosterCard :poster="poster"></ModerationPosterCard>
+            <div class="text-center"> {{ poster.creator.email }}</div>
+           
             <div class="d-flex justify-center pa-1">
                 <v-icon @click="actionDialog(poster, 'delete', 'Удалить?')" icon="mdi-trash-can-outline" size="small"
                     class="action-button">
