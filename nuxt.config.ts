@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
-// import getRoutes from './utility/getRoutes.js'
 
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -16,7 +15,7 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: {
       brotli: true
-    },
+    }
   },
   css: ["~/assets/main.scss"],
 
@@ -60,7 +59,7 @@ export default defineNuxtConfig({
 
   robots: {
     groups: [
-      { userAgent: '*', disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], allow: '/' },// Для всех поисковых ботов
+      { userAgent: '*', disallow: ['/admin', '/cabinet', '/info', '/manager', '/frame'], allow: '/' },// Для всех поисковых ботов
       // {sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`}, // Указание ссылки на карту сайта
       // {host: process.env.NUXT_PUBLIC_SITE_URL},
     ]
@@ -71,10 +70,7 @@ export default defineNuxtConfig({
     // gzip: true, // Enable gzip compression for the sitemap
     // include: [
     // ],
-    // sources: getRoutes(),
-    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/createposter', '/editposter', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
-    // urls:await getRoutes(),
-    sources:[`${process.env.NUXT_PUBLIC_API_BASE}/poster/get-ids`],
+    exclude: ['/admin/**', '/cabinet/**', '/info/**', '/manager/**', '/frame', '/framePost', '/auth', '/reg', '/helloPage', '/addPrice','/createposter','/editposter', '/forgotPassword'], // Exclude unwanted routes
     defaults: {
       changefreq: 'daily',
       priority: 0.8,
