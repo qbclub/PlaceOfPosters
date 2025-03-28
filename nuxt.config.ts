@@ -60,7 +60,7 @@ export default defineNuxtConfig({
 
   robots: {
     groups: [
-      { userAgent: '*', disallow: ['/Admin', '/Cabinet', '/Info', '/Manager', '/Frame'], allow: '/' },// Для всех поисковых ботов
+      { userAgent: '*', disallow: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth','/auth', '/Reg', '/HelloPage', '/AddPrice', '/createposter', '/editposter', '/CreatePoster', '/ForgotPassword','/PosterPreview'], allow: '/' },
       // {sitemap: `${process.env.NUXT_PUBLIC_SITE_URL}/sitemap.xml`}, // Указание ссылки на карту сайта
       // {host: process.env.NUXT_PUBLIC_SITE_URL},
     ]
@@ -72,7 +72,7 @@ export default defineNuxtConfig({
     // include: [
     // ],
     // sources: getRoutes(),
-    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth', '/Reg', '/HelloPage', '/AddPrice', '/createposter', '/editposter', '/CreatePoster', '/ForgotPassword'], // Exclude unwanted routes
+    exclude: ['/Admin/**', '/Cabinet/**', '/Info/**', '/Manager/**', '/frame', '/FramePost', '/Auth','/auth', '/Reg', '/HelloPage', '/AddPrice', '/createposter', '/editposter', '/CreatePoster', '/ForgotPassword','/PosterPreview'], // Exclude unwanted routes
     // urls:await getRoutes(),
     sources:[`${process.env.NUXT_PUBLIC_API_BASE}/poster/get-ids`],
     defaults: {
