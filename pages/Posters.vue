@@ -1,12 +1,21 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import { useRoute } from "vue-router";
+useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://plpo.ru/posters'
+    }
+  ]
+})
 let locationsStore = useLocations()
 let posterStore = usePoster()
 let cols = ref(3)
 let loading = ref(false)
 let topVisible = ref(false)
 let showImage = ref(false)
+
 
 let route = useRoute()
 
