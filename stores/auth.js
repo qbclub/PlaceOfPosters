@@ -114,6 +114,15 @@ export const useAuth = defineStore('auth', {
 				console.log(error);
 			}
 		},
+		async incrementPaidPosters(_id, amount) {
+			try {
+				return await AuthService.incrementPaidPosters(_id, amount)
+			} catch (error) {
+				console.log(error);
+			}
+		},
+
+
 		async removeLocationToEmail(managerIn, email) {
 			try {
 				return await AuthService.removeLocationToEmail(managerIn, email);
