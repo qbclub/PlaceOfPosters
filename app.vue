@@ -16,6 +16,15 @@
 //   __dangerouslyDisableSanitizersByTagID: {
 //     'noscript': ['innerHTML']
 //   }
+useHead({
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://plpo.ru/posters'
+    }
+  ]
+})
+
 useSeoMeta({
   charset: 'utf-8',
   lang:'ru',
