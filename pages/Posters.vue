@@ -5,7 +5,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: 'https://plpo.ru/posters'
+      href: 'https://plpo.ru'
     }
   ]
 })
