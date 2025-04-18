@@ -25,9 +25,14 @@ const wrapper = ref(null)
 
 let radio = computed(() => {
   if (mobile.value) {
-    return [{ label: 1, value: "12" }, { label: 2, value: "6" }, { label: 3, value: "4" }]
+    return [{ label: 1, value: "12", trueIcon: "mdi-view-grid", falseIcon: "mdi-view-grid-outline" }, 
+            { label: 2, value: "6", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
+            { label: 3, value: "4", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }]
   } else {
-    return [{ label: 3, value: "4" }, { label: 4, value: "3" }, { label: 6, value: "2" }, { label: 12, value: "1" }]
+    return [{ label: 3, value: "4", trueIcon: "mdi-view-grid", falseIcon: "mdi-view-grid-outline" }, 
+            { label: 4, value: "3", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
+            { label: 6, value: "2", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
+            { label: 12, value: "1", trueIcon: "mdi-view-comfy", falseIcon: "mdi-view-comfy-outline" }]
   }
 })
 
@@ -136,7 +141,7 @@ onMounted(async () => {
       <v-row class="pa-0 ma-0 d-flexjustify-space-between ">
         <div style="width: 80px"></div>
         <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-          <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
+          <v-radio v-for="item in radio" :value="item.value" :trueIcon="item.trueIcon" :falseIcon="item.falseIcon" label=""></v-radio>
         </v-radio-group>
         <div class="text-center">
           <a href="https://t.me/plporu" target="_blank">
