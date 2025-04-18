@@ -23,16 +23,25 @@ const { mobile } = useDisplay()
 
 const wrapper = ref(null)
 
+const iconSquareTrue = "M4 4H20V20H4Z";
+const iconSquareFalse = "M4 4H20V20H4V4Z";
+const iconGrid2x2True = "M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14Z";
+const iconGrid2x2False = "M4 4H10V10H4V4ZM14 4H20V10H14V4ZM4 14H10V20H4V14ZM14 14H20V20H14V14ZM10 4V10M14 4V10M4 10H10M14 10H20M10 14V20M14 14V20M10 10V14M14 10V14";
+const iconGrid3x3True = 'M4 4H8V8H4V4ZM4 10H8V14H4V10ZM4 16H8V20H4V16ZM10 4H14V8H10V4ZM10 10H14V14H10V10ZM10 16H14V20H10V16ZM16 4H20V8H16V4ZM16 10H20V14H16V10ZM16 16H20V20H16V16Z'
+const iconGrid3x3False = 'M4 4H8V8H4V4ZM4 10H8V14H4V10ZM4 16H8V20H4V16ZM10 4H14V8H10V4ZM10 10H14V14H10V10ZM10 16H14V20H10V16ZM16 4H20V8H16V4ZM16 10H20V14H16V10ZM16 16H20V20H16V16Z'
+const iconGrid4x4True = 'M2 2H5V5H2V2ZM2 7H5V10H2V7ZM2 12H5V15H2V12ZM2 17H5V20H2V17ZM7 2H10V5H7V2ZM7 7H10V10H7V7ZM7 12H10V15H7V12ZM7 17H10V20H7V17ZM12 2H15V5H12V2ZM12 7H15V10H12V7ZM12 12H15V15H12V12ZM12 17H15V20H12V17ZM17 2H20V5H17V2ZM17 7H20V10H17V7ZM17 12H20V15H17V12ZM17 17H20V20H17V17Z'
+const iconGrid4x4False = 'M2 2H5V5H2V2ZM7 2H10V5H7V2ZM12 2H15V5H12V2ZM17 2H20V5H17V2ZM2 7H5V10H2V7ZM7 7H10V10H7V7ZM12 7H15V10H12V7ZM17 7H20V10H17V7ZM2 12H5V15H2V12ZM7 12H10V15H7V12ZM12 12H15V15H12V12ZM17 12H20V15H17V12ZM2 17H5V20H2V17ZM7 17H10V20H7V17ZM12 17H15V20H12V17ZM17 17H20V20H17V17Z'
+
 let radio = computed(() => {
   if (mobile.value) {
-    return [{ label: 1, value: "12", trueIcon: "mdi-view-grid", falseIcon: "mdi-view-grid-outline" }, 
-            { label: 2, value: "6", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
-            { label: 3, value: "4", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }]
+    return [{ label: 1, value: "12", trueIcon: iconSquareTrue, falseIcon: iconSquareFalse }, 
+            { label: 2, value: "6", trueIcon: iconGrid2x2True, falseIcon: iconGrid2x2False }, 
+            { label: 3, value: "4", trueIcon: iconGrid3x3True, falseIcon: iconGrid4x4False }]
   } else {
-    return [{ label: 3, value: "4", trueIcon: "mdi-view-grid", falseIcon: "mdi-view-grid-outline" }, 
-            { label: 4, value: "3", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
-            { label: 6, value: "2", trueIcon: "mdi-view-module", falseIcon: "mdi-view-module-outline" }, 
-            { label: 12, value: "1", trueIcon: "mdi-view-comfy", falseIcon: "mdi-view-comfy-outline" }]
+    return [{ label: 3, value: "4", trueIcon: iconSquareTrue, falseIcon: iconSquareFalse }, 
+            { label: 4, value: "3", trueIcon: iconGrid2x2True, falseIcon: iconGrid2x2False }, 
+            { label: 6, value: "2", trueIcon: iconGrid3x3True, falseIcon: iconGrid3x3False }, 
+            { label: 12, value: "1", trueIcon: iconGrid4x4True, falseIcon: iconGrid4x4False }]
   }
 })
 
@@ -141,7 +150,7 @@ onMounted(async () => {
       <v-row class="pa-0 ma-0 d-flexjustify-space-between ">
         <div style="width: 80px"></div>
         <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
-          <v-radio v-for="item in radio" :value="item.value" :trueIcon="item.trueIcon" :falseIcon="item.falseIcon" label=""></v-radio>
+          <v-radio v-for="item in radio" :value="item.value" :trueIcon="`mdiSvg:${item.trueIcon}`" :falseIcon="`mdiSvg:${item.falseIcon}`" label=""></v-radio>
         </v-radio-group>
         <div class="text-center">
           <a href="https://t.me/plporu" target="_blank">
@@ -157,6 +166,8 @@ onMounted(async () => {
 
 
     <v-container class="pt-0 d-flex justify-center ">
+      <h1>СВО</h1><v-icon :icon="`mdiSvg:${iconGrid3x3False}`" />
+
       <v-row class="justify-center flex-wrap mb-16 mt-2 w-100">
 
         <v-col v-for="item of posterStore.posters" :key="item._id" :cols="cols" class="pa-1 poster">
