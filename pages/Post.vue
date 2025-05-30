@@ -83,13 +83,23 @@ async function changeFilter(event) {
     </Head>
 
     <v-responsive>
-      <v-row>
+      <v-row class="d-flex justify-space-between">
         <v-col>
           <!-- router.replace({ hash: "#bio" }) -->
           <div @click="router.replace({ path: '/posters', hash: `#${poster._id}` })"
             class="pa-1 cursor-pointer text-body-1">
             <span class="mdi mdi-arrow-left"></span> назад
           </div>
+        </v-col>
+        <v-col class="d-flex justify-end">
+          <div>
+            <span style="font-size: 7px;">при поддержке</span>
+            <a href="https://gorodaivesi.ru" target="_blank">
+            <v-img src="../assets/images/logo.webp" style="width: 50px;">
+            </v-img></a>
+          </div>
+
+
         </v-col>
       </v-row>
       <v-row v-if="!pending && poster?._id" class="pb-4">
@@ -121,7 +131,7 @@ async function changeFilter(event) {
                   class="mdi mdi-24px mdi-share-variant-outline ma-8 " @click="startShare()" v-if="isSupported">
                 </span></div>
               <div> <b>Место:</b> <a :href="`https://yandex.ru/maps/?text=${poster.eventLocation.name}`">{{
-        poster.eventLocation.name }}</a> </div>
+                poster.eventLocation.name }}</a> </div>
               <div v-if="poster.date?.length" class="d-flex">
                 <div><b>Время начала:&nbsp;</b></div>
                 <div>
@@ -135,11 +145,11 @@ async function changeFilter(event) {
               <div v-if="poster.organizer"> <b>Организатор:</b> {{ poster.organizer }}</div>
               <div v-if="poster.ageLimit"> <b>Возраст:</b> {{ poster.ageLimit }}</div>
               <div v-if="poster.email"> <b>Email:</b> <a :href="getHref(`mailto:${poster.email}`)">{{ poster.email
-                  }}</a>
+              }}</a>
               </div>
               <div v-if="poster.site"> <b> Сайт:</b> <a :href="poster.site" target="_blank">{{ poster.site }}</a> </div>
               <div v-if="poster.phone"> <b>Телефон:</b> <a :href="getHref(`tel:${poster.phone}`)"> {{ poster.phone
-                  }}</a>
+              }}</a>
               </div>
             </div>
             <v-divider class="ma-4"></v-divider>

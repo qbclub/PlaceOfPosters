@@ -21,7 +21,7 @@
                 <BackButton />
             </v-col>
         </v-row>
-        <v-row class="d-flex flex-column flex-md-row">
+        <v-row class="d-flex flex-column flex-md-row mb-8">
             <v-col cols="12" md="2">
                 <div class="d-flex justify-center flex-wrap flex-md-column">
                     <div @click="navigateTo(`/info/landing`)" class=" menu-btn">
@@ -36,10 +36,15 @@
                         контакты
                     </div>
 
+
                 </div>
             </v-col>
             <v-col cols="12" md="10">
                 <NuxtPage />
+            </v-col>
+            <v-col class="text-center">
+                <a href="https://storage.yandexcloud.net/politica/Politica%20confidetcionalnosty.pdf" target="_blank">
+                    политика конфиденциальности и обработки персональных данных</a>
             </v-col>
 
 

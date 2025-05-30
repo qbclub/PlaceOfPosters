@@ -254,11 +254,11 @@
                                         <router-link to="/info/adver">закона РФ "О рекламе" </router-link>.
                                     </li>
                                     <li>
-                                    <li>
+                                 
                                         Ответственность за соблюдение требований <router-link to="/info/adver">закона РФ "О
                                             рекламе" </router-link> лежит на Рекламодателе.
 
-                                    </li>
+                               
                                     </li>
                                 </ul>
                             </v-expansion-panel-text>
