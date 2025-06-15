@@ -123,6 +123,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+     ssr: {
+      noExternal: ['vue-router', 'entities']
+    },
     vue: {
       template: {
         transformAssetUrls,
