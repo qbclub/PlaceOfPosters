@@ -44,7 +44,13 @@ let filter = ref({
 });
 
 let shortName = (item) => {
-  let name = item.replace("(", "").replace(")", "").split(" ");
+  let name = item.replace("(", "").replace(")", "").split(" ").filter(Boolean);
+  if (name[0]?.length === 1) {
+    name.shift();
+  }
+  if (name.length >= 2) {
+    return name.slice(-2).join(" ");
+  }
   return name.pop();
 };
 

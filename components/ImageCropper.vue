@@ -8,6 +8,7 @@ let preview = ref({});
 let previewImage = ref(null);
 let imageInput = ref(null)
 let cropper;
+const MAX_DIMENSION = 900; // макс. ширина/высота финального файла
 
 const emit = defineEmits(["addImage"]);
 
@@ -26,27 +27,28 @@ function loadImage() {
     }
 }
 async function crop() {
-    if (cropper) {
-        await cropper
-            .getCroppedCanvas({
-                fillColor: "#fff",
-                width: 450,
-                // height: 425,
-                // imageSmoothingEnabled: false,
-                // imageSmoothingQuality: 'low',
-            })
-            .toBlob((blob) => {
-                emit("addImage", blob);
-                try {
-                    loadedImages.value = [];
-                } catch (err) {
-                    console.log(err);
-                }
-            }, 'image/jpeg', 0.95
-                // quality is
-                // 0.9,
-            )
-    }
+    if (!cropper) return;
+
+    const { width, height } = cropper.getData(true);
+    const scale = Math.min(1, MAX_DIMENSION / Math.max(width, height));
+    const targetWidth = Math.max(1, Math.round(width * scale));
+    const targetHeight = Math.max(1, Math.round(height * scale));
+
+    const canvas = cropper.getCroppedCanvas({
+        fillColor: "#fff",
+        width: targetWidth,
+        height: targetHeight,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    });
+
+    await new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+            if (blob) emit("addImage", blob);
+            loadedImages.value = [];
+            resolve();
+        }, 'image/jpeg', 0.82); 
+    });
 }
 watch(preview, () => {
     cropper = new Cropper(previewImage.value, {
