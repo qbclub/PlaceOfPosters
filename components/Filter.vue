@@ -44,12 +44,42 @@ let filter = ref({
 });
 
 let shortName = (item) => {
+  // Убираем всё после запятой
+  if (item.includes(",")) {
+    item = item.split(",")[0];
+  }
+  
   let name = item.replace("(", "").replace(")", "").split(" ").filter(Boolean);
-  if (name[0]?.length === 1) {
+  let banned = new Set([
+    "г",
+    "дер",
+    "деревня",
+    "мкр",
+    "п",
+    "пос",
+    "поселок",
+    "посёлок",
+    "пгт",
+    "село",
+    "ст",
+    "х",
+    "хут",
+    "хутор",
+  ]);
+  name = name.filter((part) => {
+    let normalized = part.toLowerCase().replace(/[.,]/g, "");
+    return !banned.has(normalized);
+  });
+  let firstNormalized = name[0]?.replace(/[.,]/g, "");
+  if (firstNormalized?.length === 1) {
     name.shift();
   }
   if (name.length >= 2) {
-    return name.slice(-2).join(" ");
+    let lastTwo = name.slice(-2);
+    if (lastTwo[0].toLowerCase() === lastTwo[1].toLowerCase()) {
+      return lastTwo[0];
+    }
+    return lastTwo.join(" ");
   }
   return name.pop();
 };

@@ -3,6 +3,7 @@ import dates from "~/utility/dates"
 
 const userStore = useAuth();
 const posterStore = usePoster();
+const appStore = useAppStore();
 
 const { posters, actions, posterType, isAdminPage } = defineProps(["posters", "actions", "posterType", "isAdminPage"]);
 
@@ -85,6 +86,23 @@ async function prolongPoster() {
 
 }
 
+let snackbar = ref(false)
+let snackbarText = ref('')
+
+function setFeaturedPoster(posterId) {
+    appStore.setFeaturedPosterId(posterId)
+    featuredId.value = posterId
+    snackbarText.value = 'Плакат установлен как первый'
+    snackbar.value = true
+}
+
+function removeFeaturedPoster() {
+    appStore.setFeaturedPosterId(null)
+    featuredId.value = ''
+    snackbarText.value = 'Плакат снят с первого места'
+    snackbar.value = true
+}
+
 let actionDialog = (poster, action, title) => {
     dialog.value = true;
     dialogTitle.value = title
@@ -112,6 +130,14 @@ let acceptAction = () => {
             navigateTo({ path: '/editposter', query: { hotfix: 'false', _id: selectedPoster.value._id } })
         }
     }
+    if (selectedAction.value == 'set-first') {
+        setFeaturedPoster(selectedPoster.value._id)
+        dialog.value = false
+    }
+    if (selectedAction.value == 'remove-first') {
+        removeFeaturedPoster()
+        dialog.value = false
+    }
 }
 
 
@@ -122,6 +148,11 @@ let checkPayment = computed(() => {
 let getIcon = (poster) => {
     return poster.isHidden ? " mdi-eye-outline" : "mdi-eye-off-outline"
 }
+
+let featuredId = ref('')
+onMounted(async () => {
+    featuredId.value = await appStore.getFeaturedPosterId() || ''
+})
 
 </script>
 <template>
@@ -146,6 +177,12 @@ let getIcon = (poster) => {
                 </v-icon>
                 <v-icon v-if="actions.includes('message')" @click="showMessage(poster.moderationMessage)"
                     icon="mdi-message-text-outline" size="small" class="action-button">
+                </v-icon>
+                <v-icon v-if="actions.includes('set-first')" @click="actionDialog(poster, 'set-first', 'Выставить на первое место?')"
+                    icon="mdi-arrow-up-bold" size="small" class="action-button" :color="featuredId === poster._id ? 'accent' : undefined">
+                </v-icon>
+                <v-icon v-if="actions.includes('remove-first')" @click="actionDialog(poster, 'remove-first', 'Снять с первого места?')"
+                    icon="mdi-arrow-down-bold" size="small" class="action-button">
                 </v-icon>
             </div>
 
@@ -177,7 +214,9 @@ let getIcon = (poster) => {
 
             </v-card>
         </v-dialog>
-
+        <v-snackbar v-model="snackbar" timeout="2000" color="accent">
+            {{ snackbarText }}
+        </v-snackbar>
     </v-row>
 </template>
 <style lang="scss" scoped>

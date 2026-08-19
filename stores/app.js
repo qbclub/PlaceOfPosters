@@ -68,6 +68,22 @@ export const useAppStore = defineStore('app', {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async setFeaturedPosterId(posterId) {
+            try {
+                await appStateService.setFeaturedPosterId(posterId)
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getFeaturedPosterId() {
+            try {
+                let {data} = await appStateService.getFeaturedPosterId()
+                return data.posterId
+            } catch (error) {
+                console.log(error);
+                return null
+            }
         }
     }
 })

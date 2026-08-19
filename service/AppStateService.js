@@ -18,5 +18,11 @@ export default {
     },
     getUsers() {
         return $api.get("/app-state/get-users")
+    },
+    setFeaturedPosterId(posterId) {
+        return $api.post("/app-state/set-featured-poster", { posterId })
+    },
+    getFeaturedPosterId() {
+        return $api.get("/app-state/get-featured-poster")
     }
 }

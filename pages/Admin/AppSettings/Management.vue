@@ -29,7 +29,7 @@ async function findPosters() {
             </v-row>
 
             <PostersList v-if="posters.length" :posters="posters" :isAdminPage="true" posterType="active"
-                :actions="['edit', 'delete', 'hide']" @getPosters="findPosters" />
+                :actions="['edit', 'delete', 'hide', 'set-first', 'remove-first']" @getPosters="findPosters" />
 
             <h3 class="text-center" v-else>
                 Мы ничего не нашли 😟
