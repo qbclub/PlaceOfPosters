@@ -103,7 +103,6 @@ onMounted(async () => {
                     <v-card userStore. @click="checkIsAuth()" height="100" v-bind="props" color="success"
                         class="animation mx-auto rounded pa-4 d-flex flex-column justify-space-between">
                         <div class=" text-h6 text-md-h5">Тестовый режим</div>
-                        <div class=" text-h6 text-md-h5 text-end font-weight-bold"> Aфиша - 0 рублей </div>
                     </v-card>
                 </v-hover>
             </v-col>
@@ -129,24 +128,6 @@ onMounted(async () => {
                 </v-hover>
 
             </v-col> -->
-            <v-col cols="12" sm="6">
-                <v-hover v-slot="{ isHovering, props }">
-                    <v-card v-bind="props" color="accent"
-                        class="animation rounded pa-4 d-flex flex-column justify-space-between">
-
-                        <ul class="pl-4">
-                            <li>
-                                <div class=" text-h6 text-md-h5"> Гранты на бесплатное размещение </div>
-
-                            </li>
-                            <li>
-                                <div class=" text-h6 text-md-h5"> Особые условия рекламным агентствам</div>
-                            </li>
-                        </ul>
-
-                    </v-card>
-                </v-hover>
-            </v-col>
         </v-row>
         <v-dialog v-model="isBuyDialog" width="auto">
 

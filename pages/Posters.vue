@@ -138,14 +138,7 @@ onMounted(async () => {
         <v-radio-group inline class="d-flex justify-center" v-model="cols" color="accent">
           <v-radio v-for="item in radio" :value="item.value" label=""></v-radio>
         </v-radio-group>
-        <div class="text-center">
-          <a href="https://t.me/plporu" target="_blank">
-            <img class="ma-2" src="~/assets/icons/telegram.svg" alt="Изображение не загрузилось"></a>
-
-          <a href="https://vk.com/plporu" target="_blank"><img class="ma-2" src="~/assets/icons/vk.svg"
-              alt="Изображение не загрузилось"></a>
-
-        </div>
+        <div style="width: 80px"></div>
       </v-row>
     </v-container>
 
